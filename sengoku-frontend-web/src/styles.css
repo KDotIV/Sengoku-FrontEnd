@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+/* src/styles.css */
+
+body {
+    background-color: #2d2d2d; /* Dark grey background */
+    color: white;              /* White text */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  a {
+    color: #f1f1f1;            /* Light grey for links */
+  }
+  
+  table, th, td {
+    border-color: #f1f1f1;      /* Light grey for table borders */
+  }
+  
+  button {
+    background-color: #444;     /* Darker grey button background */
+    color: white;               /* White text for buttons */
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #555;     /* Slightly lighter grey on hover */
+  }
+  

@@ -1,0 +1,45 @@
+/* src/app/app.component.css */
+
+header {
+  background-color: #444; /* Darker grey for header */
+  color: white;
+  padding: 15px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+nav ul li {
+  display: inline;
+}
+
+nav ul li a {
+  color: white; /* White text for links in the nav */
+  text-decoration: none;
+}
+
+main {
+  padding: 20px;
+}
+
+table {
+  width: 100%;
+  background-color: #3d3d3d; /* Grey background for table */
+  color: white;              /* White text for table */
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid white;    /* White borders */
+}
+
+input[type="text"] {
+  padding: 5px;
+  margin-right: 10px;
+  background-color: #333;     /* Dark input background */
+  color: white;               /* White text */
+  border: 1px solid #f1f1f1;
+}

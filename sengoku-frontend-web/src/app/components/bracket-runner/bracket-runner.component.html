@@ -1,0 +1,12 @@
+<div class="tournament-board-container">
+    <div *ngFor="let tournament of tournamentBoardResults" class="tournament-card" (click)="selectTournament(tournament)">
+      <h3>{{ tournament.tournamentName }}</h3>
+      <p>Entrants: {{ tournament.entrantsNum }}</p>
+      <p>Game ID: {{ tournament.gameId }}</p>
+      <div *ngIf="selectedTournament === tournament" class="tournament-details">
+        <p>Last Updated: {{ tournament.lastUpdated | date }}</p>
+        <a [href]="'/tournament/' + tournament.urlSlug">Manage Tournament</a>
+      </div>
+    </div>
+  </div>
+  
