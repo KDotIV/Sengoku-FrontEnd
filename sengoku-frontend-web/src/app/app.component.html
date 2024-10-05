@@ -22,6 +22,8 @@
   </div>
 
   <!-- Show event table only if events are found -->
+  <div *ngIf="errorMessage">{{ errorMessage }}</div>
+
   <div *ngIf="events.length > 0" class="event-results">
     <table>
       <thead>
@@ -35,18 +37,21 @@
       </thead>
       <tbody>
         <tr *ngFor="let event of events">
-          <td>{{ event.eventName }}</td>
-          <td>{{ event.region }}</td>
-          <td>{{ event.startTime | date:'short' }}</td>
-          <td>{{ event.endTime | date:'short' }}</td>
-          <td>{{ event.closingRegistration | date:'short' }}</td>
-          <td><a [href]="'/event/' + event.urlSlug">Manage Event</a></td>
-        </tr>
+          <td>{{ event.EventName }}</td>
+          <td>{{ event.Region }}</td>
+          <td>{{ event.StartTime ? (event.StartTime | date:'short') : 'N/A' }}</td>
+          <td>{{ event.EndTime ? (event.EndTime | date:'short') : 'N/A' }}</td>
+          <td>{{ event.ClosingRegistration ? (event.ClosingRegistration | date:'short') : 'N/A' }}</td>
+          <td>{{ event.Latitude !== 0.0 ? event.Latitude : 'N/A' }}</td>
+          <td>{{ event.Longitude !== 0.0 ? event.Longitude : 'N/A' }}</td>
+          <td>{{ event.Distance !== 0.0 ? event.Distance + ' km' : 'N/A' }}</td>
+          <td>{{ event.Address ? event.Address : 'N/A' }}</td>
+          <td><a [href]="'/event/' + event.UrlSlug">Manage Event</a></td>
+        </tr>        
       </tbody>
     </table>
   </div>
 
-  <!-- Show a no events found message if zipcode is entered but no events returned -->
   <div *ngIf="events.length === 0 && zipcode">
     <p>No events found for the given zipcode.</p>
   </div>
