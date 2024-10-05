@@ -7,7 +7,7 @@ import { EventLocationService, AddressEventResult } from './services/event-locat
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, FormsModule],  // Import CommonModule here
+  imports: [RouterOutlet, CommonModule, FormsModule],  // No HttpClientModule needed
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

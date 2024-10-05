@@ -10,13 +10,18 @@
 
 <main>
   <h1>{{ title }}</h1>
-
   <div class="search-container">
     <label for="zipcode">Enter Zipcode to Search Events:</label>
     <input type="text" id="zipcode" [(ngModel)]="zipcode" placeholder="Enter Zipcode">
     <button (click)="searchEvents()">Search</button>
   </div>
 
+  <!-- Default message before search -->
+  <div *ngIf="events.length === 0 && !zipcode">
+    <p>Please enter a zipcode to search for events.</p>
+  </div>
+
+  <!-- Show event table only if events are found -->
   <div *ngIf="events.length > 0" class="event-results">
     <table>
       <thead>
@@ -41,6 +46,7 @@
     </table>
   </div>
 
+  <!-- Show a no events found message if zipcode is entered but no events returned -->
   <div *ngIf="events.length === 0 && zipcode">
     <p>No events found for the given zipcode.</p>
   </div>
