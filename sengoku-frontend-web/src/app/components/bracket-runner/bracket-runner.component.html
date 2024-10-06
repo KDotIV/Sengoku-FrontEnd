@@ -1,12 +1,22 @@
 <div class="tournament-board-container">
-    <div *ngFor="let tournament of tournamentBoardResults" class="tournament-card" (click)="selectTournament(tournament)">
-      <h3>{{ tournament.tournamentName }}</h3>
+  <h2>Tournament Board</h2>
+  <button class="addTournamentButton" type="button">Add Tournament</button>
+</div>
+<!-- Display tournament board data -->
+<div *ngIf="tournamentBoardResults$ | async as tournamentBoardResults">
+  <ul>
+    <li *ngFor="let tournament of tournamentBoardResults" (click)="selectTournament(tournament)">
+      <h3>{{ tournament.tournamentName }}</h3>  <!-- Use camelCase names -->
       <p>Entrants: {{ tournament.entrantsNum }}</p>
       <p>Game ID: {{ tournament.gameId }}</p>
-      <div *ngIf="selectedTournament === tournament" class="tournament-details">
-        <p>Last Updated: {{ tournament.lastUpdated | date }}</p>
-        <a [href]="'/tournament/' + tournament.urlSlug">Manage Tournament</a>
-      </div>
-    </div>
-  </div>
-  
+    </li>
+  </ul>
+</div>
+
+<!-- Display selected tournament details -->
+<div *ngIf="selectedTournament">
+  <h2>Selected Tournament</h2>
+  <p>Name: {{ selectedTournament.tournamentName }}</p>  <!-- Use camelCase names -->
+  <p>Entrants: {{ selectedTournament.entrantsNum }}</p>
+  <p>Game ID: {{ selectedTournament.gameId }}</p>
+</div>

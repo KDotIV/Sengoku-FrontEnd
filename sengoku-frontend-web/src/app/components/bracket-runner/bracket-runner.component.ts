@@ -1,32 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
 import { TournamentBoardService, TournamentBoardResult } from '../../services/tournament-board.service';
+import { Observable } from 'rxjs';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-bracket-runner',
   standalone: true,
-  imports: [CommonModule],  // Import CommonModule here
+  imports: [RouterOutlet, CommonModule],
   templateUrl: './bracket-runner.component.html',
   styleUrls: ['./bracket-runner.component.css']
 })
 export class BracketRunnerComponent implements OnInit {
 
-  tournamentBoardResults: TournamentBoardResult[] = [];
-  selectedTournament: TournamentBoardResult | null = null;
+  tournamentBoardResults$: Observable<TournamentBoardResult[]> = new Observable();
+  selectedTournament: TournamentBoardResult | null = null;  // Declare the selectedTournament property
 
   constructor(private tournamentBoardService: TournamentBoardService) { }
 
   ngOnInit(): void {
-    this.loadTournamentBoard();
+    this.tournamentBoardResults$ = this.tournamentBoardService.getTournamentBoard();
   }
 
-  loadTournamentBoard(): void {
-    this.tournamentBoardService.getTournamentBoard().subscribe(
-      (data) => this.tournamentBoardResults = data,
-      (error) => console.error('Failed to load tournament board', error)
-    );
-  }
-
+  // Define the selectTournament method
   selectTournament(tournament: TournamentBoardResult): void {
     this.selectedTournament = this.selectedTournament === tournament ? null : tournament;
   }
