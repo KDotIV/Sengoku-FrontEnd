@@ -24,13 +24,13 @@ export class HomeComponent {
       this.eventLocationService.queryEventsByLocation(this.zipcode)
         .pipe(
           tap(data => {
-            console.log('Events Data:', data); // Log the data to verify
+            console.log('Events Data:', data);
             this.events = data;
           }),
           catchError(error => {
             console.error('Failed to load events', error);
             this.errorMessage = 'Failed to load events. Please try again later.';
-            return EMPTY;  // return an empty observable if there's an error
+            return EMPTY;
           })
         ).subscribe();
     }

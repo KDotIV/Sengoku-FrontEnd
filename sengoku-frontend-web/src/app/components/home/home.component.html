@@ -27,11 +27,11 @@
         </thead>
         <tbody>
           <tr *ngFor="let event of events">
-            <td>{{ event.EventName }}</td>
-            <td>{{ event.Region }}</td>
-            <td>{{ event.StartTime ? (event.StartTime | date:'short') : 'N/A' }}</td>
-            <td>{{ event.EndTime ? (event.EndTime | date:'short') : 'N/A' }}</td>
-            <td>{{ event.ClosingRegistration ? (event.ClosingRegistration | date:'short') : 'N/A' }}</td>
+            <td>{{ event.eventName }}</td>
+            <td>{{ event.region }}</td>
+            <td>{{ event.startTime ? (event.startTime | date:'short') : 'N/A' }}</td>
+            <td>{{ event.endTime ? (event.endTime | date:'short') : 'N/A' }}</td>
+            <td>{{ event.closingRegistration ? (event.closingRegistration | date:'short') : 'N/A' }}</td>
             <td><a [href]="'/event/' + event.UrlSlug">View Event</a></td>
           </tr>
         </tbody>

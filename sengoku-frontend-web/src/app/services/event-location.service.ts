@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export interface AddressEventResult {
-  Address: string;
-  Latitude: number;
-  Longitude: number;
-  Distance: number;
-  EventName: string;
-  EventDescription?: string;
-  Region: number;
-  StartTime: Date | null;
-  EndTime: Date | null;
-  LinkId: number;
-  ClosingRegistration: Date | null;
-  UrlSlug: string;
-  IsOnline: boolean;
+  address: string;
+  latitude: number;
+  longitude: number;
+  distance: number;
+  eventName: string;
+  eventDescription?: string;
+  region: number;
+  startTime: Date | null;
+  endTime: Date | null;
+  linkId: number;
+  closingRegistration: Date | null;
+  urlSlug: string;
+  isOnline: boolean;
 }
 
 
@@ -40,19 +40,22 @@ export class EventLocationService {
 
   // Query events and ensure date fields are parsed correctly
   queryEventsByLocation(regionId: string, perPage: number = 50, priority: string = 'date'): Observable<AddressEventResult[]> {
-    const requestBody = {
-      RegionId: regionId,
-      PerPage: perPage,
-      Priority: priority
-    };
+    const params = new HttpParams()
+    .set('RegionId', regionId)
+    .set('PerPage', perPage.toString())
+    .set('Priority', priority);
+
+    const headers = new HttpHeaders({
+      'Accept': 'application/json'
+    });
   
-    return this.http.post<AddressEventResult[]>(this.apiUrl, requestBody)
+    return this.http.get<AddressEventResult[]>(this.apiUrl, {params, headers})
       .pipe(
         map(events => events.map(event => ({
           ...event,
-          startTime: this.parseDate(event.StartTime),
-          endTime: this.parseDate(event.EndTime),
-          closingRegistration: this.parseDate(event.ClosingRegistration)
+          startTime: this.parseDate(event.startTime),
+          endTime: this.parseDate(event.endTime),
+          closingRegistration: this.parseDate(event.closingRegistration)
         })))
       );
   }  
