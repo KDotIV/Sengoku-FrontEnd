@@ -14,25 +14,39 @@ import { catchError, EMPTY, tap } from 'rxjs';
 export class HomeComponent {
   title = 'Tournament Finder';
   zipcode: string = '';
-  events: any[] = [];
+  events: AddressEventResult[] = [];
   errorMessage: string = '';
 
   constructor(private eventLocationService: EventLocationService) { }
 
+  loading: boolean = false;
+
   searchEvents(): void {
-    if (this.zipcode) {
-      this.eventLocationService.queryEventsByLocation(this.zipcode)
+    if (!this.zipcode || !/^\d{5}$/.test(this.zipcode)) {
+      this.errorMessage = 'Please enter a valid 5-digit zipcode.';
+    return;
+    }
+    this.errorMessage = '';
+    this.loading = true;
+
+    this.eventLocationService.queryEventsByLocation(this.zipcode)
         .pipe(
-          tap(data => {
+          tap((data: AddressEventResult[]) => {
             console.log('Events Data:', data);
             this.events = data;
+            this.loading = false;
+            if(data.length === 0) {
+              this.errorMessage = 'No Events found for the given zipcode.';
+            } else {
+              this.errorMessage = '';
+            }
           }),
           catchError(error => {
             console.error('Failed to load events', error);
             this.errorMessage = 'Failed to load events. Please try again later.';
+            this.loading = false;
             return EMPTY;
           })
         ).subscribe();
-    }
   }
 }

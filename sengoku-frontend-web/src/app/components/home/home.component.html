@@ -1,45 +1,61 @@
 <main>
-    <h1>{{ title }}</h1>
-    <div class="search-container">
-      <label for="zipcode">Enter Zipcode to Search Events:</label>
-      <input type="text" id="zipcode" [(ngModel)]="zipcode" placeholder="Enter Zipcode">
-      <button (click)="searchEvents()">Search</button>
-    </div>
+  <h1>{{ title }}</h1>
   
-    <!-- Default message before search -->
-    <div *ngIf="events.length === 0 && !zipcode">
-      <p>Please enter a zipcode to search for events.</p>
-    </div>
-  
-    <!-- Show event table only if events are found -->
-    <div *ngIf="errorMessage">{{ errorMessage }}</div>
-  
-    <div *ngIf="events.length > 0" class="event-results">
-      <table>
-        <thead>
-          <tr>
-            <th>Event Name</th>
-            <th>Region</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Closing Registration</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let event of events">
-            <td>{{ event.eventName }}</td>
-            <td>{{ event.region }}</td>
-            <td>{{ event.startTime ? (event.startTime | date:'short') : 'N/A' }}</td>
-            <td>{{ event.endTime ? (event.endTime | date:'short') : 'N/A' }}</td>
-            <td>{{ event.closingRegistration ? (event.closingRegistration | date:'short') : 'N/A' }}</td>
-            <td><a [href]="'/event/' + event.UrlSlug">View Event</a></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  
-    <div *ngIf="events.length === 0 && zipcode">
-      <p>No events found for the given zipcode.</p>
-    </div>
-  </main>
-  
+  <!-- Search Container -->
+  <div class="search-container">
+    <label for="zipcode">Enter Zipcode to Search Events:</label>
+    <input 
+      type="text" 
+      id="zipcode" 
+      [(ngModel)]="zipcode" 
+      placeholder="Enter Zipcode"
+    >
+    <button (click)="searchEvents()">Search</button>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-spinner">
+    Loading events, please wait...
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Default Message Before Search -->
+  <div *ngIf="!loading && events.length === 0 && !zipcode">
+    <p>Please enter a zipcode to search for events.</p>
+  </div>
+
+  <!-- Display Event Table if Events are Found -->
+  <div *ngIf="!loading && events.length > 0" class="event-results">
+    <table>
+      <thead>
+        <tr>
+          <th>Event Name</th>
+          <th>Region</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th>Closing Registration</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let event of events">
+          <td>{{ event.eventName }}</td>
+          <td>{{ event.region }}</td>
+          <td>{{ event.startTime ? (event.startTime | date:'short') : 'N/A' }}</td>
+          <td>{{ event.endTime ? (event.endTime | date:'short') : 'N/A' }}</td>
+          <td>{{ event.closingRegistration ? (event.closingRegistration | date:'short') : 'N/A' }}</td>
+          <td><a [href]="'/event/' + event.urlSlug">View Event</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- No Events Found Message -->
+  <div *ngIf="!loading && events.length === 0 && zipcode">
+    <p>No events found for the given zipcode.</p>
+  </div>
+</main>
