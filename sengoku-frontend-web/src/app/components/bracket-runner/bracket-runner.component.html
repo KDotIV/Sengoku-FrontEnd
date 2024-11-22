@@ -6,7 +6,7 @@
 <div *ngIf="tournamentBoardResults$ | async as tournamentBoardResults">
   <ul>
     <li *ngFor="let tournament of tournamentBoardResults" (click)="selectTournament(tournament)">
-      <h3>{{ tournament.tournamentName }}</h3>  <!-- Use camelCase names -->
+      <h3>{{ tournament.tournamentName }}</h3>
       <p>Entrants: {{ tournament.entrantsNum }}</p>
       <p>Game ID: {{ tournament.gameId }}</p>
     </li>
@@ -16,7 +16,7 @@
 <!-- Display selected tournament details -->
 <div *ngIf="selectedTournament">
   <h2>Selected Tournament</h2>
-  <p>Name: {{ selectedTournament.tournamentName }}</p>  <!-- Use camelCase names -->
+  <p>Name: {{ selectedTournament.tournamentName }}</p>
   <p>Entrants: {{ selectedTournament.entrantsNum }}</p>
   <p>Game ID: {{ selectedTournament.gameId }}</p>
 </div>
