@@ -5,11 +5,10 @@ import { EventLocationService, AddressEventResult } from '../../services/event-l
 import { catchError, EMPTY, tap } from 'rxjs';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+    selector: 'app-home',
+    imports: [CommonModule, FormsModule],
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
   title = 'Tournament Finder';

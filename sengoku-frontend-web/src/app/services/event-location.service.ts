@@ -19,7 +19,6 @@ export interface AddressEventResult {
   isOnline: boolean;
 }
 
-
 @Injectable({
   providedIn: 'root'
 })

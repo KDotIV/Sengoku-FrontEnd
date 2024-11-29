@@ -5,11 +5,10 @@ import { Observable } from 'rxjs';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-bracket-runner',
-  standalone: true,
-  imports: [RouterOutlet, CommonModule],
-  templateUrl: './bracket-runner.component.html',
-  styleUrls: ['./bracket-runner.component.css']
+    selector: 'app-bracket-runner',
+    imports: [RouterOutlet, CommonModule],
+    templateUrl: './bracket-runner.component.html',
+    styleUrls: ['./bracket-runner.component.css']
 })
 export class BracketRunnerComponent implements OnInit {
 
