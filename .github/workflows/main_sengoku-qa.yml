@@ -22,23 +22,23 @@ jobs:
 
       # Step 3: Install dependencies and build
       - name: Install dependencies and build
-        working-directory: sengoku-frontend-web
+        working-directory: ./sengoku
         run: |
           npm install
-          npm run build -- --output-path=dist/browser
-          cp ../web.config dist/browser/
+          npm run build -- --output-path=../dist/sengoku-frontend-web/browser
+          cp web.config ../dist/sengoku-frontend-web/browser/
 
       # Step 4: Package the build artifacts
       - name: Zip build artifacts
-        working-directory: sengoku-frontend-web/dist/browser
-        run: Compress-Archive -Path * -DestinationPath ../../release.zip
+        working-directory: ./dist/sengoku-frontend-web/browser
+        run: Compress-Archive -Path * -DestinationPath ../../../release.zip
 
       # Step 5: Upload the build artifact
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
           name: angular-build
-          path: sengoku-frontend-web/dist/release.zip
+          path: ./dist/release.zip
 
   deploy:
     runs-on: windows-latest
@@ -50,7 +50,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: angular-build
-          
+
+      # Step 7: Login to Azure
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -58,11 +59,10 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_80AB4FFAE16D4A6B8481B864BF17047E }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_336612A37BB44394B7FAE04BF4388A07 }}
 
-      # Step 7: Deploy to Azure Web App
+      # Step 8: Deploy to Azure Web App
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'sengoku-qa'
           slot-name: 'Production'
-          package: sengoku-frontend-web/dist/release.zip
-          
+          package: ./dist/release.zip
