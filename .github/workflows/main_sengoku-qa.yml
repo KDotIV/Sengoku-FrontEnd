@@ -1,7 +1,4 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy Node.js Azure
+name: Deploy Web App sengoku-qa - Node.js
 
 on:
   push:
@@ -14,38 +11,45 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      # Checkout the repository
       - uses: actions/checkout@v4
 
+      # Set up Node.js
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
 
-      - name: npm install, build, and test
+      # Install dependencies and build
+      - name: Install dependencies and build
+        working-directory: ./sengoku-frontend-web
         run: |
           npm install
-          npm run build --if-present
-      
-      - name: Upload artifact for deployment job
+          npm run build -- --output-path=dist/sengoku-frontend-web/browser
+          cp web.config dist/sengoku-frontend-web/browser/
+
+      # Package the build artifacts
+      - name: Zip build artifacts
+        working-directory: ./sengoku-frontend-web
+        run: Compress-Archive -Path dist/sengoku-frontend-web/browser/* -DestinationPath release.zip
+
+      # Upload the build artifacts
+      - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
-          name: node-app
-          path: .
+          name: angular-build
+          path: ./sengoku-frontend-web/release.zip
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      id-token: write #This is required for requesting the JWT
 
     steps:
-      - name: Download artifact from build job
+      # Download the build artifact
+      - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: node-app
+          name: angular-build
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -54,11 +58,10 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_80AB4FFAE16D4A6B8481B864BF17047E }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_336612A37BB44394B7FAE04BF4388A07 }}
 
-      - name: 'Deploy to Azure Web App'
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
         with:
           app-name: 'sengoku-qa'
           slot-name: 'Production'
-          package: .
+          package: ./dist/sengoku-frontend-web/browser
           
