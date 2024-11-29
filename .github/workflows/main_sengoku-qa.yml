@@ -26,7 +26,7 @@ jobs:
         run: |
           npm install
           npm run build -- --output-path=./dist/sengoku-frontend-web/browser
-          cp web.config ../dist/sengoku-frontend-web/browser/
+          cp web.config ./dist/sengoku-frontend-web/browser/
 
       # Step 4: Package the build artifacts
       - name: Zip build artifacts
