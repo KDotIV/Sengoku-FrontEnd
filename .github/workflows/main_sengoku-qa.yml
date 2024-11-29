@@ -30,14 +30,14 @@ jobs:
       # Step 4: Package the build artifacts
       - name: Zip build artifacts
         run: |
-          Compress-Archive -Path dist/sengoku-frontend-web/browser/* -DestinationPath dist/release.zip
+          Compress-Archive -Path ../dist/sengoku-frontend-web/browser/* -DestinationPath ../dist/release.zip
 
       # Step 5: Upload the build artifact
       - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
           name: angular-build
-          path: ./dist/release.zip
+          path: ../dist/release.zip
 
   deploy:
     runs-on: windows-latest
