@@ -42,6 +42,10 @@ jobs:
   deploy:
     runs-on: windows-latest
     needs: build
+    environment:
+      name: 'Production'
+    permissions:
+      id-token: write # Required for requesting the JWT
 
     steps:
       # Step 6: Download the build artifact
