@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
 import { TournamentBoardService, TournamentBoardResult } from '../../services/tournament-board.service';
 import { Observable } from 'rxjs';
-import { RouterOutlet } from '@angular/router';
 
 @Component({
     selector: 'app-bracket-runner',
-    imports: [RouterOutlet, CommonModule],
+    standalone: true,
+    imports: [CommonModule],
     templateUrl: './bracket-runner.component.html',
     styleUrls: ['./bracket-runner.component.css']
 })

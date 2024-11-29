@@ -7,6 +7,7 @@ import { catchError, EMPTY, tap } from 'rxjs';
 @Component({
     selector: 'app-home',
     imports: [CommonModule, FormsModule],
+    standalone: true,
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css']
 })
@@ -14,6 +15,13 @@ export class HomeComponent {
   title = 'Tournament Finder';
   zipcode: string = '';
   events: AddressEventResult[] = [];
+  selectedGames: string[] = [];
+  availableGames = [
+    { id: '33945', name: 'Guilty Gear Strive' },
+    { id: '1386', name: 'Smash Ultimate' },
+    { id: '36953', name: 'Street Fighter 6'},
+    { id: '49783', name: 'Tekken 8'},
+  ];
   errorMessage: string = '';
 
   constructor(private eventLocationService: EventLocationService) { }
@@ -28,7 +36,7 @@ export class HomeComponent {
     this.errorMessage = '';
     this.loading = true;
 
-    this.eventLocationService.queryEventsByLocation(this.zipcode)
+    this.eventLocationService.queryEventsByLocation(this.zipcode, this.selectedGames)
         .pipe(
           tap((data: AddressEventResult[]) => {
             console.log('Events Data:', data);

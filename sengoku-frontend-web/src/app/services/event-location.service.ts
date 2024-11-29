@@ -38,11 +38,16 @@ export class EventLocationService {
   }
 
   // Query events and ensure date fields are parsed correctly
-  queryEventsByLocation(regionId: string, perPage: number = 50, priority: string = 'date'): Observable<AddressEventResult[]> {
-    const params = new HttpParams()
+  queryEventsByLocation(regionId: string, games: string[], perPage: number = 50, 
+    priority: string = 'date'): Observable<AddressEventResult[]> {
+    let params = new HttpParams()
     .set('RegionId', regionId)
     .set('PerPage', perPage.toString())
     .set('Priority', priority);
+
+    games.forEach(gameId => {
+      params = params.append('GameIds', gameId)
+    })
 
     const headers = new HttpHeaders({
       'Accept': 'application/json'

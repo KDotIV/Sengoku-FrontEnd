@@ -10,6 +10,12 @@
       [(ngModel)]="zipcode"
       placeholder="Enter Zipcode"
     >
+    <label for="games">Select Games:</label>
+    <select id="games" [(ngModel)]="selectedGames" multiple>
+      <option *ngFor="let game of availableGames" [value]="game.id">
+        {{game.name }}
+      </option>
+    </select>
     <button (click)="searchEvents()">Search</button>
   </div>
 
@@ -48,7 +54,7 @@
           <td>{{ event.startTime ? (event.startTime | date:'short') : 'N/A' }}</td>
           <td>{{ event.endTime ? (event.endTime | date:'short') : 'N/A' }}</td>
           <td>{{ event.closingRegistration ? (event.closingRegistration | date:'short') : 'N/A' }}</td>
-          <td><a [href]="'/event/' + event.urlSlug">View Event</a></td>
+          <td><a [href]="'https://www.start.gg/' + event.urlSlug" target="_blank" rel="noopener noreferrer">View Event</a></td>
         </tr>
       </tbody>
     </table>
