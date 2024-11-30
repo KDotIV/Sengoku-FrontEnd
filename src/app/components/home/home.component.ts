@@ -19,7 +19,7 @@ export class HomeComponent {
   availableGames = [
     { id: '33945', name: 'Guilty Gear Strive' },
     { id: '1386', name: 'Smash Ultimate' },
-    { id: '36953', name: 'Street Fighter 6'},
+    { id: '43868', name: 'Street Fighter 6'},
     { id: '49783', name: 'Tekken 8'},
   ];
   errorMessage: string = '';
