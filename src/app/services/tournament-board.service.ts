@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment-api';
 import { Observable } from 'rxjs';
 
 export interface TournamentBoardResult {
@@ -11,15 +12,15 @@ export interface TournamentBoardResult {
   gameId: number;
 }
 export interface AddTournamentRequest {
-  tournamentIds: number[];  // List of tournament IDs
-  userId: number;           // User ID
+  tournamentIds: number[];
+  userId: number;
 }
 @Injectable({
   providedIn: 'root'
 })
 export class TournamentBoardService {
 
-  private apiUrl = 'https://sengoku-alexandria-qa.azurewebsites.net/api/';
+  private apiUrl = `${environment.alexandriaUrl}/`;
 
   constructor(private http: HttpClient) { }
 

@@ -29,6 +29,12 @@ export class HomeComponent {
     { id: '287', name: 'Dragon Ball FighterZ'},
     { id: '1', name: 'Smash Melee'}
   ];
+  searchRadius: string[] = [];
+  currentPriorities = [
+    { value: 'local', name: 'Local'},
+    { value: 'default', name: 'Regional'},
+    { value: 'national', name: "National (Turned Off)"}
+  ];
   errorMessage: string = '';
 
   constructor(private eventLocationService: EventLocationService) { }
@@ -43,7 +49,7 @@ export class HomeComponent {
     this.errorMessage = '';
     this.loading = true;
 
-    this.eventLocationService.queryEventsByLocation(this.zipcode, this.selectedGames)
+    this.eventLocationService.queryEventsByLocation(this.zipcode, this.selectedGames, this.searchRadius)
         .pipe(
           tap((data: AddressEventResult[]) => {
             console.log('Events Data:', data);

@@ -16,6 +16,12 @@
         {{game.name }}
       </option>
     </select>
+    <label for="priorities">Search Radius:</label>
+    <select id="priorities" [(ngModel)]="searchRadius" multiple>
+      <option *ngFor="let priority of currentPriorities" [value]="priority.value">
+        {{priority.name }}
+      </option>
+    </select>
     <button (click)="searchEvents()">Search</button>
   </div>
 

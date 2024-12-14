@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { environment } from '../../environments/environment-api';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -24,7 +25,7 @@ export interface AddressEventResult {
 })
 export class EventLocationService {
 
-  private apiUrl = 'https://sengoku-alexandria-qa.azurewebsites.net/api/events/QueryEventsByLocation';
+  private apiUrl = `${environment.alexandriaUrl}/events/QueryEventsByLocation`;
 
   constructor(private http: HttpClient) { }
 
@@ -38,17 +39,18 @@ export class EventLocationService {
   }
 
   // Query events and ensure date fields are parsed correctly
-  queryEventsByLocation(regionId: string, games: string[], perPage: number = 50, 
-    priority: string = 'date'): Observable<AddressEventResult[]> {
+  queryEventsByLocation(regionId: string, games: string[], priorities: string[],
+    perPage: number = 50): Observable<AddressEventResult[]> {
     let params = new HttpParams()
     .set('RegionId', regionId)
     .set('PerPage', perPage.toString())
-    .set('Priority', priority);
 
     games.forEach(gameId => {
       params = params.append('GameIds', gameId)
     })
-
+    priorities.forEach(currentPriority => {
+      params = params.append('Priority', currentPriority)
+    })
     const headers = new HttpHeaders({
       'Accept': 'application/json'
     });
