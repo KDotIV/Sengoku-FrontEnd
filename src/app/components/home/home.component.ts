@@ -21,6 +21,12 @@ export class HomeComponent {
     { id: '1386', name: 'Smash Ultimate' },
     { id: '43868', name: 'Street Fighter 6'},
     { id: '49783', name: 'Tekken 8'},
+    { id: '48548', name: 'Granblue Versus Rising'},
+    { id: '610', name: 'Third Strike'},
+    { id: '36963', name: 'KoF XV'},
+    { id: '5582', name: 'Soul Calibur 2'},
+    { id: '48599', name: 'Mortal Kombat 11'},
+    { id: '287', name: 'Dragon Ball FighterZ'},
     { id: '1', name: 'Smash Melee'}
   ];
   errorMessage: string = '';
