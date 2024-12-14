@@ -25,7 +25,7 @@ export class HomeComponent {
     { id: '610', name: 'Third Strike'},
     { id: '36963', name: 'KoF XV'},
     { id: '5582', name: 'Soul Calibur 2'},
-    { id: '48599', name: 'Mortal Kombat 11'},
+    { id: '48599', name: 'Mortal Kombat 1'},
     { id: '287', name: 'Dragon Ball FighterZ'},
     { id: '1', name: 'Smash Melee'}
   ];
