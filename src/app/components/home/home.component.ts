@@ -21,6 +21,7 @@ export class HomeComponent {
     { id: '1386', name: 'Smash Ultimate' },
     { id: '43868', name: 'Street Fighter 6'},
     { id: '49783', name: 'Tekken 8'},
+    { id: '1', name: 'Smash Melee'}
   ];
   errorMessage: string = '';
 
