@@ -30,27 +30,29 @@ export class EventLocationService {
   constructor(private http: HttpClient) { }
 
   // Utility function to safely parse date strings
-  private parseDate(date: any): Date | null {
+  private parseDate(date: string | Date | null): Date | null {
     if (!date) {
-      return null; // If the date is null or empty, return null
+      return null; // Handle null or undefined input
     }
   
-    const parsedDate = new Date(date);
-    if (isNaN(parsedDate.getTime())) {
-      return null; // Check for valid date
+    // If input is already a Date object, use it directly
+    if (date instanceof Date) {
+      // Format to local timezone explicitly
+      const localizedDateStr = date.toLocaleString('en-US', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
+      return new Date(localizedDateStr);
     }
   
-    // Convert UTC to local time
-    return new Date(
-      parsedDate.getUTCFullYear(),
-      parsedDate.getUTCMonth(),
-      parsedDate.getUTCDate(),
-      parsedDate.getUTCHours(),
-      parsedDate.getUTCMinutes(),
-      parsedDate.getUTCSeconds()
-    );
+    // Parse as UTC explicitly
+    const utcDate = new Date(`${date}Z`); // Append 'Z' to ensure UTC parsing
+    if (isNaN(utcDate.getTime())) {
+      return null; // Handle invalid dates
+    }
+  
+    // Format to local timezone explicitly
+    const localizedDateStr = utcDate.toLocaleString('en-US', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
+    console.log(localizedDateStr)
+    return new Date(localizedDateStr);
   }
-
   // Query events and ensure date fields are parsed correctly
   queryEventsByLocation(regionId: string, games: string[], priorities: string[],
     perPage: number = 50): Observable<AddressEventResult[]> {
