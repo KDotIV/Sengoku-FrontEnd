@@ -32,10 +32,23 @@ export class EventLocationService {
   // Utility function to safely parse date strings
   private parseDate(date: any): Date | null {
     if (!date) {
-      return null;  // If the date is null or empty, return null
+      return null; // If the date is null or empty, return null
     }
+  
     const parsedDate = new Date(date);
-    return isNaN(parsedDate.getTime()) ? null : parsedDate;  // Check for valid date
+    if (isNaN(parsedDate.getTime())) {
+      return null; // Check for valid date
+    }
+  
+    // Convert UTC to local time
+    return new Date(
+      parsedDate.getUTCFullYear(),
+      parsedDate.getUTCMonth(),
+      parsedDate.getUTCDate(),
+      parsedDate.getUTCHours(),
+      parsedDate.getUTCMinutes(),
+      parsedDate.getUTCSeconds()
+    );
   }
 
   // Query events and ensure date fields are parsed correctly

@@ -16,6 +16,7 @@ export class HomeComponent {
   zipcode: string = '';
   events: AddressEventResult[] = [];
   selectedGames: string[] = [];
+  searchRadius: string[] = [];
   availableGames = [
     { id: '33945', name: 'Guilty Gear Strive' },
     { id: '1386', name: 'Smash Ultimate' },
@@ -29,11 +30,10 @@ export class HomeComponent {
     { id: '287', name: 'Dragon Ball FighterZ'},
     { id: '1', name: 'Smash Melee'}
   ];
-  searchRadius: string[] = [];
   currentPriorities = [
     { value: 'local', name: 'Local'},
     { value: 'default', name: 'Regional'},
-    { value: 'national', name: "National (Turned Off)"}
+    { value: 'national', name: "National (Inactive)"}
   ];
   errorMessage: string = '';
 
