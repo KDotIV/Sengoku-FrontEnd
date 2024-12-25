@@ -12,7 +12,7 @@ import { catchError, EMPTY, tap } from 'rxjs';
     styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  title = 'Welcome to Sengoku Alpha!!';
+  title = 'Welcome to Sengoku v.alpha!!';
   zipcode: string = '';
   events: AddressEventResult[] = [];
   selectedGames: string[] = [];
