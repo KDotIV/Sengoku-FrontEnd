@@ -1,1 +1,49 @@
-<p>co-op works!</p>
+<main>
+    <h1>{{ title }}</h1>
+
+    <div class="add-container">
+        <label for="operationName">Search Operation: (Inactive)</label>
+        <input
+            type ="text"
+            id="operationName"
+            [(ngModel)]="operationName"
+            placeholder="Enter Operation Name"
+        >
+    </div>
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="loading-spinner">
+        Loading CoOps, please wait...
+    </div>
+    <!-- Error Message -->
+     <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+     </div>
+     <div *ngIf="!loading && coOps.length === 0">
+        <p>Please Add or Search for an Operation.</p>
+     </div>
+     <!--Default Results -->
+     <div *ngIf="!loading && coOps.length > 0" class="coOps-results">
+        <table>
+            <thead>
+                <tr>
+                    <th>Operation Name</th>
+                    <th>Current Funding</th>
+                    <th>Funding Goal</th>
+                    <th>Current Items</th>
+                    <th>Owner</th>
+                    <th>Last Updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let coOp of coOps">
+                    <td>{{ coOp.operationName}}</td>
+                    <td>{{ coOp.currentFunding }}</td>
+                    <td>{{ coOp.fundingGoal }}</td>
+                    <td>{{ coOp.coOpItems }}</td>
+                    <td>{{ coOp.userName }}</td>
+                    <td>{{ coOp.lastUpdated ? (coOp.lastUpdated | date:'short') : 'N/A'}}</td>
+                </tr>
+            </tbody>
+        </table>
+     </div>
+</main>

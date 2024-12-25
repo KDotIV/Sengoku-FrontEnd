@@ -5,14 +5,14 @@ import { EventLocationService, AddressEventResult } from '../../services/event-l
 import { catchError, EMPTY, tap } from 'rxjs';
 
 @Component({
-    selector: 'app-home',
-    imports: [CommonModule, FormsModule],
-    standalone: true,
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.css']
+  selector: 'app-home',
+  imports: [CommonModule, FormsModule],
+  standalone: true,
+  templateUrl: './tournament-finder.component.html',
+  styleUrl: './tournament-finder.component.css'
 })
-export class HomeComponent {
-  title = 'Welcome to Sengoku Alpha!!';
+export class TournamentFinderComponent {
+  title = 'Tournament Finder';
   zipcode: string = '';
   events: AddressEventResult[] = [];
   selectedGames: string[] = [];

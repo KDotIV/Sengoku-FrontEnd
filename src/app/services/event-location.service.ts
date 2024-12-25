@@ -53,7 +53,7 @@ export class EventLocationService {
     console.log(localizedDateStr)
     return new Date(localizedDateStr);
   }
-  // Query events and ensure date fields are parsed correctly
+  // Query events parsed correctly
   queryEventsByLocation(regionId: string, games: string[], priorities: string[],
     perPage: number = 50): Observable<AddressEventResult[]> {
     let params = new HttpParams()
