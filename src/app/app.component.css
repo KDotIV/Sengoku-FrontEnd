@@ -27,7 +27,7 @@ main {
 
 table {
   width: 100%;
-  background-color: #3d3d3d; /* Grey background for table */
+  background-color: #505B70; /* Grey background for table */
   color: white;              /* White text for table */
 }
 
@@ -39,7 +39,7 @@ th, td {
 input[type="text"] {
   padding: 5px;
   margin-right: 10px;
-  background-color: #333;     /* Dark input background */
+  background-color: #505B70;     /* Dark input background */
   color: white;               /* White text */
   border: 1px solid #f1f1f1;
 }
