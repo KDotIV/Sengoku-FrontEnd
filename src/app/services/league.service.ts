@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { environment } from "../../environments/environment-api";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams, HttpRequest } from "@angular/common/http";
 import { map, Observable } from "rxjs";
 
 export interface LeagueTournamentData {
@@ -15,12 +15,18 @@ export interface LeagueTournamentData {
     gameId: number;
     startTime: Date | null;
 }
-
+export interface LeagueByOrgData {
+    leagueId: number;
+    leagueName: string;
+    orgId: number;
+    startDate: Date | null;
+    endDate: Date | null;
+    lastUpdated: Date | null;
+}
 @Injectable({
     providedIn: 'root'
 })
 export class LeagueService {
-    private apiUrl = `${environment.alexandriaUrl}/leagues/GetLeagueTournamentSchedule`;
 
     constructor(private http: HttpClient) {}
 
@@ -48,6 +54,28 @@ export class LeagueService {
         console.log(localizedDateStr)
         return new Date(localizedDateStr);
   }
+  //Add League to User
+  addLeagueToUser(leagueId: number, userId: number): void {
+
+  }
+  //Query Available Leagues
+  queryAvailableLeagues(): Observable<LeagueByOrgData[]> {
+    let params = new HttpParams()
+
+    const headers = new HttpHeaders({
+        'Accept': 'application/json'
+    });
+
+    return this.http.get<LeagueByOrgData[]>(`${environment.alexandriaUrl}/leagues/GetAvailableLeagues`, {params, headers})
+    .pipe(
+        map(availableLeagues => availableLeagues.map(league => ({
+            ...league,
+            startDate: this.parseDate(league.startDate),
+            endDate: this.parseDate(league.endDate),
+            lastUpdated: this.parseDate(league.lastUpdated)
+        })))
+    );
+  }
   //Query Tournaments for League
   queryTournamentsByLeague(leagueIds: number[]): Observable<LeagueTournamentData[]> {
     let params = new HttpParams()
@@ -59,11 +87,11 @@ export class LeagueService {
         'Accept': 'application/json'
     });
 
-    return this.http.get<LeagueTournamentData[]>(this.apiUrl, {params, headers})
+    return this.http.get<LeagueTournamentData[]>(`${environment.alexandriaUrl}/leagues/GetLeagueTournamentSchedule`, {params, headers})
     .pipe(
-        map(events => events.map(event => ({
+        map(leagueEvents => leagueEvents.map(event => ({
             ...event,
-            start: this.parseDate(event.startTime),
+            startTime: this.parseDate(event.startTime),
             lastUpdated: this.parseDate(event.lastUpdated)
         })))
     );

@@ -42,10 +42,10 @@ export class EventLocationService {
       return new Date(localizedDateStr);
     }
   
-    // Parse as UTC explicitly
+    // Parse UTC explicitly
     const utcDate = new Date(`${date}Z`); // Append 'Z' to ensure UTC parsing
     if (isNaN(utcDate.getTime())) {
-      return null; // Handle invalid dates
+      return null; 
     }
   
     // Format to local timezone explicitly

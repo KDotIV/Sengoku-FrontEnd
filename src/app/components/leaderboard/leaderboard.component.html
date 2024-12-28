@@ -2,4 +2,47 @@
     <h1>{{ title }}</h1>
     
     <!--Search Container-->
+    <div class="search-container">
+        <label for="leagues">Enter League ID:</label>
+        <input
+            type="text"
+            id="leagues"
+            [(ngModel)]="leagues"
+            placeholder="Enter League ID">
+        <button class="addLeagueButton" type="button" (click)="addLeagueToUser()">Register League </button>
+    </div>
+    <!-- Loading Spinner -->
+    <div *ngIf="loading" class="loading-spinner">
+        loading events, please wait...
+    </div>
+
+    <!-- No Events Found Message -->
+    <div *ngIf="!loading && availableLeagues.length === 0">
+        <p>No leagues available currently.</p>
+    </div>
+    <!--Default League Display-->
+    <div *ngIf="!loading && availableLeagues.length > 0" class="display-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>League ID</th>
+                    <th>League Title</th>
+                    <th>Organization</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Last Updated</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let league of availableLeagues">
+                    <td>{{ league.leagueId }}</td>
+                    <td><a [href]="'https://www.sengoku-alpha/' + league.leagueId">{{ league.leagueName }}</a></td>
+                    <td>{{ league.orgId }}</td>
+                    <td>{{ league.startDate ? (league.startDate | date: 'short'): 'N/A' }}</td>
+                    <td>{{ league.endDate ? (league.endDate | date:'short'): 'N/A'}}</td>
+                    <td>{{ league.lastUpdated ? (league.lastUpdated | date:'short'): 'N/A'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </main>
