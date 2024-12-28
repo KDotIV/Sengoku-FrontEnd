@@ -1,0 +1,36 @@
+<div>
+    <h2>{{ league.leagueName }} Details</h2>
+    <p>League ID: {{ league.leagueId }}</p>
+    <p>Organization: {{ league.orgId }}</p>
+    <p>Circuit Start Date: {{ league.startDate | date: 'short' }}</p>
+    <p>Circuit End Date: {{ league.endDate | date: 'short' }}</p>
+    <p>Last Updated: {{ league.lastUpdated | date: 'short' }}</p>
+    <button (click)="goBack()">Back to Leagues</button>
+  </div>
+  <!-- No Events Found Message -->
+  <div *ngIf="!loading && leagueEvents.length === 0">
+    <p>No Tournaments Scheduled... Check back again!</p>
+  </div>
+  <!--Schedule Display-->
+  <div *ngIf="!loading && leagueEvents.length > 0" class="schedule-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Tournament Name</th>
+          <th>Entrants</th>
+          <th>Start Time</th>
+          <th>Game Id</th>
+          <th>Registry</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let event of leagueEvents">
+          <td>{{ event.tournamentName }}</td>
+          <td>{{ event.entrants }}</td>
+          <td>{{ event.startTime ? (event.startTime | date:'short'): 'N/A'}}</td>
+          <td>{{ event.gameId}}</td>
+          <td><a [href]="'https://www.start.gg/' + event.urlSlug" target="_blank" rel="noopener noreferrer">View Event</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

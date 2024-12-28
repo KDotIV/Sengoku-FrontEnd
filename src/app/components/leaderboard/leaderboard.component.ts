@@ -3,10 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { catchError, EMPTY, tap } from 'rxjs';
 import { LeagueService, LeagueTournamentData, LeagueByOrgData } from '../../services/league.service';
+import { LeagueDetailsComponent } from './league-details/league-details.component';
 
 @Component({
   selector: 'app-leaderboard',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, LeagueDetailsComponent],
   standalone: true,
   templateUrl: './leaderboard.component.html',
   styleUrl: './leaderboard.component.css'
@@ -21,14 +22,20 @@ export class LeaderboardComponent implements OnInit {
   errorMessage: string = '';
   loading: boolean = false;
 
+  selectedLeague: LeagueByOrgData | null = null;
   constructor(private leagueService: LeagueService){ }
 
   ngOnInit(): void {
-    this.getLeagueSchedule();
     this.getAvailableLeagues();
   }
   addLeagueToUser(): void {
     this.leagueService.addLeagueToUser(this.leagueId, this.userId)
+  }
+  selectLeague(league: LeagueByOrgData): void {
+    this.selectedLeague = league;
+  }
+  clearSelection(): void {
+    this.selectedLeague = null;
   }
   getAvailableLeagues(): void {
     this.errorMessage = '';
@@ -53,29 +60,5 @@ export class LeaderboardComponent implements OnInit {
           return EMPTY;
       })
     ).subscribe();
-  }
-  getLeagueSchedule(): void {
-    this.errorMessage = '';
-    this.loading = true;
-
-    this.leagueService.queryTournamentsByLeague(this.leagues)
-      .pipe(
-        tap((data: LeagueTournamentData[]) => {
-          console.log('Events Data', data);
-          this.leagueEvents = data;
-          this.loading = false;
-          if(data.length === 0) {
-            this.errorMessage = 'No Events found for the given League Id';
-          } else {
-            this.errorMessage = '';
-          }
-        }),
-        catchError(error => {
-          console.error('Failed to load League Events', error);
-          this.errorMessage = 'Failed to load League Events';
-          this.loading = false;
-          return EMPTY;
-        })
-      ).subscribe();
   }
 }

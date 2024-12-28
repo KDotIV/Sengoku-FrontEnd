@@ -57,8 +57,8 @@ input[type="text"] {
     margin-bottom: 15px;
 }
 
-.tournament-card:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+.league-card:hover {
+    background-color: #004d4d;
 }
 
 .tournament-details {

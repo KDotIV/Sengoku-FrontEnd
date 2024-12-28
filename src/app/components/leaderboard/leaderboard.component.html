@@ -21,28 +21,33 @@
         <p>No leagues available currently.</p>
     </div>
     <!--Default League Display-->
-    <div *ngIf="!loading && availableLeagues.length > 0" class="display-container">
+    <div *ngIf="!loading && availableLeagues.length > 0 && !selectedLeague" class="display-container">
         <table>
             <thead>
                 <tr>
-                    <th>League ID</th>
-                    <th>League Title</th>
-                    <th>Organization</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Last Updated</th>
+                <th>League ID</th>
+                <th>League Title</th>
+                <th>Organization</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Last Updated</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let league of availableLeagues">
-                    <td>{{ league.leagueId }}</td>
-                    <td><a [href]="'https://www.sengoku-alpha/' + league.leagueId">{{ league.leagueName }}</a></td>
-                    <td>{{ league.orgId }}</td>
-                    <td>{{ league.startDate ? (league.startDate | date: 'short'): 'N/A' }}</td>
-                    <td>{{ league.endDate ? (league.endDate | date:'short'): 'N/A'}}</td>
-                    <td>{{ league.lastUpdated ? (league.lastUpdated | date:'short'): 'N/A'}}</td>
+                <tr *ngFor="let league of availableLeagues" (click)="selectLeague(league)" class="league-card">
+                <td>{{ league.leagueId }}</td>
+                <td>{{ league.leagueName }}</td>
+                <td>{{ league.orgId }}</td>
+                <td>{{ league.startDate ? (league.startDate | date: 'short') : 'N/A' }}</td>
+                <td>{{ league.endDate ? (league.endDate | date: 'short') : 'N/A' }}</td>
+                <td>{{ league.lastUpdated ? (league.lastUpdated | date: 'short') : 'N/A' }}</td>
                 </tr>
             </tbody>
         </table>
     </div>
+    <app-league-details
+        *ngIf="selectedLeague"
+        [league]="selectedLeague"
+        (back)="clearSelection()"
+    ></app-league-details>
 </main>
