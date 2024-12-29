@@ -1,15 +1,29 @@
-/* src/app/app.component.css */
-
 header {
   background-color: #444; /* Darker grey for header */
   color: white;
-  padding: 15px;
+  padding: 25px;
+}
+
+nav {
+  display: flex;
+  align-items: center; /* Vertically align items if needed */
+  justify-content: space-between; /* Push ul elements to opposite sides */
 }
 
 nav ul {
   list-style: none;
   display: flex;
   gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+nav ul:first-of-type {
+}
+
+nav ul:last-of-type {
+  margin-left: auto;
+  padding-right: 10px;
 }
 
 nav ul li {

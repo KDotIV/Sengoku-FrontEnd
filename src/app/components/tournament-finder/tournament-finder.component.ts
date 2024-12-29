@@ -52,7 +52,6 @@ export class TournamentFinderComponent {
     this.eventLocationService.queryEventsByLocation(this.zipcode, this.selectedGames, this.searchRadius)
         .pipe(
           tap((data: AddressEventResult[]) => {
-            console.log('Events Data:', data);
             this.events = data;
             this.loading = false;
             if(data.length === 0) {

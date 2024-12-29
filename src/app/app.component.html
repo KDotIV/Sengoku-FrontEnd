@@ -1,6 +1,6 @@
 <header>
   <nav>
-    <ul>
+    <ul class="first-of-type">
       <li><a [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
       <li><a [routerLink]="['/tournament-finder']" routerLinkActive="active">Tournament Finder</a></li>
       <li><a [routerLink]="['/leaderboards']" routerLinkActive="active">Leaderboards</a></li>
@@ -8,7 +8,19 @@
       <li><a [routerLink]="['/co-op']" routerLinkActive="active">Co-Ops</a></li>
       <!-- Add more navigation links as needed -->
     </ul>
+    <ul class="last-of-type">
+      <li><a [routerLink]="['/user-register']" routerLinkActive="active">Register</a></li>
+      <li><a [routerLink]="['/user-login']" routerLinkActive="active">Login</a></li>
+    </ul>
   </nav>
 </header>
+<main>
+  <app-user-login>
+
+  </app-user-login>
+  <app-user-register>
+    
+  </app-user-register>
+</main>
 <!-- This router outlet will load the routed components -->
 <router-outlet></router-outlet>

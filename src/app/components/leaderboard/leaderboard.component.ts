@@ -13,7 +13,7 @@ import { LeagueDetailsComponent } from './league-details/league-details.componen
   styleUrl: './leaderboard.component.css'
 })
 export class LeaderboardComponent implements OnInit {
-  title = 'LeaderBoards';
+  title = 'Leaderboards';
   leagues: number[] = [];
   leagueId: number = 0;
   userId: number = 0;

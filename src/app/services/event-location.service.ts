@@ -50,7 +50,6 @@ export class EventLocationService {
   
     // Format to local timezone explicitly
     const localizedDateStr = utcDate.toLocaleString('en-US', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
-    console.log(localizedDateStr)
     return new Date(localizedDateStr);
   }
   // Query events parsed correctly
