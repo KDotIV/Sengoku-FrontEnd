@@ -1,0 +1,33 @@
+{
+    "routes": [
+      {
+        "route": "/tournament-finder",
+        "rewrite": "/index.html"
+      },
+      {
+        "route": "/leaderboards",
+        "rewrite": "/index.html"
+      },
+      {
+        "route": "/bracket-runner",
+        "rewrite": "/index.html"
+      },
+      {
+        "route": "/co-op",
+        "rewrite": "/index.html"
+      },
+      {
+        "route": "/user-login",
+        "rewrite": "/index.html"
+      },
+      {
+        "route": "/user-register",
+        "rewrite": "/index.html"
+      },
+      {
+        "route": "/*",
+        "rewrite": "/index.html"
+      }
+    ]
+  }
+  
