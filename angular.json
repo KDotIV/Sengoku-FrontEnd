@@ -25,7 +25,8 @@
                 "glob": "**/*",
                 "input": "public"
               },
-              "src/web.config"
+              "src/web.config",
+              "src/staticwebapp.config.json"
             ],
             "styles": [
               "src/styles.css"
