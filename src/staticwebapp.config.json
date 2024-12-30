@@ -1,25 +1,28 @@
 {
   "routes": [
     {
-      "route": "/*",
-      "rewrite": "/index.html",
-      "exclude": [
-        "/*.css",
-        "/*.js",
-        "/*.ico",
-        "/*.png",
-        "/*.jpg",
-        "/*.jpeg",
-        "/*.gif",
-        "/*.svg",
-        "/*.woff",
-        "/*.woff2",
-        "/*.ttf",
-        "/*.eot",
-        "/*.wasm"
-      ]
+      "route": "/login",
+      "redirect": "/.auth/login/github"
     }
   ],
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [
+      "/*.css",
+      "/*.js",
+      "/*.ico",
+      "/*.png",
+      "/*.jpg",
+      "/*.jpeg",
+      "/*.gif",
+      "/*.svg",
+      "/*.woff",
+      "/*.woff2",
+      "/*.ttf",
+      "/*.eot",
+      "/*.wasm"
+    ]
+  },
   "mimeTypes": {
     ".js": "application/javascript",
     ".css": "text/css",
