@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "npx http-server ./dist/sengoku-frontend-web/browser -p 8080",
     "build": "ng build",
+    "postbuild": "node move-config.js",
     "test": "ng test"
   },
   "private": true,

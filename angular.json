@@ -26,7 +26,11 @@
                 "input": "public"
               },
               "src/web.config",
-              "src/staticwebapp.config.json"
+              {
+                "glob":"staticwebapp.config.json",
+                "input":"src",
+                "output":"./"
+              }
             ],
             "styles": [
               "src/styles.css"
