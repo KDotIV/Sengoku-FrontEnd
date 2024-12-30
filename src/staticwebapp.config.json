@@ -4,14 +4,14 @@
       "route": "/*",
       "rewrite": "/index.html",
       "exclude": [
-        "/*.js",
         "/*.css",
+        "/*.js",
+        "/*.ico",
         "/*.png",
         "/*.jpg",
         "/*.jpeg",
         "/*.gif",
         "/*.svg",
-        "/*.ico",
         "/*.woff",
         "/*.woff2",
         "/*.ttf",
@@ -20,14 +20,9 @@
       ]
     }
   ],
-  "responseOverrides": {
-    "404": {
-      "rewrite": "/index.html"
-    }
-  },
-  "globalHeaders": {
-    "X-Content-Type-Options": "nosniff",
-    "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
-    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';"
+  "mimeTypes": {
+    ".js": "application/javascript",
+    ".css": "text/css",
+    ".wasm": "application/wasm"
   }
 }

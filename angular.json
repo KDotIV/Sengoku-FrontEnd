@@ -15,7 +15,7 @@
           "options": {
             "outputPath": "dist/sengoku-frontend-web",
             "index": "src/index.html",
-            "browser": "src/main.ts",
+            "browser": "src/main.ts", 
             "polyfills": [
               "zone.js"
             ],
@@ -27,9 +27,9 @@
               },
               "src/web.config",
               {
-                "glob":"staticwebapp.config.json",
-                "input":"src",
-                "output":"./"
+                "glob": "staticwebapp.config.json",
+                "input": "src",
+                "output": "./"
               }
             ],
             "styles": [
@@ -98,7 +98,7 @@
         }
       }
     }
-  },
+  },  
   "cli": {
     "analytics": false
   }
