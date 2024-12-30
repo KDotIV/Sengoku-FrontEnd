@@ -1,33 +1,43 @@
 {
-    "routes": [
-      {
-        "route": "/tournament-finder",
-        "rewrite": "/index.html"
-      },
-      {
-        "route": "/leaderboards",
-        "rewrite": "/index.html"
-      },
-      {
-        "route": "/bracket-runner",
-        "rewrite": "/index.html"
-      },
-      {
-        "route": "/co-op",
-        "rewrite": "/index.html"
-      },
-      {
-        "route": "/user-login",
-        "rewrite": "/index.html"
-      },
-      {
-        "route": "/user-register",
-        "rewrite": "/index.html"
-      },
-      {
-        "route": "/*",
-        "rewrite": "/index.html"
-      }
-    ]
+  "routes": [
+    {
+      "route": "/tournament-finder",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/leaderboards",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/bracket-runner",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/co-op",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/user-login",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/user-register",
+      "rewrite": "/index.html"
+    },
+    {
+      "route": "/*",
+      "rewrite": "/index.html",
+      "exclude": ["/*.js", "/*.css", "/*.png", "/*.jpg", "/*.jpeg", "/*.gif", "/*.svg", "/*.ico", "/*.woff", "/*.woff2", "/*.ttf", "/*.eot", "/*.wasm"]
+    }
+  ],
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/index.html"
+    }
+  },
+  "globalHeaders": {
+    "X-Content-Type-Options": "nosniff",
+    "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+    "Content-Security-Policy": "default-src 'self' https://*; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*; style-src 'self' 'unsafe-inline' https://*;"
   }
-  
+}
