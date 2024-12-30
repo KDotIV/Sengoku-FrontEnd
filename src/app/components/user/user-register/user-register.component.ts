@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { UserService } from '../../../services/user.service';
+import { UserData, UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-user-register',
@@ -15,6 +15,8 @@ export class UserRegisterComponent implements OnChanges{
   errorMessage: string = '';
   loading: boolean = false;
   loggedin: boolean = false;
+  newUser: UserData = { UserId: 0 , UserName: '', Display: '', Password: '', Email:'', permissionChecksum: ''};
+  confirmPass: string = '';
 
   constructor(private UserService: UserService) { }
   ngOnChanges(changes: SimpleChanges): void {

@@ -14,4 +14,9 @@ import { UserRegisterComponent } from "./components/user/user-register/user-regi
 })
 export class AppComponent {
   title = 'Sengoku';
+  showOverlay = false;
+
+  toggleOverlay(): void {
+    this.showOverlay = !this.showOverlay;
+  }
 }

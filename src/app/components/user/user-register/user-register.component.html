@@ -1,3 +1,42 @@
 <div>
-    
+    <h2>Register</h2>
+    <div class="newuser-form">
+        <label for="newUser.Email">Email*</label>
+        <input
+            type="text"
+            id="newUser.Email"
+            [(ngModel)]="newUser.Email"
+            placeholder="Enter Email"
+        >
+    </div>
+    <div class="newuser-form">
+        <label for="newUser.Username">UserName*</label>
+        <input
+            type="text"
+            id="newUser.UserName"
+            [(ngModel)]="newUser.UserName"
+            placeholder="Enter UserName"
+        >
+    </div>
+    <div class="newuser-form">
+        <label for="newUser.Password">Password*</label>
+        <input
+            type="text"
+            id="newUser.Password"
+            [(ngModel)]="newUser.Password"
+            placeholder="Enter Password"
+        >
+    </div>
+    <div class="newuser-form">
+        <label for="confirmPass">Confirm Password*</label>
+        <input
+            type="text"
+            id="confirmPass"
+            [(ngModel)]="confirmPass"
+            placeholder="Confirm Password"
+        >
+    </div>
+    <button (click)="goBack()">Cancel</button>
+    <button (click)="sendNewRegisteredUser(newUser.UserName, 
+    newUser.Display, newUser.Email, newUser.Password)">Submit</button>
 </div>

@@ -16,6 +16,7 @@ export interface CreateUserRequest {
     Display: string;
     Password: string;
     Email: string;
+    Topic: number;
 }
 
 @Injectable({
@@ -29,7 +30,8 @@ export class UserService {
             UserName: userName,
             Display: display,
             Password: password,
-            Email: email
+            Email: email,
+            Topic: 401
         };
         let params = new HttpParams()
         const headers = new HttpHeaders({
@@ -37,7 +39,7 @@ export class UserService {
         });
 
         return this.http.post<CreateUserRequest>(
-            `${environment.alexandriaUrl}/users/CreateUser`, requestBody, { headers });
+            `${environment.alexandriaUrl}/user/CreateUser`, requestBody, { headers });
     }
     
 }
