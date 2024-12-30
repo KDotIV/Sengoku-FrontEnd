@@ -20,6 +20,12 @@
       ]
     }
   ],
+  "mimeTypes": {
+    ".js": "application/javascript",
+    ".css": "text/css",
+    ".svg": "image/svg+xml",
+    ".wasm": "application/wasm"
+  },
   "responseOverrides": {
     "404": {
       "rewrite": "/index.html"
