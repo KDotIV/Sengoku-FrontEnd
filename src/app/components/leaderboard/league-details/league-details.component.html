@@ -20,7 +20,7 @@
           <th>Tournament Name</th>
           <th>Entrants</th>
           <th>Start Time</th>
-          <th>Game Id</th>
+          <th>Game</th>
           <th>Registry</th>
         </tr>
       </thead>
@@ -29,7 +29,7 @@
           <td>{{ event.tournamentName }}</td>
           <td>{{ event.entrants }}</td>
           <td>{{ event.startTime ? (event.startTime | date:'short'): 'N/A'}}</td>
-          <td>{{ event.gameId}}</td>
+          <td>{{ event.gameName}}</td>
           <td><a [href]="'https://www.start.gg/' + event.urlSlug" target="_blank" rel="noopener noreferrer">View Event</a></td>
         </tr>
       </tbody>

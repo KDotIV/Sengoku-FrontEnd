@@ -25,7 +25,7 @@ export interface AddressEventResult {
 })
 export class EventLocationService {
 
-  private apiUrl = `${environment.alexandriaUrl}/events/QueryEventsByLocation`;
+  private apiUrl = `${environment.apiUrl}/events/QueryEventsByLocation`;
 
   constructor(private http: HttpClient) { }
 

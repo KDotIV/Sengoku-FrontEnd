@@ -20,7 +20,7 @@ export interface AddTournamentRequest {
 })
 export class TournamentBoardService {
 
-  private apiUrl = `${environment.alexandriaUrl}/`;
+  private apiUrl = `${environment.apiUrl}/`;
 
   constructor(private http: HttpClient) { }
 

@@ -19,7 +19,7 @@ export interface CoOpTravelResult {
     providedIn: 'root'
 })
 export class CoOpsServices {
-    private apiUrl = `${environment.alexandriaUrl}/orgs/GetCoOpResultsUser`
+    private apiUrl = `${environment.apiUrl}/orgs/GetCoOpResultsUser`
 
     constructor(private http: HttpClient){}
 

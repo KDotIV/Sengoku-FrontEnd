@@ -39,7 +39,7 @@ export class UserService {
         });
 
         return this.http.post<CreateUserRequest>(
-            `${environment.alexandriaUrl}/user/CreateUser`, requestBody, { headers });
+            `${environment.apiUrl}/user/CreateUser`, requestBody, { headers });
     }
     
 }

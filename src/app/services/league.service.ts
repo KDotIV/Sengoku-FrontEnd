@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { environment } from "../../environments/environment-api";
+import { GameDictionary } from "../../environments/environment-api.prod";
 import { HttpClient, HttpHeaders, HttpParams, HttpRequest } from "@angular/common/http";
 import { map, Observable } from "rxjs";
 
@@ -13,6 +14,7 @@ export interface LeagueTournamentData {
     lastUpdated: Date | null;
     viewerShipUrls: string[];
     gameId: number;
+    gameName: string;
     startTime: Date | null;
 }
 export interface LeagueByOrgData {
@@ -27,6 +29,19 @@ export interface LeagueByOrgData {
     providedIn: 'root'
 })
 export class LeagueService {
+    private currentGameDictionary = new GameDictionary([
+        { key: 33945, value: 'Guilty Gear Strive' },
+        { key: 1386, value: 'Smash Ultimate' },
+        { key: 43868, value: 'Street Fighter 6'},
+        { key: 49783, value: 'Tekken 8'},
+        { key: 48548, value: 'Granblue Versus Rising'},
+        { key: 610, value: 'Third Strike'},
+        { key: 36963, value: 'KoF XV'},
+        { key: 5582, value: 'Soul Calibur 2'},
+        { key: 48599, value: 'Mortal Kombat 1'},
+        { key: 287, value: 'Dragon Ball FighterZ'},
+        { key: 1, value: 'Smash Melee'}
+    ]);
 
     constructor(private http: HttpClient) {}
 
@@ -54,6 +69,9 @@ export class LeagueService {
         console.log(localizedDateStr)
         return new Date(localizedDateStr);
   }
+    private parseGameId(gameId: number): string {
+        return this.currentGameDictionary.tryGetValue(gameId);
+    }
   //Add League to User
   addLeagueToUser(leagueId: number, userId: number): void {
 
@@ -66,7 +84,7 @@ export class LeagueService {
         'Accept': 'application/json'
     });
 
-    return this.http.get<LeagueByOrgData[]>(`${environment.alexandriaUrl}/leagues/GetAvailableLeagues`, {params, headers})
+    return this.http.get<LeagueByOrgData[]>(`${environment.apiUrl}/leagues/GetAvailableLeagues`, {params, headers})
     .pipe(
         map(availableLeagues => availableLeagues.map(league => ({
             ...league,
@@ -87,12 +105,13 @@ export class LeagueService {
         'Accept': 'application/json'
     });
 
-    return this.http.get<LeagueTournamentData[]>(`${environment.alexandriaUrl}/leagues/GetLeagueTournamentSchedule`, {params, headers})
+    return this.http.get<LeagueTournamentData[]>(`${environment.apiUrl}/leagues/GetLeagueTournamentSchedule`, {params, headers})
     .pipe(
-        map(leagueEvents => leagueEvents.map(event => ({
-            ...event,
-            startTime: this.parseDate(event.startTime),
-            lastUpdated: this.parseDate(event.lastUpdated)
+        map(leagueEvents => leagueEvents.map(leagueEvent => ({
+            ...leagueEvent,
+            startTime: this.parseDate(leagueEvent.startTime),
+            lastUpdated: this.parseDate(leagueEvent.lastUpdated),
+            gameName: this.parseGameId(leagueEvent.gameId)
         })))
     );
   }
