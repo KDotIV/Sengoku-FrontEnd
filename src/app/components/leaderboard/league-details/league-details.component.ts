@@ -24,6 +24,7 @@ export class LeagueDetailsComponent implements OnChanges {
   constructor(private leagueService: LeagueService){ }
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['league'] && changes['league'].currentValue) {
+      console.log(this.league.leagueId);
       this.getLeagueSchedule(this.league.leagueId);
     }
   }

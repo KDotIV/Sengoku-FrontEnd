@@ -81,7 +81,7 @@ export class LeagueService {
     let params = new HttpParams()
 
     leagueIds.forEach(leagueId =>{
-        params = params.append('LeagueId', leagueId)
+        params = params.append('leagueIds', leagueId)
     })
     const headers = new HttpHeaders({
         'Accept': 'application/json'
