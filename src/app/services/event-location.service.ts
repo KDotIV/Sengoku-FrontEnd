@@ -53,7 +53,7 @@ export class EventLocationService {
     return new Date(localizedDateStr);
   }
   // Query events parsed correctly
-  queryEventsByLocation(regionId: string, games: string[], priorities: string[],
+  queryEventsByLocation(regionId: string, games: number[], priorities: string[],
     perPage: number = 50): Observable<AddressEventResult[]> {
     let params = new HttpParams()
     .set('RegionId', regionId)

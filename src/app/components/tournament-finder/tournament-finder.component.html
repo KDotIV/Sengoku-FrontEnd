@@ -1,74 +1,83 @@
 <main>
-    <h1>{{ title }}</h1>
-    
-    <!-- Search Container -->
-    <div class="search-container">
-      <label for="zipcode">Search Events:</label>
-      <input 
-        type="text" 
-        id="zipcode" 
-        [(ngModel)]="zipcode"
-        placeholder="Enter Zipcode"
-      >
-      <label for="games">Select Games:</label>
-      <select id="games" [(ngModel)]="selectedGames" multiple>
-        <option *ngFor="let game of availableGames" [value]="game.id">
-          {{game.name }}
-        </option>
-      </select>
-      <label for="priorities">Search Radius:</label>
-      <select id="priorities" [(ngModel)]="searchRadius" multiple>
-        <option *ngFor="let priority of currentPriorities" [value]="priority.value">
-          {{priority.name }}
-        </option>
-      </select>
-      <button (click)="searchEvents()">Search</button>
-    </div>
+  <h1>{{ title }}</h1>
   
-    <!-- Loading Spinner -->
-    <div *ngIf="loading" class="loading-spinner">
-      Loading events, please wait...
-    </div>
+  <div class="container">
+      <!-- Search Container -->
+      <div class="search-container">
+          <label for="zipcode">Search Events:</label>
+          <input 
+              type="text" 
+              id="zipcode" 
+              [(ngModel)]="zipcode"
+              placeholder="Enter Zipcode"
+          >
+          <label for="games">Select Games:</label>
+          <div id="games" class="games-checkboxes">
+            <button (click)="clearAllGames()">Clear All</button>
+            <div *ngFor="let game of availableGames">
+                <input 
+                    type="checkbox" 
+                    [id]="'game-' + game.id" 
+                    [value]="game.id" 
+                    (change)="toggleGameSelection(game.id, $event)"
+                    #gameCheckbox
+                >
+                <label [for]="'game-' + game.id">{{ game.name }}</label>
+            </div>
+        </div>
+        <label for="priorities">Search Radius:</label>
+        <select id="priorities" [(ngModel)]="searchRadius" multiple>
+            <option *ngFor="let priority of currentPriorities" [value]="priority.value">
+                {{priority.name }}
+            </option>
+        </select>
+        <button (click)="searchEvents()">Search</button>
+      </div>
   
-    <!-- Error Message -->
-    <div *ngIf="errorMessage" class="error-message">
-      {{ errorMessage }}
-    </div>
+      <!-- Loading Spinner -->
+      <div *ngIf="loading" class="loading-spinner">
+          Loading events, please wait...
+      </div>
   
-    <!-- Default Message Before Search -->
-    <div *ngIf="!loading && events.length === 0 && !zipcode">
-      <p>Please enter a zipcode to search for events.</p>
-    </div>
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+      </div>
   
-    <!-- Display Event Table if Events are Found -->
-    <div *ngIf="!loading && events.length > 0" class="event-results">
-      <table>
-        <thead>
-          <tr>
-            <th>Event Name</th>
-            <th>Region</th>
-            <th>Start Time</th>
-            <th>End Time</th>
-            <th>Closing Registration</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let event of events">
-            <td>{{ event.eventName }}</td>
-            <td>{{ event.region }}</td>
-            <td>{{ event.startTime ? (event.startTime | date:'short') : 'N/A' }}</td>
-            <td>{{ event.endTime ? (event.endTime | date:'short') : 'N/A' }}</td>
-            <td>{{ event.closingRegistration ? (event.closingRegistration | date:'short') : 'N/A' }}</td>
-            <td><a [href]="'https://www.start.gg/' + event.urlSlug" target="_blank" rel="noopener noreferrer">View Event</a></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      <!-- Default Message Before Search -->
+      <div *ngIf="!loading && events.length === 0 && !zipcode">
+          <p>Please enter a zipcode to search for events.</p>
+      </div>
   
-    <!-- No Events Found Message -->
-    <div *ngIf="!loading && events.length === 0 && zipcode">
-      <p>No events found for the given zipcode.</p>
-    </div>
-  </main>
+      <!-- Display Event Table if Events are Found -->
+      <div *ngIf="!loading && events.length > 0" class="event-results">
+          <table>
+              <thead>
+                  <tr>
+                      <th>Event Name</th>
+                      <th>Region</th>
+                      <th>Start Time</th>
+                      <th>End Time</th>
+                      <th>Closing Registration</th>
+                      <th>Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let event of events">
+                      <td>{{ event.eventName }}</td>
+                      <td>{{ event.region }}</td>
+                      <td>{{ event.startTime ? (event.startTime | date:'short') : 'N/A' }}</td>
+                      <td>{{ event.endTime ? (event.endTime | date:'short') : 'N/A' }}</td>
+                      <td>{{ event.closingRegistration ? (event.closingRegistration | date:'short') : 'N/A' }}</td>
+                      <td><a [href]="'https://www.start.gg/' + event.urlSlug" target="_blank" rel="noopener noreferrer">View Event</a></td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
   
+      <!-- No Events Found Message -->
+      <div *ngIf="!loading && events.length === 0 && zipcode">
+          <p>No events found for the given zipcode.</p>
+      </div>
+  </div>
+</main>

@@ -15,20 +15,20 @@ export class HomeComponent {
   title = 'Welcome to Sengoku v.alpha!!';
   zipcode: string = '';
   events: AddressEventResult[] = [];
-  selectedGames: string[] = [];
+  selectedGames: number[] = [];
   searchRadius: string[] = [];
   availableGames = [
-    { id: '33945', name: 'Guilty Gear Strive' },
-    { id: '1386', name: 'Smash Ultimate' },
-    { id: '43868', name: 'Street Fighter 6'},
-    { id: '49783', name: 'Tekken 8'},
-    { id: '48548', name: 'Granblue Versus Rising'},
-    { id: '610', name: 'Third Strike'},
-    { id: '36963', name: 'KoF XV'},
-    { id: '5582', name: 'Soul Calibur 2'},
-    { id: '48599', name: 'Mortal Kombat 1'},
-    { id: '287', name: 'Dragon Ball FighterZ'},
-    { id: '1', name: 'Smash Melee'}
+    { id: 33945, name: 'Guilty Gear Strive' },
+    { id: 1386, name: 'Smash Ultimate' },
+    { id: 43868, name: 'Street Fighter 6'},
+    { id: 49783, name: 'Tekken 8'},
+    { id: 48548, name: 'Granblue Versus Rising'},
+    { id: 610, name: 'Third Strike'},
+    { id: 36963, name: 'KoF XV'},
+    { id: 5582, name: 'Soul Calibur 2'},
+    { id: 48599, name: 'Mortal Kombat 1'},
+    { id: 287, name: 'Dragon Ball FighterZ'},
+    { id: 1, name: 'Smash Melee'}
   ];
   currentPriorities = [
     { value: 'local', name: 'Local'},

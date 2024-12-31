@@ -23,21 +23,73 @@ main {
 padding: 20px;
 }
 
+/* Container for search and results */
+.container {
+    display: flex;
+    gap: 20px; /* Space between search container and event results */
+}
+
+.search-container {
+    width: 12%;
+    height: max-content;
+    padding: 20px;
+    background-color: rgb(39 33 49);
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between elements */
+}
+
+/* Event results styling */
+.event-results {
+    width: 75%; /* Adjust the width as needed */
+    padding: 20px;
+}
+
+/* Table styling */
 table {
-width: 100%;
-background-color: #444; /* Grey background for table */
-color: white;              /* White text for table */
+    width: 100%;
+    background-color: #505B70; /* Grey background for table */
+    color: white; /* White text for table */
 }
 
 th, td {
-padding: 10px;
-border: 1px solid white;    /* White borders */
+    padding: 10px;
+    border: 1px solid white; /* White borders */
 }
 
-input[type="text"] {
-padding: 5px;
-margin-right: 10px;
-background-color: #333;     /* Dark input background */
-color: white;               /* White text */
-border: 1px solid #f1f1f1;
+/* Input and select styling */
+input[type="text"], select {
+    padding: 10px;
+    background-color: #505B70; /* Dark input background */
+    color: white; /* White text */
+    border: 1px solid #f1f1f1;
+}
+
+/* Button styling */
+button {
+    padding: 10px;
+    background-color: #007bff; /* Blue background */
+    color: white; /* White text */
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Loading spinner styling */
+.loading-spinner {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2em;
+    color: #007bff; /* Blue text */
+}
+
+/* Error message styling */
+.error-message {
+    color: red;
+    font-weight: bold;
+    padding: 20px;
+    text-align: center;
 }
