@@ -26,11 +26,13 @@ padding: 20px;
 /* Container for search and results */
 .container {
     display: flex;
+    flex-wrap: wrap;
     gap: 20px; /* Space between search container and event results */
 }
 
 .search-container {
-    width: 12%;
+    width: 100%;
+    max-width: 300px;
     height: max-content;
     padding: 20px;
     background-color: rgb(39 33 49);
@@ -41,7 +43,7 @@ padding: 20px;
 
 /* Event results styling */
 .event-results {
-    width: 75%; /* Adjust the width as needed */
+    width: 100%;
     padding: 20px;
 }
 
@@ -92,4 +94,29 @@ button:hover {
     font-weight: bold;
     padding: 20px;
     text-align: center;
+}
+
+/* Media queries for mobile devices */
+@media (max-width: 600px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .search-container {
+    width: 100%;
+    max-width: none;
+  }
+
+  .event-results {
+    width: 100%;
+  }
+
+  table, th, td {
+    font-size: 14px;
+  }
+
+  input[type="text"], select {
+    width: 100%;
+  }
 }
