@@ -1,0 +1,74 @@
+div {
+    background: #f5deb3; /* Parchment-like background */
+    border: 2px solid #c0c0c0;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+}
+
+h2 {
+    text-align: center;
+    color: #4b2e2e; /* Dark brown color */
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1.1em;
+    color: #4b2e2e; /* Dark brown color */
+    margin: 5px 0;
+}
+
+button {
+    background-color: #8b4513; /* Saddle brown color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+button:hover {
+    background-color: #5a2d0c; /* Darker brown color */
+}
+
+.schedule-container {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    border: 1px solid #c0c0c0;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #bdc7ff; /* Parchment-like background */
+    color: #4b2e2e; /* Dark brown color */
+    font-weight: bold;
+}
+
+td {
+    background-color: #ffffff;
+    color: #4b2e2e; /* Dark brown color */
+}
+
+a {
+    color: #8b4513; /* Saddle brown color */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
