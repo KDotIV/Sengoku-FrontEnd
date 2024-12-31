@@ -27,7 +27,7 @@
       <tbody>
         <tr *ngFor="let event of leagueEvents">
           <td>{{ event.tournamentName }}</td>
-          <td>{{ event.entrants }}</td>
+          <td>{{ event.entrantsNum }}</td>
           <td>{{ event.startTime ? (event.startTime | date:'short'): 'N/A'}}</td>
           <td>{{ event.gameName}}</td>
           <td><a [href]="'https://www.start.gg/' + event.urlSlug" target="_blank" rel="noopener noreferrer">View Event</a></td>

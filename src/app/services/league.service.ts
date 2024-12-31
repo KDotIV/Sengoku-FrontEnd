@@ -10,7 +10,7 @@ export interface LeagueTournamentData {
     tournamentName: string;
     urlSlug: string;
     playerIds: number[];
-    entrants: number;
+    entrantsNum: number;
     lastUpdated: Date | null;
     viewerShipUrls: string[];
     gameId: number;
