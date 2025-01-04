@@ -17,6 +17,18 @@ export interface LeagueTournamentData {
     gameName: string;
     startTime: Date | null;
 }
+export interface LeaguePlayerRankingData {
+    playerId: number;
+    leagueId: number;
+    leagueName: string;
+    playerName: string;
+    currentScore: number;
+    scoreDifference: number;
+    tournamentCount: number;
+    gameId: number;
+    gameName: string;
+    lastUpdated: Date | null;
+}
 export interface LeagueByOrgData {
     leagueId: number;
     leagueName: string;
@@ -114,5 +126,22 @@ export class LeagueService {
             gameName: this.parseGameId(leagueEvent.gameId)
         })))
     );
+  }
+  //Query Player Rankings for given League
+  queryPlayerRankings(leagueId: number): Observable<LeaguePlayerRankingData[]> {
+    let params = new HttpParams()
+    params = params.append('leagueId', leagueId)
+    const headers = new HttpHeaders({
+        'Accept': 'application/json'
+    });
+
+    return this.http.get<LeaguePlayerRankingData[]>(`${environment.apiUrl}/leagues/GetLeaderboardResultsByLeagueId`, {params, headers})
+    .pipe(
+        map(playerRankings => playerRankings.map(playerRanking => ({
+            ...playerRanking,
+            lastUpdated: this.parseDate(playerRanking.lastUpdated),
+            gameName: this.parseGameId(playerRanking.gameId)
+        })))
+    )
   }
 }

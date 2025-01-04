@@ -1,38 +1,70 @@
-<div>
-    <h2>{{ league.leagueName }} Details</h2>
-    <p>League ID: {{ league.leagueId }}</p>
-    <p>Organization: {{ league.orgId }}</p>
-    <p>Circuit Start Date: {{ league.startDate | date: 'short' }}</p>
-    <p>Circuit End Date: {{ league.endDate | date: 'short' }}</p>
-    <p>Last Updated: {{ league.lastUpdated | date: 'short' }}</p>
-    <!--Need to make this dynamic-->
-    <td><a [href]="'https://forms.gle/zFYoW8xhSMiUrnEV6'" target="_blank" rel="noopener noreferrer">Register</a></td>
-    <button (click)="goBack()">Back to Leagues</button>
+<div class="league-details-wrapper">
+  <div class="left-container">
+    <div class="league-details-container">
+      <h2>{{ league.leagueName }} Details</h2>
+      <p>League ID: {{ league.leagueId }}</p>
+      <p>Organization: {{ league.orgId }}</p>
+      <p>Circuit Start Date: {{ league.startDate | date: 'short' }}</p>
+      <p>Circuit End Date: {{ league.endDate | date: 'short' }}</p>
+      <p>Last Updated: {{ league.lastUpdated | date: 'short' }}</p>
+      <td><a [href]="'https://forms.gle/zFYoW8xhSMiUrnEV6'" target="_blank" rel="noopener noreferrer">Register</a></td>
+      <button (click)="goBack()">Back to Leagues</button>
+    </div>
+    <!-- No Events Found Message -->
+    <div *ngIf="!loading && leagueEvents.length === 0">
+      <p>No Tournaments Scheduled... Check back again!</p>
+    </div>
+    <!--Schedule Display-->
+    <div *ngIf="!loading && leagueEvents.length > 0" class="schedule-container">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Tournament Name</th>
+              <th>Entrants</th>
+              <th>Start Time</th>
+              <th>Game</th>
+              <th>Registry</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let event of leagueEvents">
+              <td>{{ event.tournamentName }}</td>
+              <td>{{ event.entrantsNum }}</td>
+              <td>{{ event.startTime ? (event.startTime | date:'short'): 'N/A'}}</td>
+              <td>{{ event.gameName}}</td>
+              <td><a [href]="'https://www.start.gg/' + event.urlSlug" target="_blank" rel="noopener noreferrer">View Event</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
-  <!-- No Events Found Message -->
-  <div *ngIf="!loading && leagueEvents.length === 0">
-    <p>No Tournaments Scheduled... Check back again!</p>
-  </div>
-  <!--Schedule Display-->
-  <div *ngIf="!loading && leagueEvents.length > 0" class="schedule-container">
+  <div class="player-rankings-container">
     <table>
       <thead>
         <tr>
-          <th>Tournament Name</th>
-          <th>Entrants</th>
-          <th>Start Time</th>
+          <th>Player</th>
+          <th>League</th>
           <th>Game</th>
-          <th>Registry</th>
+          <th>Points</th>
+          <th>Score Change</th>
+          <th>Participation</th>
+          <th>Last Updated</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let event of leagueEvents">
-          <td>{{ event.tournamentName }}</td>
-          <td>{{ event.entrantsNum }}</td>
-          <td>{{ event.startTime ? (event.startTime | date:'short'): 'N/A'}}</td>
-          <td>{{ event.gameName}}</td>
-          <td><a [href]="'https://www.start.gg/' + event.urlSlug" target="_blank" rel="noopener noreferrer">View Event</a></td>
+        <tr *ngFor="let playerRanking of playerRankings">
+          <td>{{ playerRanking.playerName }}</td>
+          <td>{{ playerRanking.leagueName }}</td>
+          <td>{{ playerRanking.gameName }}</td>
+          <td>{{ playerRanking.currentScore }}</td>
+          <td>{{ playerRanking.scoreDifference !== null ? playerRanking.scoreDifference : '-' }}</td>
+          <td>{{ playerRanking.tournamentCount }}</td>
+          <td>{{ playerRanking.lastUpdated ? (playerRanking.lastUpdated | date:'short') : 'N/A' }}</td>
         </tr>
       </tbody>
     </table>
   </div>
+</div>

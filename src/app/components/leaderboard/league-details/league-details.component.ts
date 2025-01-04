@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, SimpleChange, SimpleChanges, OnChanges } from '@angular/core';
-import { LeagueByOrgData, LeagueService, LeagueTournamentData } from '../../../services/league.service';
+import { LeagueByOrgData, LeaguePlayerRankingData, LeagueService, LeagueTournamentData } from '../../../services/league.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { catchError, EMPTY, tap } from 'rxjs';
@@ -15,6 +15,7 @@ export class LeagueDetailsComponent implements OnChanges {
   @Input() league!: LeagueByOrgData;
   @Output() back = new EventEmitter<void>();
   leagueEvents: LeagueTournamentData[] = [];
+  playerRankings: LeaguePlayerRankingData[] = [];
   errorMessage: string = '';
   loading: boolean = false;
 
@@ -26,7 +27,32 @@ export class LeagueDetailsComponent implements OnChanges {
     if(changes['league'] && changes['league'].currentValue) {
       console.log(this.league.leagueId);
       this.getLeagueSchedule(this.league.leagueId);
+      this.getPlayerRankings(this.league.leagueId);
     }
+  }
+  getPlayerRankings(leagueId: number) {
+    this.errorMessage = '';
+    this.loading = true;
+
+    this.leagueService.queryPlayerRankings(leagueId)
+    .pipe(
+      tap((data: LeaguePlayerRankingData[]) => {
+        console.log('Player Rankings Data', data);
+        this.playerRankings = data;
+        this.loading = false;
+        if(data.length === 0) {
+          this.errorMessage = 'No Player Rankings found for the given League Id';
+        } else {
+          this.errorMessage = '';
+        }
+      }),
+      catchError(error => {
+        console.error('Failed to load Player Rankings', error);
+        this.errorMessage = 'Failed to load Player Rankings';
+        this.loading = false;
+        return EMPTY;
+      })
+    ).subscribe();
   }
   
   getLeagueSchedule(leagueId: number): void {
