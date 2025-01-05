@@ -27,14 +27,14 @@ export class LeagueDetailsComponent implements OnChanges {
     if(changes['league'] && changes['league'].currentValue) {
       console.log(this.league.leagueId);
       this.getLeagueSchedule(this.league.leagueId);
-      this.getPlayerRankings(this.league.leagueId);
+      this.getPlayerRankings([this.league.leagueId]);
     }
   }
-  getPlayerRankings(leagueId: number) {
+  getPlayerRankings(leagueIds: number[]) {
     this.errorMessage = '';
     this.loading = true;
 
-    this.leagueService.queryPlayerRankings(leagueId)
+    this.leagueService.queryPlayerRankings(leagueIds, 2)
     .pipe(
       tap((data: LeaguePlayerRankingData[]) => {
         console.log('Player Rankings Data', data);

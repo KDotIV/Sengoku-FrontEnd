@@ -128,9 +128,13 @@ export class LeagueService {
     );
   }
   //Query Player Rankings for given League
-  queryPlayerRankings(leagueId: number): Observable<LeaguePlayerRankingData[]> {
+  queryPlayerRankings(leagueIds: number[], topN: number): Observable<LeaguePlayerRankingData[]> {
     let params = new HttpParams()
-    params = params.append('leagueId', leagueId)
+    .set('topN', topN);
+    leagueIds.forEach(leagueId => {
+        params = params.append('leagueIds', leagueId)
+    });
+
     const headers = new HttpHeaders({
         'Accept': 'application/json'
     });
