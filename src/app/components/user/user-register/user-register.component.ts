@@ -28,7 +28,7 @@ export class UserRegisterComponent implements OnChanges{
   goBack(): void {
     this.back.emit();
   }
-  
+
   getCreateNewUserForm(): void  {
     this.errorMessage = '';
     this. loading = false;

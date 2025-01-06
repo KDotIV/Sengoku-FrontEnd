@@ -57,25 +57,25 @@ export class LeagueService {
 
     constructor(private http: HttpClient) {}
 
-      // Utility function to safely parse date strings
+    // Utility function to safely parse date strings
     private parseDate(date: string | Date | null): Date | null {
         if (!date) {
         return null; // Handle null or undefined input
         }
-    
+
         // If input is already a Date object, use it directly
         if (date instanceof Date) {
         // Format to local timezone explicitly
         const localizedDateStr = date.toLocaleString('en-US', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
         return new Date(localizedDateStr);
         }
-    
+
         // Parse as UTC explicitly
         const utcDate = new Date(`${date}Z`); // Append 'Z' to ensure UTC parsing
         if (isNaN(utcDate.getTime())) {
         return null; // Handle invalid dates
         }
-    
+
         // Format to local timezone explicitly
         const localizedDateStr = utcDate.toLocaleString('en-US', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
         console.log(localizedDateStr)
