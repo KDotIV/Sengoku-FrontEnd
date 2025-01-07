@@ -80,7 +80,7 @@ export class LeagueService {
         const localizedDateStr = utcDate.toLocaleString('en-US', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
         console.log(localizedDateStr)
         return new Date(localizedDateStr);
-  }
+    }
     private parseGameId(gameId: number): string {
         return this.currentGameDictionary.tryGetValue(gameId);
     }

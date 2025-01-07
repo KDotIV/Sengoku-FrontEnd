@@ -1,0 +1,19 @@
+<div class="overlay">
+  <div class="overlay-content">
+    <h2>Subscribe to Feed</h2>
+    <form (ngSubmit)="onSubmit()">
+      <label for="serverName">Server Name:</label>
+      <input type="text" id="serverName" [(ngModel)]="serverName" name="serverName" required>
+
+      <label for="subscribedChannel">Subscribed Channel:</label>
+      <input type="text" id="subscribedChannel" [(ngModel)]="subscribedChannel" name="subscribedChannel" required>
+
+      <label for="webhookUrl">Webhook URL:</label>
+      <input type="url" id="webhookUrl" [(ngModel)]="webhookUrl" name="webhookUrl" required>
+
+      <button type="submit">Subscribe</button>
+      <button type="button" (click)="goBack()">Back</button>
+    </form>
+    <p *ngIf="errorMessage">{{ errorMessage }}</p>
+  </div>
+</div>

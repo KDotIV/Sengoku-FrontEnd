@@ -8,7 +8,7 @@
       <p>Circuit End Date: {{ league.endDate | date: 'short' }}</p>
       <p>Last Updated: {{ league.lastUpdated | date: 'short' }}</p>
       <td><a [href]="'https://forms.gle/zFYoW8xhSMiUrnEV6'" target="_blank" rel="noopener noreferrer">Register</a></td>
-      <td>Subscribe to Feed</td>
+      <td><a (click)="openSubscribeOverlay(league.leagueId)">Subscribe to Feed</a></td>
       <button (click)="goBack()">Back to Leagues</button>
     </div>
     <!-- No Events Found Message -->
@@ -68,4 +68,5 @@
       </tbody>
     </table>
   </div>
+  <app-feeds-subscribe-overlay *ngIf="selectedFeed" [feedData]="selectedFeed" (back)="clearSelection()"></app-feeds-subscribe-overlay>
 </div>
