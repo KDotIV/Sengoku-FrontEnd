@@ -37,6 +37,7 @@ export interface LeagueByOrgData {
     startDate: Date | null;
     endDate: Date | null;
     lastUpdated: Date | null;
+    isActive: boolean;
 }
 @Injectable({
     providedIn: 'root'
