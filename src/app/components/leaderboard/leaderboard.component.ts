@@ -44,7 +44,6 @@ export class LeaderboardComponent implements OnInit {
     this.leagueService.queryAvailableLeagues()
     .pipe(
       tap((data: LeagueByOrgData[]) => {
-        console.log('League Data', data);
         this.availableLeagues = data;
         this.loading = false;
         if(data.length === 0) {

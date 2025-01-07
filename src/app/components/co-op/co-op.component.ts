@@ -33,7 +33,6 @@ export class CoOpComponent implements OnInit{
     this.coOpsServices.queryCoOpsByUserId(this.userId)
     .pipe(
       tap((data: CoOpTravelResult[]) => {
-        console.log('Operations:', data);
         this.coOps = data;
         this.loading = false;
         if(data.length === 0) {

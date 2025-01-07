@@ -48,7 +48,6 @@ export class LeagueDetailsComponent implements OnChanges {
     this.feedsService.getFeedByFeedId(feedId)
       .pipe(
         tap((data: FeedData) => {
-          console.log('Feeds Data', data);
           this.selectedFeed = data;
           this.loading = false;
           if (!data) {
@@ -73,7 +72,6 @@ export class LeagueDetailsComponent implements OnChanges {
     this.leagueService.queryPlayerRankings(leagueIds, 2)
       .pipe(
         tap((data: LeaguePlayerRankingData[]) => {
-          console.log('Player Rankings Data', data);
           this.playerRankings = data;
           this.loading = false;
           if (data.length === 0) {
@@ -98,7 +96,6 @@ export class LeagueDetailsComponent implements OnChanges {
     this.leagueService.queryTournamentsByLeague([leagueId])
       .pipe(
         tap((data: LeagueTournamentData[]) => {
-          console.log('Events Data', data);
           this.leagueEvents = data;
           this.loading = false;
           if (data.length === 0) {
