@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, SimpleChange, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, SimpleChange, SimpleChanges, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { LeagueByOrgData, LeaguePlayerRankingData, LeagueService, LeagueTournamentData } from '../../../services/league.service';
 import { FeedData, FeedsService } from '../../../services/feeds.service';
 import { FormsModule } from '@angular/forms';
@@ -26,7 +26,7 @@ export class LeagueDetailsComponent implements OnChanges {
     this.back.emit();
   }
 
-  constructor(private leagueService: LeagueService, private feedsService: FeedsService) { }
+  constructor(private leagueService: LeagueService, private feedsService: FeedsService, private cdr: ChangeDetectorRef) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['league'] && changes['league'].currentValue) {
@@ -65,6 +65,7 @@ export class LeagueDetailsComponent implements OnChanges {
         })
       ).subscribe();
   }
+
   getPlayerRankings(leagueIds: number[]) {
     this.errorMessage = '';
     this.loading = true;
@@ -89,6 +90,7 @@ export class LeagueDetailsComponent implements OnChanges {
         })
       ).subscribe();
   }
+
   getLeagueSchedule(leagueId: number): void {
     this.errorMessage = '';
     this.loading = true;
@@ -104,6 +106,7 @@ export class LeagueDetailsComponent implements OnChanges {
           } else {
             this.errorMessage = '';
           }
+          this.cdr.detectChanges();
         }),
         catchError(error => {
           console.error('Failed to load League Events', error);

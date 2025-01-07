@@ -98,6 +98,11 @@ a:hover {
   text-decoration: underline;
 }
 
+.schedule-container .table-wrapper table tbody tr.past-event td {
+  background-color: #60dbc1bb !important; /* Light red background */
+  color: #4b2e2e !important; /* Dark brown color for text */
+}
+
 /* Media queries for mobile devices */
 @media (max-width: 600px) {
   .league-details-wrapper {

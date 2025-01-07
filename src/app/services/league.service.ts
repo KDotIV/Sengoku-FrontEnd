@@ -16,6 +16,7 @@ export interface LeagueTournamentData {
     gameId: number;
     gameName: string;
     startTime: Date | null;
+    isPast?: boolean;
 }
 export interface LeaguePlayerRankingData {
     playerId: number;
@@ -123,7 +124,8 @@ export class LeagueService {
             ...leagueEvent,
             startTime: this.parseDate(leagueEvent.startTime),
             lastUpdated: this.parseDate(leagueEvent.lastUpdated),
-            gameName: this.parseGameId(leagueEvent.gameId)
+            gameName: this.parseGameId(leagueEvent.gameId),
+            isPast: leagueEvent.startTime ? new Date(leagueEvent.startTime) < new Date() : false
         })))
     );
   }
