@@ -45,9 +45,5 @@
             </tbody>
         </table>
     </div>
-    <app-league-details
-        *ngIf="selectedLeague"
-        [league]="selectedLeague"
-        (back)="clearSelection()"
-    ></app-league-details>
+    <router-outlet class="league-details-overlay"></router-outlet>
 </main>

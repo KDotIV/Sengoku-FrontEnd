@@ -3,11 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { catchError, EMPTY, tap } from 'rxjs';
 import { LeagueService, LeagueTournamentData, LeagueByOrgData } from '../../services/league.service';
-import { LeagueDetailsComponent } from './league-details/league-details.component';
+import { Router, RouterModule } from '@angular/router';
+import { LeagueStateService } from '../../services/LeagueStateService.service';
 
 @Component({
   selector: 'app-leaderboard',
-  imports: [CommonModule, FormsModule, LeagueDetailsComponent],
+  imports: [CommonModule, FormsModule, RouterModule],
   standalone: true,
   templateUrl: './leaderboard.component.html',
   styleUrl: './leaderboard.component.css'
@@ -21,9 +22,9 @@ export class LeaderboardComponent implements OnInit {
   availableLeagues: LeagueByOrgData[] = [];
   errorMessage: string = '';
   loading: boolean = false;
-
   selectedLeague: LeagueByOrgData | null = null;
-  constructor(private leagueService: LeagueService){ }
+  
+  constructor(private leagueState: LeagueStateService, private leagueService: LeagueService, private router: Router){ }
 
   ngOnInit(): void {
     this.getAvailableLeagues();
@@ -33,6 +34,8 @@ export class LeaderboardComponent implements OnInit {
   }
   selectLeague(league: LeagueByOrgData): void {
     this.selectedLeague = league;
+    this.leagueState.setSelectedLeague(league);
+    this.router.navigate(['/leaderboards', league.leagueId]);
   }
   clearSelection(): void {
     this.selectedLeague = null;

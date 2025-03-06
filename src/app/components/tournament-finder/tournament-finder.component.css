@@ -26,7 +26,6 @@ padding: 20px;
 /* Container for search and results */
 .container {
     display: flex;
-    flex-wrap: wrap;
     gap: 20px; /* Space between search container and event results */
 }
 
