@@ -7,16 +7,15 @@ import { LeaderboardComponent } from './components/leaderboard/leaderboard.compo
 import { UserRegisterComponent } from './components/user/user-register/user-register.component';
 import { UserLoginComponent } from './components/user/user-login/user-login.component';
 import { LeagueDetailsComponent } from './components/leaderboard/league-details/league-details.component';
+import { LeagueRegisterComponent } from './components/leaderboard/league-register/league-register.component';
 
 export const routes: Routes = [
   {
     path: 'leaderboards',
     component: LeaderboardComponent,
     children: [
-      {
-        path: ':leagueId',
-        component: LeagueDetailsComponent
-      }
+      { path: ':leagueId', component: LeagueDetailsComponent },
+      { path: ':leagueId/register', component: LeagueRegisterComponent }
     ]
   },
   { path: 'tournament-finder', component: TournamentFinderComponent },

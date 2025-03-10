@@ -39,6 +39,17 @@ export interface LeagueByOrgData {
     lastUpdated: Date | null;
     isActive: boolean;
 }
+export interface PlayerRegisterData {
+    PlayerId: number;
+    PlayerName: string;
+    PlayerEmail: string;
+    GameIds: number[];
+    LeagueId: number | undefined;
+}
+export interface PlayerStartggSyncRequest {
+    PlayerName: string;
+    userSlug: string;
+}
 @Injectable({
     providedIn: 'root'
 })
@@ -86,12 +97,15 @@ export class LeagueService {
     private parseGameId(gameId: number): string {
         return this.currentGameDictionary.tryGetValue(gameId);
     }
-  //Add League to User
-  addLeagueToUser(leagueId: number, userId: number): void {
+    //Add League to User
+    addLeagueToUser(leagueId: number, userId: number): void {
 
-  }
-  //Query Available Leagues
-  queryAvailableLeagues(): Observable<LeagueByOrgData[]> {
+    }
+    getLeagueById(leagueIdNum: number) {
+        throw new Error('Method not implemented.');
+      }
+    //Query Available Leagues
+    queryAvailableLeagues(): Observable<LeagueByOrgData[]> {
     let params = new HttpParams()
 
     const headers = new HttpHeaders({
@@ -107,9 +121,9 @@ export class LeagueService {
             lastUpdated: this.parseDate(league.lastUpdated)
         })))
     );
-  }
-  //Query Tournaments for League
-  queryTournamentsByLeague(leagueIds: number[]): Observable<LeagueTournamentData[]> {
+    }
+    //Query Tournaments for League
+    queryTournamentsByLeague(leagueIds: number[]): Observable<LeagueTournamentData[]> {
     let params = new HttpParams()
 
     leagueIds.forEach(leagueId =>{
@@ -129,9 +143,9 @@ export class LeagueService {
             isPast: leagueEvent.startTime ? new Date(leagueEvent.startTime) < new Date() : false
         })))
     );
-  }
-  //Query Player Rankings for given League
-  queryPlayerRankings(leagueIds: number[], topN: number): Observable<LeaguePlayerRankingData[]> {
+    }
+    //Query Player Rankings for given League
+    queryPlayerRankings(leagueIds: number[], topN: number): Observable<LeaguePlayerRankingData[]> {
     let params = new HttpParams()
     .set('topN', topN);
     leagueIds.forEach(leagueId => {
@@ -150,5 +164,33 @@ export class LeagueService {
             gameName: this.parseGameId(playerRanking.gameId)
         })))
     )
-  }
+    }
+    //Register Player for League
+    registerPlayerForLeague(playerData: PlayerRegisterData | undefined): Observable<string> {
+        if (!playerData) {
+            throw new Error('Player data is missing');
+        }
+        const requestBody: PlayerRegisterData = {
+            PlayerId: playerData.PlayerId,
+            PlayerName: playerData.PlayerName,
+            PlayerEmail: playerData.PlayerEmail,
+            GameIds: playerData.GameIds,
+            LeagueId: playerData.LeagueId
+        }
+        const headers = new HttpHeaders({
+            'Accept': 'application/json'
+        });
+        return this.http.post<string>(`${environment.apiUrl}/leagues/RegisterUserToLeague`, requestBody, {headers});
+    }
+    //Sync Startgg Data to Register Player
+    syncStartggDataToRegisterPlayer(PlayerName: string, userSlug: string): Observable<{ data: PlayerRegisterData; response: string }> {
+        const requestBody: PlayerStartggSyncRequest = {
+            PlayerName: PlayerName,
+            userSlug: userSlug
+        }
+        const headers = new HttpHeaders({
+        'Accept': 'application/json'});
+        
+        return this.http.post<{ data: PlayerRegisterData; response: string }>(`${environment.apiUrl}/user/SyncStartggDataToPlayer`, requestBody, {headers});
+    }
 }

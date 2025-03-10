@@ -16,18 +16,19 @@ import { LeagueStateService } from '../../../services/LeagueStateService.service
   standalone: true,
 })
 export class LeagueDetailsComponent implements OnInit {
-  @Output() back = new EventEmitter<void>();
   league: LeagueByOrgData | undefined = undefined;
   leagueEvents: LeagueTournamentData[] = [];
   playerRankings: LeaguePlayerRankingData[] = [];
   selectedFeed: FeedData | null = null;
-  leagueId: string = '';
+  leagueId: string | undefined = undefined;
   errorMessage: string = '';
   loading: boolean = false;
 
-  constructor(private leagueState: LeagueStateService, private leagueService: LeagueService, private feedsService: FeedsService, private cdr: ChangeDetectorRef, private route: ActivatedRoute) { }
+  constructor(private leagueState: LeagueStateService, private leagueService: LeagueService, private feedsService: FeedsService, 
+    private cdr: ChangeDetectorRef, private router: Router, private route: ActivatedRoute) { }
+
   goBack(): void {
-    this.back.emit();
+    this.router.navigate(['/leaderboards']); 
   }
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -39,6 +40,9 @@ export class LeagueDetailsComponent implements OnInit {
       this.getLeagueSchedule(parsedLeagueId);
       this.getPlayerRankings([parsedLeagueId]);
     });
+  }
+  navigateToRegister(): void {
+    this.router.navigate(['/leaderboards', this.league?.leagueId, 'register']);
   }
   openSubscribeOverlay(feedId: number | undefined): void {
     if(feedId === undefined) { console.error("Current League is undefined"); return; }

@@ -41,6 +41,12 @@ input[type="text"] {
     color: white;               /* White text */
     border: 1px solid #f1f1f1;
 }
+.main-leaderboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+}
 .tournament-board-container {
     display: flex;
     flex-wrap: wrap;

@@ -33,7 +33,6 @@ export class LeaderboardComponent implements OnInit {
     this.leagueService.addLeagueToUser(this.leagueId, this.userId)
   }
   selectLeague(league: LeagueByOrgData): void {
-    this.selectedLeague = league;
     this.leagueState.setSelectedLeague(league);
     this.router.navigate(['/leaderboards', league.leagueId]);
   }

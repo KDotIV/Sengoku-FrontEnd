@@ -16,13 +16,12 @@
 </header>
 <main>
   <app-user-login>
-
   </app-user-login>
   <div class="overlay" *ngIf="showOverlay">
     <div class="overlay-content">
       <app-user-register (back)="toggleOverlay()"></app-user-register>
     </div>
   </div>
-</main>
-<!-- This router outlet will load the routed components -->
+  <!-- This router outlet will load the routed components -->
 <router-outlet></router-outlet>
+</main>
