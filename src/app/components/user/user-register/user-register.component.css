@@ -1,0 +1,8 @@
+.league-link {
+    color: rgb(116, 116, 194);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .league-link:hover {
+    text-decoration: none; /* or keep underline on hover, your choice */
+  }

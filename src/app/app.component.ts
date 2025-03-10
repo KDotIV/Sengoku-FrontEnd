@@ -8,7 +8,7 @@ import { UserRegisterComponent } from "./components/user/user-register/user-regi
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterOutlet, RouterModule, CommonModule, UserLoginComponent, UserRegisterComponent],
+    imports: [RouterOutlet, RouterModule, CommonModule],
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
@@ -32,9 +32,4 @@ export class AppComponent implements OnInit {
     });
   }
   title = 'Sengoku';
-  showOverlay = false;
-
-  toggleOverlay(): void {
-    this.showOverlay = !this.showOverlay;
-  }
 }

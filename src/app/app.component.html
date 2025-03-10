@@ -9,19 +9,12 @@
       <!-- Add more navigation links as needed -->
     </ul>
     <ul class="last-of-type">
-      <li><a (click)="toggleOverlay()">Register</a></li>
-      <li><a (click)="toggleOverlay()">Login</a></li>
+      <li><a [routerLink]="['/user-register']">Register</a></li>
+      <li><a [routerLink]="['/user-login']">Login</a></li>
     </ul>
   </nav>
 </header>
+
 <main>
-  <app-user-login>
-  </app-user-login>
-  <div class="overlay" *ngIf="showOverlay">
-    <div class="overlay-content">
-      <app-user-register (back)="toggleOverlay()"></app-user-register>
-    </div>
-  </div>
-  <!-- This router outlet will load the routed components -->
-<router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </main>
