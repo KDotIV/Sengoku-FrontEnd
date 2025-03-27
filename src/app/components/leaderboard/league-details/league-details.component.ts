@@ -80,7 +80,7 @@ export class LeagueDetailsComponent implements OnInit {
     this.errorMessage = '';
     this.loading = true;
 
-    this.leagueService.queryPlayerRankings(leagueIds, 2)
+    this.leagueService.queryPlayerRankings(leagueIds, 3)
       .pipe(
         tap((data: LeaguePlayerRankingData[]) => {
           this.playerRankings = data;
