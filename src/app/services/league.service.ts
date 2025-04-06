@@ -23,12 +23,22 @@ export interface LeaguePlayerRankingData {
     leagueId: number;
     leagueName: string;
     playerName: string;
-    currentScore: number;
+    gainedPoints: number;
+    tournamentId: number;
+    tournamentSlug: string;
     scoreDifference: number;
     tournamentCount: number;
     gameId: number;
     gameName: string;
     lastUpdated: Date | null;
+}
+export interface TotalPlayerRankingCard {
+  playerName: string;
+  currentScore: number;
+  scoreDifference: number;
+  tournamentCount: number;
+  lastUpdated: Date | null;
+  gameId: number;
 }
 export interface LeagueByOrgData {
     leagueId: number;
