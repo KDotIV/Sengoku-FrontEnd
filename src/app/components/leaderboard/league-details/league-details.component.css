@@ -2,7 +2,6 @@
   display: flex;
   gap: 20px;
 }
-
 .left-container {
   flex: 1;
   max-width: 35%;

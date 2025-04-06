@@ -1,14 +1,14 @@
 <div class="league-details-wrapper">
   <div class="left-container">
     <div class="league-details-container">
-      <h2>{{ league.leagueName }} Details</h2>
-      <p>League ID: {{ league.leagueId }}</p>
-      <p>Organization: {{ league.orgId }}</p>
-      <p>Circuit Start Date: {{ league.startDate | date: 'short' }}</p>
-      <p>Circuit End Date: {{ league.endDate | date: 'short' }}</p>
-      <p>Last Updated: {{ league.lastUpdated | date: 'short' }}</p>
-      <td *ngIf="league.isActive"><a [href]="'https://forms.gle/zFYoW8xhSMiUrnEV6'" target="_blank" rel="noopener noreferrer">Register</a></td>
-      <td><a (click)="openSubscribeOverlay(league.leagueId)">Subscribe to Feed</a></td>
+      <h2>{{ league?.leagueName }} Details</h2>
+      <p>League ID: {{ league?.leagueId }}</p>
+      <p>Organization: {{ league?.orgId }}</p>
+      <p>Circuit Start Date: {{ league?.startDate | date: 'short' }}</p>
+      <p>Circuit End Date: {{ league?.endDate | date: 'short' }}</p>
+      <p>Last Updated: {{ league?.lastUpdated | date: 'short' }}</p>
+      <td *ngIf="league?.isActive"><a (click)="navigateToRegister()">Register</a></td>
+      <td><a (click)="openSubscribeOverlay(league?.leagueId)">Subscribe to Feed</a></td>
       <button (click)="goBack()">Back to Leagues</button>
     </div>
     <!-- No Events Found Message -->

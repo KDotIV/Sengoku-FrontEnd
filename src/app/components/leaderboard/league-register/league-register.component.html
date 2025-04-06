@@ -1,0 +1,62 @@
+<div>
+    <h2>Register for {{ newPlayer.LeagueId }}</h2>
+    <h3>YOU WILL NEED A START.GG ACCOUNT TO PARTICIPATE IN THIS EVENT</h3>
+    <!-- Email -->
+    <div class="newuser-form">
+      <label for="newPlayer.PlayerEmail">Email*</label>
+      <input
+        type="text"
+        id="newPlayer.PlayerEmail"
+        [(ngModel)]="newPlayer.PlayerEmail"
+        placeholder="Enter Email"
+      />
+    </div>
+  
+    <!-- Username -->
+    <div class="newPlayer-form">
+      <label for="newPlayer.PlayerName">UserName*</label>
+      <input
+        type="text"
+        id="newPlayer.PlayerName"
+        [(ngModel)]="newPlayer.PlayerName"
+        placeholder="Enter UserName"
+      />
+    </div>
+  
+    <!-- Start.gg Linking -->
+    <div class="newPlayer-form">
+      <label>Link Start.gg Profile*</label>
+      <input
+        type="text"
+        id="userLink"
+        [(ngModel)]="userLink"
+        placeholder="Insert the User URL slug"
+      />
+      <button (click)="syncStartggDataToRegisterPlayer(newPlayer.PlayerName, userLink)">
+        Link User Profile
+      </button>
+  
+      <h2>You only need the URL part after "https://start.gg/", for example: user/b2a1u9d8</h2>
+    </div>
+  
+    <!-- Sync error or success message -->
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <div *ngIf="syncSuccess" class="success-message">
+      Successfully linked profile. You can now register!
+    </div>
+  
+    <!-- Cancel & Submit Buttons -->
+    <button (click)="goBack()">Cancel</button>
+  
+    <!-- Only show the Submit button if syncSuccess is true -->
+    <button
+      *ngIf="syncSuccess && !regSuccess"
+      (click)="sendNewPlayerRegistration()">
+      Submit
+    </button>
+  
+    <!-- If regSuccess is true, show a success message or hide the form altogether -->
+    <div class="success-message">
+      {{regSuccess ? regSuccess : errorMessage}}
+    </div>
+</div>

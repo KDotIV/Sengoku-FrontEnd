@@ -1,10 +1,12 @@
-import { Component, Input, Output, EventEmitter, SimpleChange, SimpleChanges, OnChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { LeagueByOrgData, LeaguePlayerRankingData, LeagueService, LeagueTournamentData, TotalPlayerRankingCard } from '../../../services/league.service';
 import { FeedData, FeedsService } from '../../../services/feeds.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { catchError, EMPTY, tap } from 'rxjs';
 import { FeedsSubscribeOverlayComponent } from '../../feeds/feeds-subscribe-overlay/feeds-subscribe-overlay.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LeagueStateService } from '../../../services/LeagueStateService.service';
 
 @Component({
   selector: 'app-league-details',
@@ -13,30 +15,39 @@ import { FeedsSubscribeOverlayComponent } from '../../feeds/feeds-subscribe-over
   styleUrl: './league-details.component.css',
   standalone: true,
 })
-export class LeagueDetailsComponent implements OnChanges {
-  @Input() league!: LeagueByOrgData;
-  @Output() back = new EventEmitter<void>();
+export class LeagueDetailsComponent implements OnInit {
+  league: LeagueByOrgData | undefined = undefined;
   leagueEvents: LeagueTournamentData[] = [];
   playerRankings: LeaguePlayerRankingData[] = [];
   totalRankingCards: TotalPlayerRankingCard[] = [];
   selectedFeed: FeedData | null = null;
+  leagueId: string | undefined = undefined;
   errorMessage: string = '';
   loading: boolean = false;
 
+  constructor(private leagueState: LeagueStateService, private leagueService: LeagueService, private feedsService: FeedsService,
+    private cdr: ChangeDetectorRef, private router: Router, private route: ActivatedRoute) { }
+
   goBack(): void {
-    this.back.emit();
+    this.router.navigate(['/leaderboards']);
   }
+  ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      this.leagueId = params.get('leagueId') ?? '';
+      const parsedLeagueId = parseInt(this.leagueId, 10);
+      if (isNaN(parsedLeagueId)) { console.error('Invalid League Id:', this.leagueId); return; }
 
-  constructor(private leagueService: LeagueService, private feedsService: FeedsService, private cdr: ChangeDetectorRef) { }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['league'] && changes['league'].currentValue) {
-      console.log(this.league.leagueId);
-      this.getLeagueSchedule(this.league.leagueId);
-      this.getPlayerRankings([this.league.leagueId]);
-    }
+      this.league = this.leagueState.getSelectedLeague();
+      this.getLeagueSchedule(parsedLeagueId);
+      this.getPlayerRankings([parsedLeagueId]);
+    });
   }
-  openSubscribeOverlay(feedId: number): void {
+  navigateToRegister(): void {
+    this.router.navigate(['/leaderboards', this.league?.leagueId, 'register']);
+  }
+  openSubscribeOverlay(feedId: number | undefined): void {
+    if(feedId === undefined) { console.error("Current League is undefined"); return; }
+
     this.getCurrentLeagueFeed(feedId.toString());
   }
   clearSelection(): void {
@@ -70,7 +81,7 @@ export class LeagueDetailsComponent implements OnChanges {
     this.errorMessage = '';
     this.loading = true;
 
-    this.leagueService.queryPlayerRankings(leagueIds, 2)
+    this.leagueService.queryPlayerRankings(leagueIds, 3)
       .pipe(
         tap((data: LeaguePlayerRankingData[]) => {
           this.playerRankings = data;
