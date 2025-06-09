@@ -46,8 +46,6 @@
       <thead>
         <tr>
           <th>Player</th>
-          <th>League</th>
-          <th>Game</th>
           <th>Points</th>
           <th>Score Change</th>
           <th>Participation</th>
@@ -55,14 +53,12 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let playerRanking of playerRankings">
-          <td>{{ playerRanking.playerName }}</td>
-          <td>{{ playerRanking.leagueName }}</td>
-          <td>{{ playerRanking.gameName }}</td>
-          <td>{{ playerRanking.currentScore }}</td>
-          <td>{{ playerRanking.scoreDifference !== null ? playerRanking.scoreDifference : '-' }}</td>
-          <td>{{ playerRanking.tournamentCount }}</td>
-          <td>{{ playerRanking.lastUpdated ? (playerRanking.lastUpdated | date:'short') : 'N/A' }}</td>
+        <tr *ngFor="let playerCard of totalRankingCards">
+          <td>{{ playerCard.playerName }}</td>
+          <td>{{ playerCard.currentScore }}</td>
+          <td>{{ playerCard.scoreDifference !== null ? playerCard.scoreDifference : '-' }}</td>
+          <td>{{ playerCard.tournamentCount }}</td>
+          <td>{{ playerCard.lastUpdated ? (playerCard.lastUpdated | date:'short') : 'N/A' }}</td>
         </tr>
       </tbody>
     </table>

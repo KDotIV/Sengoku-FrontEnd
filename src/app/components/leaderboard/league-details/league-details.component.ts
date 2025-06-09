@@ -1,5 +1,5 @@
-import { Component, Output, EventEmitter, ChangeDetectorRef, OnInit } from '@angular/core';
-import { LeagueByOrgData, LeaguePlayerRankingData, LeagueService, LeagueTournamentData } from '../../../services/league.service';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { LeagueByOrgData, LeaguePlayerRankingData, LeagueService, LeagueTournamentData, TotalPlayerRankingCard } from '../../../services/league.service';
 import { FeedData, FeedsService } from '../../../services/feeds.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -19,16 +19,17 @@ export class LeagueDetailsComponent implements OnInit {
   league: LeagueByOrgData | undefined = undefined;
   leagueEvents: LeagueTournamentData[] = [];
   playerRankings: LeaguePlayerRankingData[] = [];
+  totalRankingCards: TotalPlayerRankingCard[] = [];
   selectedFeed: FeedData | null = null;
   leagueId: string | undefined = undefined;
   errorMessage: string = '';
   loading: boolean = false;
 
-  constructor(private leagueState: LeagueStateService, private leagueService: LeagueService, private feedsService: FeedsService, 
+  constructor(private leagueState: LeagueStateService, private leagueService: LeagueService, private feedsService: FeedsService,
     private cdr: ChangeDetectorRef, private router: Router, private route: ActivatedRoute) { }
 
   goBack(): void {
-    this.router.navigate(['/leaderboards']); 
+    this.router.navigate(['/leaderboards']);
   }
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -46,7 +47,7 @@ export class LeagueDetailsComponent implements OnInit {
   }
   openSubscribeOverlay(feedId: number | undefined): void {
     if(feedId === undefined) { console.error("Current League is undefined"); return; }
-    
+
     this.getCurrentLeagueFeed(feedId.toString());
   }
   clearSelection(): void {
@@ -84,6 +85,7 @@ export class LeagueDetailsComponent implements OnInit {
       .pipe(
         tap((data: LeaguePlayerRankingData[]) => {
           this.playerRankings = data;
+          this.totalRankingCards = this.calculatePlayerScore(data);
           this.loading = false;
           if (data.length === 0) {
             this.errorMessage = 'No Player Rankings found for the given League Id';
@@ -99,7 +101,44 @@ export class LeagueDetailsComponent implements OnInit {
         })
       ).subscribe();
   }
+  calculatePlayerScore(data: LeaguePlayerRankingData[]): TotalPlayerRankingCard[] {
+    const playerMap = new Map<number, LeaguePlayerRankingData[]>();
 
+    // Group entries by playerId
+    for (const entry of data) {
+      if (!playerMap.has(entry.playerId)) {
+        playerMap.set(entry.playerId, []);
+      }
+      playerMap.get(entry.playerId)!.push(entry);
+    }
+
+    // Calculate total score and other metrics for each player
+    const result: TotalPlayerRankingCard[] = [];
+
+    for (const [playerId, entries] of playerMap) {
+      const first = entries[0];
+
+      const totalScore = entries.reduce((sum, item) => sum + item.gainedPoints, 0);
+      const totalTournaments = entries.length;
+      const mostRecentUpdate = entries.reduce((latest, item) =>
+        !item.lastUpdated ? latest :
+        !latest || new Date(item.lastUpdated) > new Date(latest) ? item.lastUpdated : latest,
+        null as Date | null
+      );
+
+      result.push({
+        playerName: first.playerName,
+        currentScore: totalScore,
+        scoreDifference: first.scoreDifference,
+        tournamentCount: totalTournaments,
+        lastUpdated: mostRecentUpdate,
+        gameId: first.gameId
+      });
+    }
+
+    // Sort players by highest currentScore
+    return result.sort((a, b) => b.currentScore - a.currentScore);
+  }
   getLeagueSchedule(leagueId: number): void {
     this.errorMessage = '';
     this.loading = true;
