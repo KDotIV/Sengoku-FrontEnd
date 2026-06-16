@@ -3,9 +3,9 @@
   <button class="addTournamentButton" type="button">Add Tournament</button>
 </div>
 <!-- Display tournament board data -->
-<div *ngIf="tournamentBoardResults$ | async as tournamentBoardResults">
-  <ul>
-    <li *ngFor="let tournament of tournamentBoardResults" (click)="selectTournament(tournament)">
+<div *ngIf="tournamentBoardResults$ | async as tournamentBoardResults" class="tournament-list-panel">
+  <ul class="tournament-list">
+    <li class="tournament-card" *ngFor="let tournament of tournamentBoardResults" (click)="selectTournament(tournament)">
       <h3>{{ tournament.tournamentName }}</h3>
       <p>Entrants: {{ tournament.entrantsNum }}</p>
       <p>Game ID: {{ tournament.gameId }}</p>
@@ -14,7 +14,7 @@
 </div>
 
 <!-- Display selected tournament details -->
-<div *ngIf="selectedTournament">
+<div *ngIf="selectedTournament" class="tournament-details">
   <h2>Selected Tournament</h2>
   <p>Name: {{ selectedTournament.tournamentName }}</p>
   <p>Entrants: {{ selectedTournament.entrantsNum }}</p>

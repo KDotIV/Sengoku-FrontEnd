@@ -1,46 +1,39 @@
 /* src/app/components/home.component.css */
 
-header {
-    background-color: #444; /* Darker grey for header */
-    color: white;
-    padding: 15px;
-  }
-  
-  nav ul {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-  }
-  
-  nav ul li {
-    display: inline;
-  }
-  
-  nav ul li a {
-    color: white; /* White text for links in the nav */
-    text-decoration: none;
-  }
-  
-  main {
-    padding: 20px;
-  }
-  
-  table {
-    width: 100%;
-    background-color: #3d3d3d; /* Grey background for table */
-    color: white;              /* White text for table */
-  }
-  
-  th, td {
-    padding: 10px;
-    border: 1px solid white;    /* White borders */
-  }
-  
-  input[type="text"] {
-    padding: 5px;
-    margin-right: 10px;
-    background-color: #333;     /* Dark input background */
-    color: white;               /* White text */
-    border: 1px solid #f1f1f1;
-  }
-  
+main {
+  position: relative;
+  padding: 28px;
+  border: 1px solid rgba(198, 151, 58, .56);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, .11), rgba(255, 255, 255, .02)),
+    rgba(8, 12, 26, .72);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, .07),
+    inset 0 0 42px rgba(110, 220, 255, .08),
+    0 24px 56px rgba(0, 0, 0, .34);
+  backdrop-filter: blur(14px);
+}
+
+main::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--aether-cyan), transparent 9rem) top left / 100% 1px no-repeat,
+    linear-gradient(180deg, var(--aether-cyan), transparent 6rem) top left / 1px 100% no-repeat,
+    linear-gradient(270deg, rgba(198, 151, 58, .86), transparent 9rem) bottom right / 100% 1px no-repeat,
+    linear-gradient(0deg, rgba(198, 151, 58, .86), transparent 6rem) bottom right / 1px 100% no-repeat;
+}
+
+h1 {
+  margin-top: 0;
+  color: #ffffff;
+}
+
+h3 {
+  max-width: 780px;
+  color: var(--secondary-white);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.5;
+}

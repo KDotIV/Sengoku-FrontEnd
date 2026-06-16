@@ -1,75 +1,67 @@
-header {
-    background-color: #444; /* Darker grey for header */
-    color: white;
-    padding: 15px;
-}
-
-nav ul {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-}
-
-nav ul li {
-    display: inline;
-}
-
-nav ul li a {
-    color: white; /* White text for links in the nav */
-    text-decoration: none;
-}
-
 main {
-    padding: 20px;
+  padding: 0;
 }
 
 table {
-    width: 100%;
-    background-color: #444; /* Grey background for table */
-    color: white;              /* White text for table */
+  width: 100%;
+  background-color: rgba(8, 12, 26, .74);
+  color: white;
 }
 
 th, td {
-    padding: 10px;
-    border: 1px solid white;    /* White borders */
+  padding: 10px;
+  border: 1px solid rgba(198, 151, 58, .35);
 }
 
 input[type="text"] {
-    padding: 5px;
-    margin-right: 10px;
-    background-color: #333;     /* Dark input background */
-    color: white;               /* White text */
-    border: 1px solid #f1f1f1;
+  padding: 9px;
+  margin-right: 10px;
+  background-color: rgba(6, 11, 25, .78);
+  color: white;
+  border: 1px solid rgba(145, 156, 178, .5);
 }
 .main-leaderboard-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 20px;
+  display: grid;
+  gap: 22px;
+  padding: 0;
 }
 .tournament-board-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px;
 }
 
 .tournament-card {
-    background-color: #3d3d3d; /* Grey card background */
-    color: white;              /* White text */
-    border: 1px solid #f1f1f1;
-    padding: 20px;
-    border-radius: 5px;
-    margin-bottom: 15px;
+  background-color: rgba(8, 12, 26, .74);
+  color: white;
+  border: 1px solid rgba(198, 151, 58, .56);
+  padding: 20px;
+  margin-bottom: 15px;
+}
+
+.search-container,
+.display-container {
+  padding: 20px;
+}
+
+.search-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.display-container {
+  overflow-x: auto;
 }
 
 .league-card:hover {
-    background-color: #004d4d;
+  background-color: rgba(28, 164, 206, .18);
 }
 
 .tournament-details {
-    margin-top: 10px;
-    background-color: #f9f9f9;
-    padding: 10px;
-    border-radius: 4px;
+  margin-top: 10px;
+  background-color: rgba(8, 12, 26, .74);
+  padding: 10px;
 }
