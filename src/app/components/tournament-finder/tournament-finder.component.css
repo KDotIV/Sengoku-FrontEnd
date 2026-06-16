@@ -2,102 +2,54 @@ main {
   padding: 0;
 }
 
-/* Container for search and results */
 .container {
   display: grid;
-  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
-  gap: 22px;
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+  gap: 18px;
   align-items: start;
 }
 
 .search-container {
   height: max-content;
-  padding: 20px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 14px;
 }
 
-/* Event results styling */
 .event-results {
-  width: auto;
-  padding: 20px;
-  overflow-x: auto;
-}
-
-/* Table styling */
-table {
   width: 100%;
-  background-color: rgba(8, 12, 26, .74);
-  color: white;
+  padding: 12px;
+  overflow: hidden;
+  display: grid;
+  gap: 10px;
+  justify-items: stretch;
 }
 
-th, td {
+input[type="text"],
+select {
+  width: 100%;
   padding: 10px;
-  border: 1px solid rgba(198, 151, 58, .35);
 }
 
-/* Input and select styling */
-input[type="text"], select {
-  padding: 10px;
-  background-color: rgba(6, 11, 25, .78);
-  color: white;
-  border: 1px solid rgba(145, 156, 178, .5);
-}
-
-/* Button styling */
-button {
-  padding: 10px;
-  background:
-    linear-gradient(135deg, rgba(28, 164, 206, .28), rgba(125, 22, 32, .42)),
-    rgba(8, 12, 26, .78);
-  color: white;
-  border: 1px solid rgba(198, 151, 58, .58);
-  cursor: pointer;
-}
-
-button:hover {
-  background:
-    linear-gradient(135deg, rgba(28, 164, 206, .38), rgba(125, 22, 32, .5)),
-    rgba(8, 12, 26, .82);
-}
-
-/* Loading spinner styling */
-.loading-spinner {
-  text-align: center;
+.loading-spinner,
+.error-message {
   padding: 20px;
-  font-size: 1.2em;
-  color: var(--aether-cyan);
+  text-align: center;
 }
 
-/* Error message styling */
+.loading-spinner {
+  color: var(--aether-cyan);
+  font-size: 1.2em;
+}
+
 .error-message {
   color: #ffb8b8;
   font-weight: bold;
-  padding: 20px;
-  text-align: center;
 }
 
-/* Media queries for mobile devices */
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .container {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .search-container {
-    width: 100%;
-  }
-
-  .event-results {
-    width: 100%;
-  }
-
-  table, th, td {
-    font-size: 14px;
-  }
-
-  input[type="text"], select {
-    width: 100%;
+    grid-template-columns: 1fr;
   }
 }

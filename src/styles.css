@@ -5,6 +5,12 @@ html {
   background: #050712;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   min-height: 100vh;
   color: var(--text-primary);
@@ -150,6 +156,276 @@ tr:hover td {
     linear-gradient(0deg, rgba(198, 151, 58, .85), transparent 5rem) bottom right / 1px 100% no-repeat;
 }
 
+app-root {
+  --nav-rail-left: clamp(12px, 1.6vw, 24px);
+  --nav-rail-width: clamp(178px, 16vw, 226px);
+  display: block;
+}
+
+app-root > header {
+  position: fixed;
+  top: 18px;
+  bottom: 18px;
+  left: var(--nav-rail-left);
+  z-index: 20;
+  color: white;
+  width: var(--nav-rail-width);
+  padding: 18px;
+  border: 1px solid rgba(198, 151, 58, .5);
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, .1), rgba(255, 255, 255, .02)),
+    linear-gradient(180deg, rgba(6, 10, 25, .94), rgba(20, 8, 18, .9)),
+    rgba(5, 7, 18, .88);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, .07),
+    inset 0 0 36px rgba(110, 220, 255, .07),
+    0 18px 48px rgba(0, 0, 0, .38),
+    0 0 30px rgba(198, 151, 58, .08);
+  backdrop-filter: blur(18px);
+}
+
+app-root > header::before,
+app-root > header::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+
+app-root > header::before {
+  inset: -1px;
+  background:
+    linear-gradient(90deg, var(--aether-cyan), transparent 8rem) top left / 100% 1px no-repeat,
+    linear-gradient(180deg, var(--aether-cyan), transparent 8rem) top left / 1px 100% no-repeat,
+    linear-gradient(270deg, rgba(198, 151, 58, .9), transparent 8rem) bottom right / 100% 1px no-repeat,
+    linear-gradient(0deg, rgba(198, 151, 58, .9), transparent 8rem) bottom right / 1px 100% no-repeat;
+}
+
+app-root > header::after {
+  top: 16px;
+  right: 14px;
+  width: 34px;
+  height: 1px;
+  background: var(--aether-cyan);
+  box-shadow: 0 8px 0 rgba(198, 151, 58, .65), 0 16px 0 rgba(110, 220, 255, .35);
+}
+
+app-root nav,
+app-root nav ul {
+  display: flex;
+  flex-direction: column;
+}
+
+app-root nav {
+  align-items: stretch;
+  gap: 18px;
+  min-height: 100%;
+}
+
+app-root nav ul {
+  list-style: none;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+}
+
+app-root .first-of-type {
+  flex: 1;
+}
+
+app-root .last-of-type {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(198, 151, 58, .28);
+}
+
+app-root nav li {
+  display: block;
+}
+
+app-root nav a {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  width: 100%;
+  padding: 0 14px;
+  color: rgba(249, 249, 249, .82);
+  text-decoration: none;
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, transparent, rgba(255, 255, 255, .03));
+  transition: color .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+}
+
+app-root nav a:hover,
+app-root nav a.active {
+  color: #ffffff;
+  border-color: rgba(110, 220, 255, .58);
+  background:
+    linear-gradient(90deg, rgba(110, 220, 255, .2), transparent 70%),
+    linear-gradient(135deg, rgba(110, 220, 255, .12), rgba(198, 151, 58, .08));
+  box-shadow:
+    inset 3px 0 0 rgba(110, 220, 255, .82),
+    inset 0 0 18px rgba(110, 220, 255, .08),
+    0 0 18px rgba(110, 220, 255, .12);
+}
+
+app-root > main {
+  width: min(calc(100% - var(--nav-rail-left) - var(--nav-rail-width) - 56px), 1280px);
+  margin: 0 auto 0 calc(var(--nav-rail-left) + var(--nav-rail-width) + 28px);
+  padding: 28px 0 64px;
+}
+
+app-root .overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, .62);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+app-root .overlay-content {
+  width: 90%;
+  max-width: 500px;
+}
+
+app-tournament-finder .event-card {
+  --event-card-primary: rgba(28, 164, 206, .38);
+  --event-card-secondary: rgba(125, 22, 32, .42);
+  --event-card-trim: rgba(198, 151, 58, .7);
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(170px, 250px) minmax(180px, 1fr) minmax(240px, 1.35fr) auto;
+  align-items: center;
+  gap: 16px;
+  min-height: 120px;
+  padding: 12px 14px 12px 0;
+  color: white;
+  border: 1px solid var(--event-card-trim);
+  background: linear-gradient(90deg, var(--event-card-primary), rgba(8, 12, 26, .78) 34%, rgba(8, 12, 26, .88)), rgba(8, 12, 26, .82);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, .06),
+    inset 0 0 30px rgba(110, 220, 255, .07),
+    0 16px 34px rgba(0, 0, 0, .28);
+  overflow: hidden;
+}
+
+app-tournament-finder .event-card::before,
+app-tournament-finder .event-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+app-tournament-finder .event-card::before {
+  background:
+    linear-gradient(90deg, rgba(110, 220, 255, .32), transparent 42%) top left / 100% 1px no-repeat,
+    linear-gradient(270deg, rgba(198, 151, 58, .55), transparent 32%) bottom right / 100% 1px no-repeat;
+}
+
+app-tournament-finder .event-card::after {
+  background: linear-gradient(90deg, transparent, var(--event-card-secondary));
+  opacity: .5;
+}
+
+app-tournament-finder .event-card-art {
+  align-self: stretch;
+  min-height: 96px;
+  background: var(--event-card-image, linear-gradient(135deg, rgba(110, 220, 255, .2), rgba(198, 151, 58, .16)));
+  background-size: cover;
+  background-position: left center;
+  mask-image: linear-gradient(90deg, #000 0%, rgba(0, 0, 0, .92) 52%, transparent 100%);
+}
+
+app-tournament-finder .event-card-main {
+  min-width: 0;
+}
+
+app-tournament-finder .event-region,
+app-tournament-finder .event-card-stat span {
+  display: block;
+  color: rgba(220, 239, 255, .7);
+  font-family: var(--font-family-secondary);
+  font-size: .75rem;
+  text-transform: uppercase;
+}
+
+app-tournament-finder .event-card-main h2 {
+  margin: 4px 0 0;
+  color: #ffffff;
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  line-height: 1.05;
+}
+
+app-tournament-finder .event-card-data {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(76px, 1fr));
+  gap: 10px;
+  min-width: 0;
+}
+
+app-tournament-finder .event-card-stat {
+  min-width: 0;
+  padding-left: 12px;
+  border-left: 1px solid rgba(198, 151, 58, .34);
+}
+
+app-tournament-finder .event-card-stat strong {
+  display: block;
+  margin-top: 4px;
+  color: rgba(249, 249, 249, .94);
+  font-size: .86rem;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.18;
+}
+
+app-tournament-finder .event-card-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 108px;
+  min-height: 42px;
+  padding: 0 14px;
+  color: #ffffff;
+  text-decoration: none;
+  border: 1px solid rgba(110, 220, 255, .62);
+  background:
+    linear-gradient(135deg, rgba(110, 220, 255, .18), rgba(198, 151, 58, .12)),
+    rgba(8, 12, 26, .72);
+  box-shadow: inset 0 0 16px rgba(110, 220, 255, .1), 0 0 18px rgba(110, 220, 255, .1);
+}
+
+app-tournament-finder .event-card-action:hover {
+  border-color: rgba(110, 220, 255, .92);
+}
+
+app-tournament-finder .game-strive {
+  --event-card-primary: rgba(172, 30, 34, .52);
+  --event-card-secondary: rgba(44, 12, 17, .72);
+  --event-card-trim: rgba(218, 116, 66, .72);
+}
+
+app-tournament-finder .game-sf6 {
+  --event-card-primary: rgba(18, 105, 196, .54);
+  --event-card-secondary: rgba(126, 26, 190, .48);
+  --event-card-trim: rgba(110, 220, 255, .74);
+}
+
+app-tournament-finder .game-t8 {
+  --event-card-primary: rgba(35, 42, 72, .74);
+  --event-card-secondary: rgba(142, 28, 38, .54);
+  --event-card-trim: rgba(202, 64, 74, .72);
+}
+
+app-tournament-finder .game-smash {
+  --event-card-primary: rgba(35, 74, 118, .56);
+  --event-card-secondary: rgba(220, 155, 60, .32);
+  --event-card-trim: rgba(220, 155, 60, .72);
+}
+
   @media (min-width: 80em) {
     :root {
         --container-width: 75rem;
@@ -157,6 +433,61 @@ tr:hover td {
 }
 /* Media queries for mobile devices */
 @media (max-width: 600px) {
+  app-root {
+    --nav-rail-left: 10px;
+    --nav-rail-width: 132px;
+  }
+
+  app-root > header {
+    top: 10px;
+    bottom: 10px;
+    padding: 12px;
+  }
+
+  app-root nav ul {
+    gap: 8px;
+  }
+
+  app-root nav a {
+    min-height: 38px;
+    padding: 0 9px;
+    font-size: 13px;
+  }
+
+  app-root > main {
+    width: calc(100% - var(--nav-rail-left) - var(--nav-rail-width) - 20px);
+    margin-left: calc(var(--nav-rail-left) + var(--nav-rail-width) + 10px);
+    padding: 18px 0 40px;
+  }
+
+  app-tournament-finder .event-card {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    min-height: 0;
+    padding: 0 12px 12px;
+  }
+
+  app-tournament-finder .event-card-art {
+    min-height: 72px;
+    margin: 0 -12px;
+    mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .9) 62%, transparent 100%);
+  }
+
+  app-tournament-finder .event-card-data {
+    grid-template-columns: 1fr;
+  }
+
+  app-tournament-finder .event-card-stat {
+    padding-left: 0;
+    padding-top: 8px;
+    border-left: 0;
+    border-top: 1px solid rgba(198, 151, 58, .24);
+  }
+
+  app-tournament-finder .event-card-action {
+    width: 100%;
+  }
+
   header {
     padding: 15px;
   }

@@ -11,6 +11,14 @@ export interface AddressEventResult {
   distance: number;
   eventName: string;
   eventDescription?: string;
+  gameId?: number;
+  gameID?: number;
+  gameIds?: number[];
+  videoGameId?: number;
+  videogameId?: number;
+  gameName?: string;
+  videoGameName?: string;
+  videogameName?: string;
   region: number;
   startTime: Date | null;
   endTime: Date | null;

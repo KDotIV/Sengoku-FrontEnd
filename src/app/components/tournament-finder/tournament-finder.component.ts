@@ -17,7 +17,7 @@ export class TournamentFinderComponent {
   zipcode: string = '';
   events: AddressEventResult[] = [];
   selectedGames: number[] = [];
-  searchRadius: string[] = [];
+  searchRadius: string[] = ['local'];
   availableGames = [
     { id: 33945, name: 'Guilty Gear Strive' },
     { id: 1386, name: 'Smash Ultimate' },
@@ -36,6 +36,33 @@ export class TournamentFinderComponent {
     { value: 'default', name: 'Regional'},
     { value: 'national', name: "National (Inactive)"}
   ];
+  tournamentCardHeaders: Record<string, { image: string; className: string; label: string }> = {
+    strive: {
+      image: '/TournamentCards/Striveheader.jpg',
+      className: 'game-strive',
+      label: 'Guilty Gear Strive'
+    },
+    sf6: {
+      image: '/TournamentCards/SF6header.jpg',
+      className: 'game-sf6',
+      label: 'Street Fighter 6'
+    },
+    t8: {
+      image: '/TournamentCards/T8header.png',
+      className: 'game-t8',
+      label: 'Tekken 8'
+    },
+    smashUltimate: {
+      image: '/TournamentCards/SmashUltimateheader.jpg',
+      className: 'game-smash',
+      label: 'Smash Ultimate'
+    },
+    default: {
+      image: '',
+      className: 'game-default',
+      label: 'Tournament'
+    }
+  };
   errorMessage: string = '';
 
   @ViewChildren('gameCheckbox') gameCheckboxes!: QueryList<HTMLInputElement>;
@@ -86,5 +113,130 @@ export class TournamentFinderComponent {
             return EMPTY;
           })
         ).subscribe();
+  }
+
+  getTournamentCardStyle(event: AddressEventResult) {
+    const card = this.getTournamentCardHeader(event);
+
+    return card.image ? { '--event-card-image': `url("${card.image}")` } : {};
+  }
+
+  getTournamentCardClass(event: AddressEventResult): string {
+    return this.getTournamentCardHeader(event).className;
+  }
+
+  getTournamentCardLabel(event: AddressEventResult): string {
+    return this.getTournamentCardHeader(event).label;
+  }
+
+  private getTournamentCardHeader(event: AddressEventResult) {
+    const key = this.getTournamentGameKey(event);
+    return this.tournamentCardHeaders[key] ?? this.tournamentCardHeaders['default'];
+  }
+
+  private getTournamentGameKey(event: AddressEventResult): string {
+    const gameIds = this.getEventGameIds(event);
+
+    if (gameIds.includes(33945)) {
+      return 'strive';
+    }
+    if (gameIds.includes(43868)) {
+      return 'sf6';
+    }
+    if (gameIds.includes(49783)) {
+      return 't8';
+    }
+    if (gameIds.includes(1386)) {
+      return 'smashUltimate';
+    }
+
+    const searchableText = this.getEventSearchableText(event);
+
+    if (searchableText.includes('guilty gear') || searchableText.includes('strive') || searchableText.includes('ggst')) {
+      return 'strive';
+    }
+    if (searchableText.includes('street fighter') || searchableText.includes('sf6')) {
+      return 'sf6';
+    }
+    if (searchableText.includes('tekken')) {
+      return 't8';
+    }
+    if (
+      searchableText.includes('smash ultimate') ||
+      searchableText.includes('super smash bros. ultimate') ||
+      searchableText.includes('super smash bros ultimate') ||
+      searchableText.includes('ssbu')
+    ) {
+      return 'smashUltimate';
+    }
+
+    if (this.selectedGames.length === 1) {
+      const selectedGameId = this.selectedGames[0];
+
+      if (selectedGameId === 33945) {
+        return 'strive';
+      }
+      if (selectedGameId === 43868) {
+        return 'sf6';
+      }
+      if (selectedGameId === 49783) {
+        return 't8';
+      }
+      if (selectedGameId === 1386) {
+        return 'smashUltimate';
+      }
+    }
+
+    return 'default';
+  }
+
+  private getEventGameIds(event: AddressEventResult): number[] {
+    const eventWithVariants = event as AddressEventResult & {
+      gameID?: number | string;
+      videoGameID?: number | string;
+      videoGameId?: number | string;
+      videogameID?: number | string;
+      videogameId?: number | string;
+      gameIds?: Array<number | string>;
+      videoGameIds?: Array<number | string>;
+      videogameIds?: Array<number | string>;
+      game?: { id?: number | string };
+      videoGame?: { id?: number | string };
+      videogame?: { id?: number | string };
+    };
+
+    return [
+      event.gameId,
+      event.gameID,
+      event.videoGameId,
+      event.videogameId,
+      eventWithVariants.gameID,
+      eventWithVariants.videoGameID,
+      eventWithVariants.videoGameId,
+      eventWithVariants.videogameID,
+      eventWithVariants.videogameId,
+      eventWithVariants.game?.id,
+      eventWithVariants.videoGame?.id,
+      eventWithVariants.videogame?.id,
+      ...(eventWithVariants.gameIds ?? []),
+      ...(eventWithVariants.videoGameIds ?? []),
+      ...(eventWithVariants.videogameIds ?? [])
+    ]
+      .map(id => Number(id))
+      .filter(id => Number.isFinite(id));
+  }
+
+  private getEventSearchableText(event: AddressEventResult): string {
+    return [
+      event.gameName,
+      event.videoGameName,
+      event.videogameName,
+      event.eventName,
+      event.eventDescription,
+      JSON.stringify(event)
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase();
   }
 }

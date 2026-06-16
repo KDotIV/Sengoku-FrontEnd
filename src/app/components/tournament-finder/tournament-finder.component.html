@@ -49,30 +49,37 @@
           <p>Please enter a zipcode to search for events.</p>
       </div>
   
-      <!-- Display Event Table if Events are Found -->
+      <!-- Display Event Cards if Events are Found -->
       <div *ngIf="!loading && events.length > 0" class="event-results">
-          <table>
-              <thead>
-                  <tr>
-                      <th>Event Name</th>
-                      <th>Region</th>
-                      <th>Start Time</th>
-                      <th>End Time</th>
-                      <th>Closing Registration</th>
-                      <th>Action</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr *ngFor="let event of events">
-                      <td>{{ event.eventName }}</td>
-                      <td>{{ event.region }}</td>
-                      <td>{{ event.startTime ? (event.startTime | date:'short') : 'N/A' }}</td>
-                      <td>{{ event.endTime ? (event.endTime | date:'short') : 'N/A' }}</td>
-                      <td>{{ event.closingRegistration ? (event.closingRegistration | date:'short') : 'N/A' }}</td>
-                      <td><a [href]="'https://www.start.gg/' + event.urlSlug" target="_blank" rel="noopener noreferrer">View Event</a></td>
-                  </tr>
-              </tbody>
-          </table>
+          <article
+              *ngFor="let event of events"
+              class="event-card"
+              [ngClass]="getTournamentCardClass(event)"
+              [ngStyle]="getTournamentCardStyle(event)"
+          >
+              <div class="event-card-art" [attr.aria-label]="getTournamentCardLabel(event)"></div>
+              <div class="event-card-main">
+                  <span class="event-region">Region {{ event.region }}</span>
+                  <h2>{{ event.eventName }}</h2>
+              </div>
+              <div class="event-card-data">
+                  <div class="event-card-stat">
+                      <span>Start</span>
+                      <strong>{{ event.startTime ? (event.startTime | date:'short') : 'N/A' }}</strong>
+                  </div>
+                  <div class="event-card-stat">
+                      <span>End</span>
+                      <strong>{{ event.endTime ? (event.endTime | date:'short') : 'N/A' }}</strong>
+                  </div>
+                  <div class="event-card-stat">
+                      <span>Registration</span>
+                      <strong>{{ event.closingRegistration ? (event.closingRegistration | date:'short') : 'N/A' }}</strong>
+                  </div>
+              </div>
+              <a class="event-card-action" [href]="'https://www.start.gg/' + event.urlSlug" target="_blank" rel="noopener noreferrer">
+                  View Event
+              </a>
+          </article>
       </div>
   
       <!-- No Events Found Message -->
