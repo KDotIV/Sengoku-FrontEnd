@@ -1,4 +1,4 @@
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import { Component, QueryList, ViewChildren, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
 import { FormsModule } from '@angular/forms';
 import { EventLocationService, AddressEventResult } from '../../services/event-location.service';  // Adjust path as necessary
@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http';
   imports: [CommonModule, FormsModule],
   standalone: true,
   templateUrl: './tournament-finder.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ['./tournament-finder.component.css']
 })
 export class TournamentFinderComponent {

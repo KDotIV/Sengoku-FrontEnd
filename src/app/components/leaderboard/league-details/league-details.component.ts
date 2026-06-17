@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { LeagueByOrgData, LeaguePlayerRankingData, LeagueService, LeagueTournamentData, TotalPlayerRankingCard } from '../../../services/league.service';
 import { FeedData, FeedsService } from '../../../services/feeds.service';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +13,7 @@ import { LeagueStateService } from '../../../services/LeagueStateService.service
   imports: [CommonModule, FormsModule, FeedsSubscribeOverlayComponent],
   templateUrl: './league-details.component.html',
   styleUrl: './league-details.component.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class LeagueDetailsComponent implements OnInit {

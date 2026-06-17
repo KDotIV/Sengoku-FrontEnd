@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserData, UserService } from '../../../services/user.service';
 import { LeagueByOrgData, LeagueService } from '../../../services/league.service';
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   imports: [CommonModule, FormsModule],
   templateUrl: './user-register.component.html',
   styleUrl: './user-register.component.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class UserRegisterComponent implements OnInit {

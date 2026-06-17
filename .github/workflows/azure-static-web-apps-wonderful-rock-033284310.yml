@@ -19,6 +19,19 @@ jobs:
         with:
           submodules: true
           lfs: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "26"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build app
+        run: npm run build
+
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -27,9 +40,9 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
           action: "upload"
           ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
-          app_location: "/" # App source code path
+          app_location: "dist/sengoku-frontend-web/browser" # Pre-built app content directory
           api_location: "" # Api source code path - optional
-          output_location: "dist/sengoku-frontend-web/browser" # Built app content directory - optional
+          skip_app_build: true
           ###### End of Repository/Build Configurations ######
 
   close_pull_request_job:

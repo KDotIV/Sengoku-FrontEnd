@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CreateNewSubscriptionRequest, FeedsService, FeedData } from '../../../services/feeds.service';
 
@@ -7,6 +7,7 @@ import { CreateNewSubscriptionRequest, FeedsService, FeedData } from '../../../s
   selector: 'app-feeds-subscribe-overlay',
   imports: [CommonModule, FormsModule],
   templateUrl: './feeds-subscribe-overlay.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './feeds-subscribe-overlay.component.css'
 })
 export class FeedsSubscribeOverlayComponent implements OnChanges {

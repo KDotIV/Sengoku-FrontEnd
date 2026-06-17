@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
 import { TournamentBoardService, TournamentBoardResult } from '../../services/tournament-board.service';
 import { Observable } from 'rxjs';
@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
     standalone: true,
     imports: [CommonModule],
     templateUrl: './bracket-runner.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./bracket-runner.component.css']
 })
 export class BracketRunnerComponent implements OnInit {

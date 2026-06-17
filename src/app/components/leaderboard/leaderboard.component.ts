@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { catchError, EMPTY, tap } from 'rxjs';
 import { LeagueService, LeagueTournamentData, LeagueByOrgData } from '../../services/league.service';
@@ -11,6 +11,7 @@ import { LeagueStateService } from '../../services/LeagueStateService.service';
   imports: [CommonModule, FormsModule, RouterModule],
   standalone: true,
   templateUrl: './leaderboard.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './leaderboard.component.css'
 })
 export class LeaderboardComponent implements OnInit {
