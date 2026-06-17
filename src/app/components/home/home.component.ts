@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
 import { FormsModule } from '@angular/forms';
 import { EventLocationService, AddressEventResult } from '../../services/event-location.service';  // Adjust path as necessary
@@ -9,6 +9,7 @@ import { catchError, EMPTY, tap } from 'rxjs';
     imports: [CommonModule, FormsModule],
     standalone: true,
     templateUrl: './home.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./home.component.css']
 })
 export class HomeComponent {

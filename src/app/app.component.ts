@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet, RouterModule, Router, RouterEvent, NavigationStart, NavigationEnd, NavigationCancel, NavigationError} from '@angular/router';
 import { CommonModule } from '@angular/common'; 
 import { FormsModule } from '@angular/forms';
@@ -10,6 +10,7 @@ import { UserRegisterComponent } from "./components/user/user-register/user-regi
     standalone: true,
     imports: [RouterOutlet, RouterModule, CommonModule],
     templateUrl: './app.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { LeagueByOrgData, LeagueService, PlayerRegisterData } from '../../../services/league.service';
@@ -11,6 +11,7 @@ import { catchError, EMPTY, tap } from 'rxjs';
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './league-register.component.html',
   styleUrl: './league-register.component.css',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true
 })
 export class LeagueRegisterComponent implements OnInit {

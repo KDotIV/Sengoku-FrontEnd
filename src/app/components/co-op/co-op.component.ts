@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CoOpsServices, CoOpTravelResult } from '../../services/co-op.service';
@@ -9,6 +9,7 @@ import { catchError, EMPTY, tap } from 'rxjs';
   imports: [CommonModule, FormsModule],
   standalone: true,
   templateUrl: './co-op.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './co-op.component.css'
 })
 export class CoOpComponent implements OnInit{
