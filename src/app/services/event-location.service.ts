@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export interface AddressEventResult {
+  tournamentId: number;
   address: string;
   latitude: number;
   longitude: number;
@@ -12,10 +13,6 @@ export interface AddressEventResult {
   eventName: string;
   eventDescription?: string;
   gameId?: number;
-  gameID?: number;
-  gameIds?: number[];
-  videoGameId?: number;
-  videogameId?: number;
   gameName?: string;
   videoGameName?: string;
   videogameName?: string;

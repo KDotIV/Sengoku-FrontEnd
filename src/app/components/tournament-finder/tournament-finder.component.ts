@@ -192,36 +192,8 @@ export class TournamentFinderComponent {
   }
 
   private getEventGameIds(event: AddressEventResult): number[] {
-    const eventWithVariants = event as AddressEventResult & {
-      gameID?: number | string;
-      videoGameID?: number | string;
-      videoGameId?: number | string;
-      videogameID?: number | string;
-      videogameId?: number | string;
-      gameIds?: Array<number | string>;
-      videoGameIds?: Array<number | string>;
-      videogameIds?: Array<number | string>;
-      game?: { id?: number | string };
-      videoGame?: { id?: number | string };
-      videogame?: { id?: number | string };
-    };
-
     return [
       event.gameId,
-      event.gameID,
-      event.videoGameId,
-      event.videogameId,
-      eventWithVariants.gameID,
-      eventWithVariants.videoGameID,
-      eventWithVariants.videoGameId,
-      eventWithVariants.videogameID,
-      eventWithVariants.videogameId,
-      eventWithVariants.game?.id,
-      eventWithVariants.videoGame?.id,
-      eventWithVariants.videogame?.id,
-      ...(eventWithVariants.gameIds ?? []),
-      ...(eventWithVariants.videoGameIds ?? []),
-      ...(eventWithVariants.videogameIds ?? [])
     ]
       .map(id => Number(id))
       .filter(id => Number.isFinite(id));
