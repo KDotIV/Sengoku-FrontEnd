@@ -50,7 +50,7 @@
       </div>
   
       <!-- Display Event Cards if Events are Found -->
-      <div *ngIf="!loading && events.length > 0" class="event-results">
+      <div *ngIf="!loading && !errorMessage && events.length > 0" class="event-results">
           <article
               *ngFor="let event of events"
               class="event-card"
