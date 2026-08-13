@@ -89,8 +89,12 @@ export class TournamentFinderComponent {
     })
   }
   searchEvents(): void {
+    //Remove previous results first
+    this.events = [];
+
     if (!this.zipcode || !/^\d{5}$/.test(this.zipcode)) {
       this.errorMessage = 'Please enter a valid 5-digit zipcode.';
+      this.loading = false;
       return;
     }
     this.errorMessage = '';
