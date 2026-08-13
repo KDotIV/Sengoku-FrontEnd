@@ -113,6 +113,7 @@ export class TournamentFinderComponent {
           }),
           catchError(error => {
             console.error('Failed to load events', error);
+            this.events = [];
             this.errorMessage = 'Failed to load events. Please try again later.';
             this.loading = false;
             return EMPTY;

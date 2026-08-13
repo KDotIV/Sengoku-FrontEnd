@@ -74,14 +74,20 @@ export class EventLocationService {
       'Accept': 'application/json'
     });
   
-    return this.http.get<AddressEventResult[]>(this.apiUrl, {params, headers})
-      .pipe(
-        map(events => events.map(event => ({
+    return this.http.get<AddressEventResult[]>(this.apiUrl, {params, headers}).pipe(
+      map(response => {
+        if(!Array.isArray(response)) {
+          console.warn('Expected an events array, received:', response);
+          return [];
+        }
+
+        return response.map((event: AddressEventResult) => ({
           ...event,
           startTime: this.parseDate(event.startTime),
           endTime: this.parseDate(event.endTime),
           closingRegistration: this.parseDate(event.closingRegistration)
-        })))
+        }));
+      })
       );
   }  
 }
