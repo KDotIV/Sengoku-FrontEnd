@@ -7,39 +7,47 @@
       <p>Circuit Start Date: {{ league?.startDate | date: 'short' }}</p>
       <p>Circuit End Date: {{ league?.endDate | date: 'short' }}</p>
       <p>Last Updated: {{ league?.lastUpdated | date: 'short' }}</p>
-      <td *ngIf="league?.isActive"><a (click)="navigateToRegister()">Register</a></td>
+      @if (league?.isActive) {
+        <td><a (click)="navigateToRegister()">Register</a></td>
+      }
       <td><a (click)="openSubscribeOverlay(league?.leagueId)">Subscribe to Feed</a></td>
       <button (click)="goBack()">Back to Leagues</button>
     </div>
     <!-- No Events Found Message -->
-    <div *ngIf="!loading && leagueEvents.length === 0">
-      <p>No Tournaments Scheduled... Check back again!</p>
-    </div>
-    <!--Schedule Display-->
-    <div *ngIf="!loading && leagueEvents.length > 0" class="schedule-container">
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>Tournament Name</th>
-              <th>Entrants</th>
-              <th>Start Time</th>
-              <th>Game</th>
-              <th>Registry</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let event of leagueEvents" [ngClass]="{'past-event': event.isPast}">
-              <td>{{ event.tournamentName }}</td>
-              <td>{{ event.entrantsNum }}</td>
-              <td>{{ event.startTime ? (event.startTime | date:'short'): 'N/A'}}</td>
-              <td>{{ event.gameName}}</td>
-              <td><a [href]="'https://www.start.gg/' + event.urlSlug" target="_blank" rel="noopener noreferrer">View Event</a></td>
-            </tr>
-          </tbody>
-        </table>
+    @if (!loading && leagueEvents.length === 0) {
+      <div>
+        <p>No Tournaments Scheduled... Check back again!</p>
       </div>
-    </div>
+    }
+    <!--Schedule Display-->
+    @if (!loading && leagueEvents.length > 0) {
+      <div class="schedule-container">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Tournament Name</th>
+                <th>Entrants</th>
+                <th>Start Time</th>
+                <th>Game</th>
+                <th>Registry</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (event of leagueEvents; track event) {
+                <tr [ngClass]="{'past-event': event.isPast}">
+                  <td>{{ event.tournamentName }}</td>
+                  <td>{{ event.entrantsNum }}</td>
+                  <td>{{ event.startTime ? (event.startTime | date:'short'): 'N/A'}}</td>
+                  <td>{{ event.gameName}}</td>
+                  <td><a [href]="'https://www.start.gg/' + event.urlSlug" target="_blank" rel="noopener noreferrer">View Event</a></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    }
   </div>
   <div class="player-rankings-container">
     <table>
@@ -53,15 +61,19 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let playerCard of totalRankingCards">
-          <td>{{ playerCard.playerName }}</td>
-          <td>{{ playerCard.currentScore }}</td>
-          <td>{{ playerCard.scoreDifference !== null ? playerCard.scoreDifference : '-' }}</td>
-          <td>{{ playerCard.tournamentCount }}</td>
-          <td>{{ playerCard.lastUpdated ? (playerCard.lastUpdated | date:'short') : 'N/A' }}</td>
-        </tr>
+        @for (playerCard of totalRankingCards; track playerCard) {
+          <tr>
+            <td>{{ playerCard.playerName }}</td>
+            <td>{{ playerCard.currentScore }}</td>
+            <td>{{ playerCard.scoreDifference !== null ? playerCard.scoreDifference : '-' }}</td>
+            <td>{{ playerCard.tournamentCount }}</td>
+            <td>{{ playerCard.lastUpdated ? (playerCard.lastUpdated | date:'short') : 'N/A' }}</td>
+          </tr>
+        }
       </tbody>
     </table>
   </div>
-  <app-feeds-subscribe-overlay *ngIf="selectedFeed" [feedData]="selectedFeed" (back)="clearSelection()"></app-feeds-subscribe-overlay>
+  @if (selectedFeed) {
+    <app-feeds-subscribe-overlay [feedData]="selectedFeed" (back)="clearSelection()"></app-feeds-subscribe-overlay>
+  }
 </div>

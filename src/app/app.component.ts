@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet, RouterModule, Router, RouterEvent, NavigationStart, NavigationEnd, NavigationCancel, NavigationError} from '@angular/router';
-import { CommonModule } from '@angular/common'; 
 import { FormsModule } from '@angular/forms';
 import { UserLoginComponent } from "./components/user/user-login/user-login.component";
 import { UserRegisterComponent } from "./components/user/user-register/user-register.component";
@@ -8,7 +7,7 @@ import { UserRegisterComponent } from "./components/user/user-register/user-regi
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterOutlet, RouterModule, CommonModule],
+    imports: [RouterOutlet, RouterModule],
     templateUrl: './app.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./app.component.css']

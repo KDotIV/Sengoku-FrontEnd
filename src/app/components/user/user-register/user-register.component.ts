@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserData, UserService } from '../../../services/user.service';
@@ -7,7 +6,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-register',
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './user-register.component.html',
   styleUrl: './user-register.component.css',
   changeDetection: ChangeDetectionStrategy.Eager,

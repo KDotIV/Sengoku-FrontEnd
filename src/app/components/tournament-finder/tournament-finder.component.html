@@ -1,88 +1,103 @@
 <main>
   <h1>{{ title }}</h1>
-  
+
   <div class="container">
-      <!-- Search Container -->
-      <div class="search-container">
-          <label for="zipcode">Search Events:</label>
-          <input 
-              type="text" 
-              id="zipcode" 
-              [(ngModel)]="zipcode"
-              placeholder="Enter Zipcode"
-          >
-          <label for="games">Select Games:</label>
-          <div id="games" class="games-checkboxes">
-            <button (click)="clearAllGames()">Clear All</button>
-            <div *ngFor="let game of availableGames">
-                <input 
-                    type="checkbox" 
-                    [id]="'game-' + game.id" 
-                    [value]="game.id" 
-                    (change)="toggleGameSelection(game.id, $event)"
-                    #gameCheckbox
-                >
-                <label [for]="'game-' + game.id">{{ game.name }}</label>
-            </div>
-        </div>
-        <label for="priorities">Search Radius:</label>
-        <select id="priorities" [(ngModel)]="searchRadius" multiple>
-            <option *ngFor="let priority of currentPriorities" [value]="priority.value">
-                {{priority.name }}
-            </option>
-        </select>
-        <button (click)="searchEvents()">Search</button>
+    <!-- Search Container -->
+    <div class="search-container">
+      <label for="zipcode">Search Events:</label>
+      <input
+        type="text"
+        id="zipcode"
+        [(ngModel)]="zipcode"
+        placeholder="Enter Zipcode"
+      >
+      <label for="games">Select Games:</label>
+      <div id="games" class="games-checkboxes">
+        <button (click)="clearAllGames()">Clear All</button>
+        @for (game of availableGames; track game) {
+          <div>
+            <input
+              type="checkbox"
+              [id]="'game-' + game.id"
+              [value]="game.id"
+              (change)="toggleGameSelection(game.id, $event)"
+              #gameCheckbox
+            >
+            <label [for]="'game-' + game.id">{{ game.name }}</label>
+          </div>
+        }
       </div>
-  
-      <!-- Loading Spinner -->
-      <div *ngIf="loading" class="loading-spinner">
-          Loading events, please wait...
+      <label for="priorities">Search Radius:</label>
+      <select id="priorities" [(ngModel)]="searchRadius" multiple>
+        @for (priority of currentPriorities; track priority) {
+          <option [value]="priority.value">
+            {{priority.name }}
+          </option>
+        }
+      </select>
+      <button (click)="searchEvents()">Search</button>
+    </div>
+
+    <!-- Loading Spinner -->
+    @if (loading) {
+      <div class="loading-spinner">
+        Loading events, please wait...
       </div>
-  
-      <!-- Error Message -->
-      <div *ngIf="errorMessage" class="error-message">
-          {{ errorMessage }}
+    }
+
+    <!-- Error Message -->
+    @if (errorMessage) {
+      <div class="error-message">
+        {{ errorMessage }}
       </div>
-  
-      <!-- Default Message Before Search -->
-      <div *ngIf="!loading && events.length === 0 && !zipcode">
-          <p>Please enter a zipcode to search for events.</p>
+    }
+
+    <!-- Default Message Before Search -->
+    @if (!loading && events.length === 0 && !zipcode) {
+      <div>
+        <p>Please enter a zipcode to search for events.</p>
       </div>
-  
-      <!-- Display Event Cards if Events are Found -->
-      <div *ngIf="!loading && !errorMessage && events.length > 0" class="event-results">
+    }
+
+    <!-- Display Event Cards if Events are Found -->
+    @if (!loading && !errorMessage && events.length > 0) {
+      <div class="event-results">
+        @for (event of events; track event) {
           <article
-              *ngFor="let event of events"
-              class="event-card"
-              [ngClass]="getTournamentCardClass(event)"
-              [ngStyle]="getTournamentCardStyle(event)"
-          >
-              <div class="event-card-art" [attr.aria-label]="getTournamentCardLabel(event)"></div>
-              <div class="event-card-main">
-                  <span class="event-region">Region {{ event.region }}</span>
-                  <h2>{{ event.eventName }}</h2>
+            class="event-card"
+            [ngClass]="getTournamentCardClass(event)"
+            [ngStyle]="getTournamentCardStyle(event)"
+            >
+            <div class="event-card-art" [attr.aria-label]="getTournamentCardLabel(event)"></div>
+            <div class="event-card-main">
+              <span class="event-region">Region {{ event.region }}</span>
+              <h2>{{ event.eventName }}</h2>
+            </div>
+            <div class="event-card-data">
+              <div class="event-card-stat">
+                <span>Start</span>
+                <strong>{{ event.startTime ? (event.startTime | date:'short') : 'N/A' }}</strong>
               </div>
-              <div class="event-card-data">
-                  <div class="event-card-stat">
-                      <span>Start</span>
-                      <strong>{{ event.startTime ? (event.startTime | date:'short') : 'N/A' }}</strong>
-                  </div>
-                  <div class="event-card-stat">
-                      <span>End</span>
-                      <strong>{{ event.endTime ? (event.endTime | date:'short') : 'N/A' }}</strong>
-                  </div>
-                  <div class="event-card-stat">
-                      <span>Registration</span>
-                      <strong>{{ event.closingRegistration ? (event.closingRegistration | date:'short') : 'N/A' }}</strong>
-                  </div>
+              <div class="event-card-stat">
+                <span>End</span>
+                <strong>{{ event.endTime ? (event.endTime | date:'short') : 'N/A' }}</strong>
               </div>
-              <a class="event-card-action" [href]="'https://www.start.gg/' + event.urlSlug" target="_blank" rel="noopener noreferrer">
-                  View Event
-              </a>
+              <div class="event-card-stat">
+                <span>Registration</span>
+                <strong>{{ event.closingRegistration ? (event.closingRegistration | date:'short') : 'N/A' }}</strong>
+              </div>
+            </div>
+            <a class="event-card-action" [href]="'https://www.start.gg/' + event.urlSlug" target="_blank" rel="noopener noreferrer">
+              View Event
+            </a>
           </article>
+        }
       </div>
-  
-      <!-- No Events Found Message -->
-      <div *ngIf="!loading && events.length === 0 && zipcode"></div>
+    }
+
+    <!-- No Events Found Message -->
+    @if (!loading && events.length === 0 && zipcode) {
+      <div></div>
+    }
   </div>
 </main>

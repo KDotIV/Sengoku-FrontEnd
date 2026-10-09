@@ -1,12 +1,10 @@
-
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { BracketRunnerService, TournamentData, OnboardTournamentData } from '../../../../services/bracket-runner.service';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-bracket-runner-tournament-add-overlay',
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './bracket-runner-tournament-add-overlay.component.html',
   styleUrls: ['./bracket-runner-tournament-add-overlay.component.css']
 })

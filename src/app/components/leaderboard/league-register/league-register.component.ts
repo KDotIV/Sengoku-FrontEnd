@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -8,7 +7,7 @@ import { catchError, EMPTY, tap } from 'rxjs';
 
 @Component({
   selector: 'app-league-register',
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [FormsModule, RouterModule],
   templateUrl: './league-register.component.html',
   styleUrl: './league-register.component.css',
   changeDetection: ChangeDetectionStrategy.Eager,

@@ -1,25 +1,32 @@
 <div>
-    <h2>Which Tournament to Register?</h2>
-  
-    <!-- Loading or error states -->
-    <div *ngIf="loading">Loading leagues, please wait...</div>
-    <div *ngIf="errorMessage">{{ errorMessage }}</div>
-  
-    <hr />
-  
-    <!-- Show the list of leagues -->
-    <div *ngIf="!loading && availableLeagues.length > 0">
+  <h2>Which Tournament to Register?</h2>
+
+  <!-- Loading or error states -->
+  @if (loading) {
+    <div>Loading leagues, please wait...</div>
+  }
+  @if (errorMessage) {
+    <div>{{ errorMessage }}</div>
+  }
+
+  <hr />
+
+  <!-- Show the list of leagues -->
+  @if (!loading && availableLeagues.length > 0) {
+    <div>
       <h3>Available Leagues</h3>
       <ul>
-        <li *ngFor="let league of availableLeagues">
-          <a
-            href="javascript:void(0)"
-            class="league-link"
-            (click)="onLeagueSelect(league.leagueId)">
-            {{ league.leagueName }}
-          </a>
-        </li>
+        @for (league of availableLeagues; track league) {
+          <li>
+            <a
+              href="javascript:void(0)"
+              class="league-link"
+              (click)="onLeagueSelect(league.leagueId)">
+              {{ league.leagueName }}
+            </a>
+          </li>
+        }
       </ul>
     </div>
-  </div>
-  
+  }
+</div>
