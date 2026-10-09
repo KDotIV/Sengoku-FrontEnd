@@ -5,7 +5,8 @@
     "ng": "ng",
     "start": "npx http-server ./dist/sengoku-frontend-web/browser -p 8080",
     "build": "ng build",
-    "test": "ng test"
+    "test": "ng test",
+    "dev:https": "ng serve --ssl --host localhost --port 4200"
   },
   "private": true,
   "dependencies": {

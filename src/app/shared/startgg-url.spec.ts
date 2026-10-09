@@ -1,4 +1,4 @@
-import { normalizeBracketUrl, normalizeUserSlug } from './startgg-url';
+import { normalizeBracketUrl, normalizeUserSlug, normalizeTournamentSlug } from './startgg-url';
 
 describe('Start.gg links', () => {
   it('normalizes full profile URLs, profile paths, and tokens', () => {
@@ -17,5 +17,13 @@ describe('Start.gg links', () => {
     for (const input of ['https://start.gg/tournament/test/event/singles', 'tournament/test/event/singles/brackets/0/456', 'https://example.com/tournament/test/event/singles/brackets/1/2']) {
       expect(() => normalizeBracketUrl(input)).toThrow();
     }
+  });
+});
+
+describe('Tournament search slugs', () => {
+  it('supports event-prefixed suffixes and full URLs while rejecting parent-only tournaments', () => {
+    expect(normalizeTournamentSlug('event/street-fighter-6-ps5')).toBe('street-fighter-6-ps5');
+    expect(normalizeTournamentSlug('https://start.gg/tournament/evo/event/sf6')).toBe('tournament/evo/event/sf6');
+    expect(() => normalizeTournamentSlug('tournament/evo')).toThrow();
   });
 });

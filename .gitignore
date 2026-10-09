@@ -41,3 +41,6 @@ testem.log
 .DS_Store
 Thumbs.db
 docs/registration-bracket-runner-integration.md
+docs/account-authentication.md
+docs/backend-e2e-handoff.md
+docs/frontend-e2e-completion.md

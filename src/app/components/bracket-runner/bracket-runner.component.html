@@ -1,92 +1,93 @@
 <section aria-labelledby="runner-title">
+  <p class="eyebrow">Know your path. Prepare for the next round.</p>
   <h1 id="runner-title">BracketRunner</h1>
-  <p>Prepare for your next bracket. Import a Start.gg bracket and explore the possible opponents in your path.</p>
+  @if (!users.ready()) { <p role="status">Checking your account…</p> }
+  @if (users.account()) {
+    <div class="section-heading">
+      <h2>Your tournament paths</h2>
+      <button type="button" (click)="loadMine()" [disabled]="loadingMine">Refresh</button>
+    </div>
+    <label class="archive-toggle"><input type="checkbox" [(ngModel)]="showCompleted" /> Include completed tournaments</label>
+    @if (loadingMine) { <p role="status">Loading your paths…</p> }
+    @if (mineError) { <p role="alert" class="error">{{ mineError }}</p> }
+    <app-path-list [paths]="visibleMyPaths" />
+    @if (!loadingMine && !mineError && visibleMyPaths.length === 0) {
+      <p class="panel">No current paths yet. Find your tournament below, then import your bracket.</p>
+    }
+    @if (legends.length) {
+      <details class="panel"><summary>Your Legend history</summary>
+        @for (legend of legends; track legend.id) {
+          <p><strong>{{ legend.legendName || legend.playerName || 'Player history' }}</strong></p>
+          <p>{{ legend.placements?.length || 0 }} recorded placements</p>
+        }
+      </details>
+    }
+    @if (legendError) { <p role="status">{{ legendError }}</p> }
+  } @else {
+    <p>Explore stored paths by player name or tournament event. Sign in to add your own brackets.</p>
+  }
 
-  <form class="panel" (ngSubmit)="selectPlayer()">
-    <h2>Choose your player</h2>
-    <p>Use your existing Sengoku player ID for now. Saved Start.gg account linking is not available yet.</p>
-    <fieldset [disabled]="loading || importing || watching">
-      <label for="runner-player">Sengoku player ID</label>
-      <div class="input-row">
-        <input id="runner-player" name="playerId" type="number" min="1" max="2147483647" step="1"
-          [(ngModel)]="playerIdInput" required aria-describedby="player-help" />
-        <button type="submit">Load tournament paths</button>
-      </div>
-      <small id="player-help">Use the ID from your Sengoku player record, not a Start.gg user or player ID.</small>
-    </fieldset>
-    <p><a routerLink="/user-register">Create an account or preview a Start.gg profile</a></p>
+  <form class="panel" (ngSubmit)="search()">
+    <h2>{{ users.account() ? 'Find a tournament' : 'Find a bracket path' }}</h2>
+    @if (!users.account()) {
+      <label for="search-type">Search by</label>
+      <select id="search-type" name="searchType" [(ngModel)]="searchType">
+        <option value="player">Player name</option>
+        <option value="tournament">Tournament event slug</option>
+      </select>
+    }
+    <label for="path-query">{{ searchType === 'player' && !users.account() ? 'Player name' : 'Tournament event slug or URL' }}</label>
+    <div class="input-row">
+      <input id="path-query" name="query" [(ngModel)]="query" required
+        [placeholder]="searchType === 'player' && !users.account() ? 'Oni_Shogi' : 'event/street-fighter-6-ps5'" aria-describedby="search-help" />
+      <button type="submit" [disabled]="searching">{{ searching ? 'Searching…' : 'Search paths' }}</button>
+    </div>
+    <small id="search-help">{{ searchType === 'player' && !users.account()
+      ? 'Use the exact gamer tag. Players who share a name appear separately.'
+      : 'Use a full Start.gg event URL for one tournament, or an event slug to search across tournaments.' }}</small>
+    <p>Search shows stored paths. It does not import a new bracket.</p>
   </form>
+  @if (searchError) { <p role="alert" class="error">{{ searchError }}</p> }
+  @if (searched) {
+    <h2>Search results</h2>
+    @if (!paths.length) { <p>No stored paths match this search.</p> }
+    <app-path-list [paths]="paths" [showPlayer]="true" />
+  }
 
-  @if (playerId) {
-    <form class="panel" (ngSubmit)="importBracket()">
-      <h2>Import a bracket</h2>
-      <p>Importing for Sengoku player {{ playerId }}.</p>
-      <fieldset [disabled]="importing || watching || !!pendingOperation || loading">
-        <label for="bracket-url">Start.gg bracket link</label>
-        <input id="bracket-url" name="bracketUrl" [(ngModel)]="bracketUrl"
-          placeholder="https://start.gg/tournament/…/event/…/brackets/123/456" required />
-        <small>Open your event's bracket on Start.gg and paste its full link here.</small>
-        <button type="submit">{{ importing ? 'Starting import…' : 'Import bracket and opponents' }}</button>
-      </fieldset>
+  @if (users.account()) {
+    <div class="panel">
+      <h2>Add your tournament path</h2>
+      @if (linkError) { <p role="alert" class="error">{{ linkError }}</p> }
+      @if (users.startgg()?.link) {
+        <p>Just joined a tournament? Open your bracket on Start.gg and paste the full bracket link. Your signed-in player profile will be used automatically.</p>
+        <form (ngSubmit)="importBracket()">
+          <fieldset [disabled]="importing || watching || !!runner.operation()">
+            <label for="bracket-url">Start.gg bracket link</label>
+            <input id="bracket-url" name="bracketUrl" [(ngModel)]="bracketUrl" required
+              placeholder="https://start.gg/tournament/…/event/…/brackets/123/456" />
+            <small>The phase and bracket numbers are required to find your opponents.</small>
+            <button type="submit">{{ importing ? 'Starting import…' : 'Import my bracket' }}</button>
+          </fieldset>
+        </form>
+      } @else {
+        <p>Link your Start.gg account before importing a bracket.</p>
+        <a routerLink="/account">Connect Start.gg</a>
+      }
       @if (progressMessage) { <p role="status">{{ progressMessage }}</p> }
       @if (importError) { <p role="alert" class="error">{{ importError }}</p> }
-      @if (pendingOperation) {
-        @if (watching) {
-          <button type="button" (click)="pauseProgress()">Pause progress checks</button>
+      @if (runner.operation(); as job) {
+        @if (job.status === 'Pending') {
+          @if (watching) { <button type="button" (click)="pauseProgress()">Pause progress checks</button> }
+          @else { <button type="button" (click)="resumeProgress()">Check import progress</button> }
+          <p>Background processing continues if you leave this page.</p>
         } @else {
-          <button type="button" (click)="resumeProgress()">Check import progress</button>
+          <p>Import status: {{ job.status }}. Retrying uses the saved bracket, not a new live snapshot.</p>
+          <button type="button" (click)="retryImport()" [disabled]="importing || !users.startgg()?.link">Retry saved import</button>
+          <button type="button" (click)="dismissOperation()" [disabled]="importing">Dismiss</button>
         }
-        <small class="note">The import continues even if you leave this page.</small>
       }
-    </form>
+    </div>
+  } @else if (users.ready()) {
+    <p><a routerLink="/user-login" [queryParams]="{returnTo: '/bracket-runner'}">Sign in</a> or <a routerLink="/user-register">create an account</a> to import your tournament path.</p>
   }
-
-  <div class="section-heading">
-    <h2>Tournament paths</h2>
-    @if (playerId) {
-      <button type="button" (click)="loadPaths()" [disabled]="loading || importing">Refresh</button>
-    }
-  </div>
-  @if (loading) { <p role="status">Loading tournament paths…</p> }
-  @if (loadError) { <p role="alert" class="error">{{ loadError }}</p> }
-  @if (loaded && !loading && paths.length === 0) {
-    <p class="panel">{{ completed ? 'No saved opponent paths were returned. Refresh later if your bracket is still being prepared.' : 'No tournament paths yet. Import a bracket above to get started.' }}</p>
-  }
-  <ul class="tournament-list">
-    @for (path of paths; track $index; let index = $index) {
-      <li class="tournament-card">
-        <button class="tournament-toggle" type="button" (click)="togglePath(path)"
-          [attr.aria-expanded]="selectedPath === path" [attr.aria-controls]="'path-' + index">
-          <span>
-            <strong>{{ path.tournamentName || 'Tournament' }}</strong>
-            <span class="subtitle">{{ path.playerTournamentCard.playerName }} · Pool / round {{ path.roundNum || 'Not provided' }}</span>
-          </span>
-          <span>{{ selectedPath === path ? 'Hide opponents −' : 'View opponents +' }}</span>
-        </button>
-        @if (selectedPath === path) {
-          <div class="path-details" [id]="'path-' + index">
-            <h3>Possible opponents</h3>
-            <p>These are candidate matchups along your bracket path. They are not confirmed matches or a guaranteed play order.</p>
-            <ul class="opponent-list">
-              @for (card of path.entrantSetCards; track $index) {
-                <li>
-                  <strong>{{ opponentName(path, card) || 'Opponent not available' }}</strong>
-                  <span>{{ card.entrantOneName }} vs {{ card.entrantTwoName }}</span>
-                </li>
-              } @empty {
-                <li>No opponent cards are available for this path yet.</li>
-              }
-            </ul>
-            @for (result of path.playerTournamentCard.playerResults; track $index) {
-              @if (result.standingDetails.placement > 0) {
-                <p>Recorded placement: {{ result.standingDetails.placement }}
-                  @if (result.entrantsNum > 0) { of {{ result.entrantsNum }} entrants }
-                </p>
-              }
-            }
-          </div>
-        }
-      </li>
-    }
-  </ul>
 </section>

@@ -1,4 +1,62 @@
-<main>
-  <h1>{{ title }}</h1>
-  <h3> This is a prototype. Please report any feedback/bugs to Oni_Shogi or create an issue <a href="https://github.com/KDotIV/Sengoku-FrontEnd/issues/new" target="_blank" rel="noopener noreferrer">here</a> </h3>
-</main>
+<section aria-labelledby="home-title">
+  <div class="welcome">
+    <p class="eyebrow">Find your scene. Build your legacy.</p>
+    <h1 id="home-title">{{ users.account() ? 'Welcome, ' + users.account()?.userName : 'Your next chapter in competition' }}</h1>
+    <p>Discover events, follow the standings, and prepare for the players in your path.</p>
+    @if (!users.account()) { <a class="primary-link" routerLink="/user-register">Join BattleLedger</a> }
+  </div>
+  <div class="feature-grid">
+    <article class="feature finder">
+      <span class="feature-number">01 / DISCOVER</span>
+      <h2>TournamentFinder</h2>
+      <p>Find fighting-game events around you. Start with your ZIP code.</p>
+      <form #finderForm="ngForm" (ngSubmit)="findEvents(finderForm)">
+        <label for="preview-zip">Your ZIP code</label>
+        <input id="preview-zip" name="zipcode" [(ngModel)]="zipcode" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" required placeholder="10001" />
+        <button type="submit" [disabled]="finding">{{ finding ? 'Finding events…' : 'Preview nearby events' }}</button>
+      </form>
+      @if (eventError) { <p role="alert" class="error">{{ eventError }}</p> }
+      <ul class="preview-list">
+        @for (event of events; track $index) { <li><strong>{{ event.eventName }}</strong><span>{{ event.isOnline ? 'Online' : event.address }}</span></li> }
+      </ul>
+      @if (found && !finding && !events.length && !eventError) { <p>No nearby events found. Try a wider search in TournamentFinder.</p> }
+      <a class="feature-link" routerLink="/tournament-finder">Explore TournamentFinder →</a>
+    </article>
+    <article class="feature leagues">
+      <span class="feature-number">02 / COMPETE</span>
+      <h2>Leaderboards</h2>
+      <p>Follow league standings and see how every tournament shapes the season.</p>
+      @if (leaguesLoading) { <p role="status">Loading leagues…</p> }
+      @if (leagueError) { <p role="status">{{ leagueError }}</p> }
+      <ul class="preview-list">
+        @for (league of leagues; track league.leagueId) {
+          <li><strong>{{ league.leagueName }}</strong><span>{{ league.isActive ? 'Active league' : 'League archive' }}</span></li>
+        }
+      </ul>
+      @if (!leaguesLoading && !leagues.length && !leagueError) { <p>New league standings will appear here as leagues become available.</p> }
+      <a class="feature-link" routerLink="/leaderboards">Explore Leaderboards →</a>
+    </article>
+    <article class="feature runner">
+      <span class="feature-number">03 / PREPARE</span>
+      <h2>BracketRunner</h2>
+      <p>Explore possible opponents and build a plan for your next round.</p>
+      @if (users.account()) {
+        @if (pathsLoading) { <p role="status">Loading your paths…</p> }
+        @if (pathError) { <p role="status">{{ pathError }}</p> }
+        <ul class="preview-list">
+          @for (path of paths; track path.bracketPathId) {
+            <li><strong>{{ path.tournamentName }}</strong><span>Pool {{ path.roundNum || 'not yet listed' }} · {{ path.lifecycle === 'Unknown' ? 'Schedule unconfirmed' : path.lifecycle }}</span></li>
+          }
+        </ul>
+        @if (!pathsLoading && !paths.length && !pathError) { <p>Ready for your first path? Connect Start.gg and import a bracket to get started.</p> }
+      } @else {
+        <ul class="preview-list">
+          <li><strong>Find a player</strong><span>Search stored paths by gamer tag.</span></li>
+          <li><strong>Explore an event</strong><span>See possible opponents across tournament pools.</span></li>
+          <li><strong>Make it yours</strong><span>Sign in and connect Start.gg to import your brackets.</span></li>
+        </ul>
+      }
+      <a class="feature-link" routerLink="/bracket-runner">Explore BracketRunner →</a>
+    </article>
+  </div>
+</section>

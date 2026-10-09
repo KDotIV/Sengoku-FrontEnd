@@ -29,3 +29,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Registration and BracketRunner
 
 See [the integration handoff](docs/registration-bracket-runner-integration.md) for supported frontend flows, API contracts, backend blockers, and verification steps.
+
+## Account and BracketRunner integration
+
+See [the current frontend completion report](docs/frontend-e2e-completion.md) for the before/after comparison, search/import contracts, and deployment acceptance checks. Run `npm run dev:https` for local cookie-authenticated testing; configure the API to allow `https://localhost:4200`.

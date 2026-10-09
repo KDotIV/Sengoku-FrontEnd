@@ -1,35 +1,40 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { RouterOutlet, RouterModule, Router, RouterEvent, NavigationStart, NavigationEnd, NavigationCancel, NavigationError} from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { UserLoginComponent } from "./components/user/user-login/user-login.component";
-import { UserRegisterComponent } from "./components/user/user-register/user-register.component";
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { finalize } from 'rxjs';
+import { UserService } from './services/user.service';
+import { apiErrorMessage } from './shared/api-error';
 
 @Component({
-    selector: 'app-root',
-    standalone: true,
-    imports: [RouterOutlet, RouterModule],
-    templateUrl: './app.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
-    styleUrls: ['./app.component.css']
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, RouterModule],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager
 })
 export class AppComponent implements OnInit {
-  constructor(private router: Router) { }
+  readonly users = inject(UserService);
+  private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
+  signingOut = false;
+  accountError = '';
 
   ngOnInit(): void {
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationStart) {
-        console.log('NavigationStart:', event.url);
-      } else if (event instanceof NavigationEnd) {
-        console.log('NavigationEnd:', event.urlAfterRedirects);
-      } else if (event instanceof NavigationCancel) {
-        console.warn('NavigationCancel:', event.reason);
-      } else if (event instanceof NavigationError) {
-        console.error('NavigationError:', event.error);
-      } else {
-        // Possibly RouteConfigLoadStart or another event type
-        console.log('Some other event:', event);
-      }
+    this.users.initialize().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({ error: () => {} });
+  }
+
+  retrySession(): void {
+    this.users.restoreSession().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({ error: () => {} });
+  }
+
+  logout(): void {
+    if (this.signingOut) return;
+    this.signingOut = true;
+    this.accountError = '';
+    this.users.logout().pipe(takeUntilDestroyed(this.destroyRef), finalize(() => this.signingOut = false)).subscribe({
+      next: () => void this.router.navigateByUrl('/'),
+      error: error => this.accountError = apiErrorMessage(error, 'Sign-out could not be confirmed. Please try again.')
     });
   }
-  title = 'Sengoku';
 }

@@ -1,0 +1,22 @@
+<div class="profile-preview">
+  @if (loading) {
+    <p role="status">Checking your Start.gg account…</p>
+  } @else if (error) {
+    <p role="alert" class="error">{{ error }}</p>
+    <button type="button" (click)="checkStatus()" [disabled]="verifying">Check link status</button>
+  } @else if (users.startgg()?.link; as link) {
+    <p class="success" role="status">Start.gg account linked: {{ link.slug }}. You can now import your brackets and build your player history.</p>
+  } @else if (users.startgg()?.enabled) {
+    <p role="status">{{ message || 'Link your Start.gg account to import your tournament paths and opponent data. You will sign in on Start.gg to confirm the account is yours.' }}</p>
+    <button type="button" (click)="verify()" [disabled]="verifying">
+      {{ verifying ? 'Waiting for Start.gg…' : 'Link Start.gg account' }}
+    </button>
+    @if (verifying) { <button type="button" (click)="cancel()">Cancel linking</button> }
+  } @else if (users.startgg()) {
+    <p role="status">Start.gg linking is temporarily unavailable. You can continue and link it later.</p>
+    <button type="button" (click)="checkStatus()">Check availability</button>
+  } @else {
+    <p role="status">Your Start.gg link status has not been loaded.</p>
+    <button type="button" (click)="checkStatus()">Check link status</button>
+  }
+</div>

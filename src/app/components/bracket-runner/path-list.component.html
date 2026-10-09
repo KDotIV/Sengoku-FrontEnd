@@ -1,0 +1,46 @@
+<ul class="tournament-list">
+  @for (path of paths(); track path.bracketPathId) {
+    <li>
+      <details class="tournament-card">
+        <summary>
+          <span class="card-title">{{ path.tournamentName || 'Tournament' }}</span>
+          <span class="badge">{{ path.lifecycle === 'Unknown' ? 'Schedule unconfirmed' : path.lifecycle }}</span>
+          <span class="subtitle">
+            {{ path.playerTournamentCard.playerName }}
+            @if (showPlayer()) { · Player #{{ path.playerTournamentCard.playerID }} }
+            · Pool {{ path.roundNum || 'not provided' }}
+            @if (path.bracketId) { · Bracket {{ path.bracketId }} }
+          </span>
+          @if (path.tournamentSlug) { <span class="subtitle">{{ path.tournamentSlug }}</span> }
+          <span class="subtitle">
+            @if (path.startTime) { Starts {{ path.startTime | date:'medium' }} } @else { Start time not provided }
+            @if (path.endTime) { · Ends {{ path.endTime | date:'medium' }} }
+          </span>
+          <span class="expand-label">View possible opponents</span>
+        </summary>
+        <div class="path-details">
+          <h3>Your route through the bracket</h3>
+          <p>Candidate opponents at the same step are alternatives. These are stored predictions, not confirmed matches or live results.</p>
+          @for (group of groups(path); track group.step) {
+            <h4>{{ group.step === null ? 'Other candidates · order not available' : 'Path step ' + group.step }}</h4>
+            <ul class="opponent-list">
+              @for (card of group.cards; track card.setID) {
+                <li>
+                  <strong>{{ opponent(path, card) || 'Opponent not yet known' }}</strong>
+                  <span>{{ card.entrantOneName }} vs {{ card.entrantTwoName }} · Candidate</span>
+                </li>
+              }
+            </ul>
+          } @empty { <p>No opponent cards are available yet. Your tournament path is saved.</p> }
+          @for (result of path.playerTournamentCard.playerResults; track $index) {
+            @if (result.standingDetails.placement > 0) {
+              <p>Recorded placement: {{ result.standingDetails.placement }}
+                @if (result.entrantsNum > 0) { of {{ result.entrantsNum }} entrants }
+              </p>
+            }
+          }
+        </div>
+      </details>
+    </li>
+  }
+</ul>

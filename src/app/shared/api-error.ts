@@ -3,6 +3,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 export function apiErrorMessage(error: unknown, fallback: string): string {
   if (error instanceof HttpErrorResponse) {
     if (error.status === 0) return 'Unable to reach Sengoku. Check your connection and try again.';
+    if (error.status === 401) return 'Please sign in again, or check your email and password.';
+    if (error.status === 403) return 'Link your Start.gg account and use your own player profile to import brackets.';
     if (error.status === 429) return 'Too many requests. Wait a moment before trying again.';
     // Server errors currently include stack traces. Do not expose them in the UI.
     if (error.status >= 500) return fallback;

@@ -1,74 +1,57 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule, NgForm } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { finalize } from 'rxjs';
-import { StartggProfilePreview, UserService } from '../../../services/user.service';
+import { Router, RouterLink } from '@angular/router';
+import { finalize, switchMap, tap } from 'rxjs';
+import { UserService } from '../../../services/user.service';
 import { apiErrorMessage } from '../../../shared/api-error';
-import { normalizeUserSlug } from '../../../shared/startgg-url';
+import { StartggLinkComponent } from '../startgg-link/startgg-link.component';
 
 @Component({
   selector: 'app-user-register',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, StartggLinkComponent],
   templateUrl: './user-register.component.html',
   styleUrl: './user-register.component.css',
   changeDetection: ChangeDetectionStrategy.Eager
 })
 export class UserRegisterComponent {
-  private readonly users = inject(UserService);
+  readonly users = inject(UserService);
+  private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
   userName = '';
   email = '';
   password = '';
   confirmPassword = '';
-  profileSlug = '';
-  profile: StartggProfilePreview['data'] = null;
-  profileUrl = '';
   accountCreated = false;
   saving = false;
-  lookingUp = false;
   errorMessage = '';
-  profileError = '';
 
   register(form: NgForm): void {
-    if (this.saving || this.accountCreated) return;
+    if (this.saving || this.accountCreated || this.users.account()) return;
     this.errorMessage = '';
-    if (form.invalid || !this.userName.trim() || this.password !== this.confirmPassword) {
+    if (form.invalid || !this.userName.trim() || this.password.length < 12 || this.password.length > 1024 ||
+        this.password !== this.confirmPassword) {
       form.control.markAllAsTouched();
-      this.errorMessage = 'Enter a username, valid email, and matching passwords.';
+      this.errorMessage = 'Enter a username, valid email, and matching passwords of 12–1024 characters.';
       return;
     }
     this.saving = true;
-    this.users.createNewUser({ userName: this.userName, email: this.email, password: this.password })
-      .pipe(takeUntilDestroyed(this.destroyRef), finalize(() => this.saving = false))
-      .subscribe({
-        next: () => {
-          this.accountCreated = true;
-          this.password = '';
-          this.confirmPassword = '';
-        },
-        error: error => this.errorMessage = apiErrorMessage(error,
-          'Unable to create your account. The email may already be registered or your details may not be accepted.')
-      });
+    const email = this.email;
+    const password = this.password;
+    this.users.createNewUser({ userName: this.userName, email, password }).pipe(
+      tap(() => { this.accountCreated = true; this.password = ''; this.confirmPassword = ''; }),
+      switchMap(() => this.users.login(email, password)),
+      takeUntilDestroyed(this.destroyRef),
+      finalize(() => this.saving = false)
+    ).subscribe({
+      error: error => this.errorMessage = this.accountCreated
+        ? 'Your account was created, but sign-in could not be completed. Sign in to continue; you do not need to register again.'
+        : apiErrorMessage(error, 'Unable to confirm registration. Please try signing in before submitting again.')
+    });
   }
 
-  previewProfile(): void {
-    if (this.lookingUp) return;
-    this.profileError = '';
-    this.profile = null;
-    let slug: string;
-    try { slug = normalizeUserSlug(this.profileSlug); }
-    catch (error) { this.profileError = apiErrorMessage(error, 'Check your Start.gg link.'); return; }
-    this.lookingUp = true;
-    this.users.previewStartggProfile(slug)
-      .pipe(takeUntilDestroyed(this.destroyRef), finalize(() => this.lookingUp = false))
-      .subscribe({
-        next: result => {
-          this.profile = result.data;
-          this.profileUrl = `https://start.gg/${slug}`;
-        },
-        error: error => this.profileError = apiErrorMessage(error, 'Unable to load that Start.gg profile. Please try again.')
-      });
+  finish(): void {
+    void this.router.navigateByUrl('/');
   }
 }

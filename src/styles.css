@@ -596,3 +596,15 @@ app-tournament-finder .game-smash {
   --glass-pane-strong: rgba(8, 12, 26, .86);
   --ornate-border: linear-gradient(135deg, rgba(255, 230, 169, .9), rgba(117, 74, 35, .9) 31%, rgba(145, 156, 178, .8) 62%, rgba(198, 151, 58, .9));
 }
+
+/* Keep navigation and feature forms usable in compact windows and on phones. */
+@media (max-width: 760px) {
+  app-root > header { position: relative; inset: auto; width: auto; margin: 10px; padding: 12px; }
+  app-root nav { min-height: 0; gap: 12px; }
+  app-root nav .first-of-type { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  app-root nav .last-of-type { flex-direction: row; flex-wrap: wrap; margin-top: 0; padding-top: 10px; }
+  app-root nav a { min-height: 40px; padding: 8px; overflow-wrap: anywhere; }
+  app-root > main { width: auto; margin: 0 14px; padding: 14px 0 40px; }
+  app-root h1, app-root h2, app-root button { overflow-wrap: anywhere; }
+}
+.session-notice { padding: 14px; margin-bottom: 20px; border: 1px solid var(--silver); line-height: 1.5; }

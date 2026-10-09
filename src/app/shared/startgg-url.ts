@@ -29,3 +29,13 @@ export function normalizeBracketUrl(input: string): string {
   }
   return `https://start.gg/${path}`;
 }
+
+export function normalizeTournamentSlug(input: string): string {
+  let path = startggPath(input);
+  // The UX accepts event/foo; the backend accepts foo or a full canonical event path.
+  if (/^event\/[a-zA-Z0-9_-]+$/.test(path)) path = path.slice(6);
+  if (!/^(?:[a-zA-Z0-9_-]+|tournament\/[a-zA-Z0-9_-]+\/event\/[a-zA-Z0-9_-]+)$/.test(path)) {
+    throw new Error('Use an event slug or a Start.gg URL ending in /event/event-slug.');
+  }
+  return path;
+}

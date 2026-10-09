@@ -1,54 +1,70 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { signal } from '@angular/core';
+import { provideRouter, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { of, throwError } from 'rxjs';
-import { UserService } from '../../../services/user.service';
+import { UserService, AccountIdentity, StartggLinkStatus } from '../../../services/user.service';
 import { UserRegisterComponent } from './user-register.component';
 
-describe('User registration', () => {
+describe('Two-step registration', () => {
   let fixture: ComponentFixture<UserRegisterComponent>;
-  let users: jasmine.SpyObj<UserService>;
+  let users: ReturnType<typeof mockUsers>;
+  function mockUsers() {
+    return {
+      account: signal<AccountIdentity | null>(null), ready: signal(true), startgg: signal<StartggLinkStatus | null>(null),
+      createNewUser: jasmine.createSpy().and.returnValue(of({ userId: 1, playerId: 42, response: 'Created' })),
+      login: jasmine.createSpy().and.callFake(() => {
+        const account = { userId: 1, playerId: 42, userName: 'Oni_Shogi' };
+        users.account.set(account); return of(account);
+      }),
+      loadStartggLink: jasmine.createSpy().and.returnValue(of({ enabled: false, link: null }))
+    };
+  }
   beforeEach(async () => {
-    users = jasmine.createSpyObj('UserService', ['createNewUser', 'previewStartggProfile']);
-    await TestBed.configureTestingModule({
-      imports: [UserRegisterComponent],
-      providers: [provideRouter([]), { provide: UserService, useValue: users }]
-    }).compileComponents();
+    users = mockUsers();
+    await TestBed.configureTestingModule({ imports: [UserRegisterComponent], providers: [
+      provideRouter([]), { provide: UserService, useValue: users }
+    ] }).compileComponents();
     fixture = TestBed.createComponent(UserRegisterComponent);
-    fixture.detectChanges();
-    await fixture.whenStable();
+    fixture.detectChanges(); await fixture.whenStable();
   });
-
-  async function fill(password: string, confirmation: string): Promise<NgForm> {
+  async function fill(password: string, confirmation = password): Promise<NgForm> {
     Object.assign(fixture.componentInstance, { userName: 'Oni_Shogi', email: 'oni@example.com', password, confirmPassword: confirmation });
-    fixture.detectChanges();
-    await fixture.whenStable();
+    fixture.detectChanges(); await fixture.whenStable();
     return fixture.debugElement.query(By.directive(NgForm)).injector.get(NgForm);
   }
 
-  it('prevents submission when passwords differ', async () => {
-    fixture.componentInstance.register(await fill('password123', 'different'));
+  it('requires a matching password of at least twelve characters', async () => {
+    fixture.componentInstance.register(await fill('short'));
     expect(users.createNewUser).not.toHaveBeenCalled();
-    expect(fixture.componentInstance.errorMessage).toContain('matching passwords');
+    fixture.componentInstance.register(await fill('long password!', 'different'));
+    expect(users.createNewUser).not.toHaveBeenCalled();
   });
 
-  it('clears passwords after success and does not claim the profile is linked', async () => {
-    users.createNewUser.and.returnValue(of('Created'));
-    fixture.componentInstance.register(await fill('password123', 'password123'));
+  it('creates then logs in, clears passwords, and offers optional linking only afterwards', async () => {
+    expect(fixture.nativeElement.querySelector('app-startgg-link')).toBeNull();
+    fixture.componentInstance.register(await fill('long password!'));
     fixture.detectChanges();
+    expect(users.createNewUser).toHaveBeenCalledBefore(users.login);
     expect(fixture.componentInstance.password).toBe('');
     expect(fixture.componentInstance.confirmPassword).toBe('');
-    expect(fixture.nativeElement.textContent).toContain('Account created');
-    expect(fixture.nativeElement.textContent).toContain('linking are not available yet');
-    expect(users.previewStartggProfile).not.toHaveBeenCalled();
+    expect(fixture.nativeElement.querySelector('app-startgg-link')).not.toBeNull();
+    expect(fixture.nativeElement.textContent).toContain('Skip for now');
   });
 
-  it('recovers after registration failure without showing success', async () => {
-    users.createNewUser.and.returnValue(throwError(() => new Error('Try again')));
-    fixture.componentInstance.register(await fill('password123', 'password123'));
-    expect(fixture.componentInstance.accountCreated).toBeFalse();
-    expect(fixture.componentInstance.saving).toBeFalse();
-    expect(fixture.componentInstance.errorMessage).toBe('Try again');
+  it('completes without Start.gg and goes to the feature landing page', () => {
+    const navigation = spyOn(TestBed.inject(Router), 'navigateByUrl').and.resolveTo(true);
+    fixture.componentInstance.finish();
+    expect(navigation).toHaveBeenCalledWith('/');
+  });
+
+  it('never repeats successful registration when automatic login fails', async () => {
+    users.login.and.returnValue(throwError(() => new Error('offline')));
+    fixture.componentInstance.register(await fill('long password!'));
+    fixture.detectChanges();
+    expect(fixture.componentInstance.accountCreated).toBeTrue();
+    expect(fixture.nativeElement.textContent).toContain('Sign in to continue');
+    expect(fixture.nativeElement.querySelector('#password')).toBeNull();
   });
 });

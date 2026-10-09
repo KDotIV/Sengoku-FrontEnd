@@ -1,1 +1,15 @@
-<p>user works!</p>
+<section class="registration">
+  <h1>Your account</h1>
+  @if (!users.ready()) {
+    <p role="status">Checking your session…</p>
+  } @else if (users.account(); as account) {
+    <div class="panel">
+      <h2>{{ account.userName }}</h2>
+      <app-startgg-link />
+    </div>
+    <a routerLink="/bracket-runner">Open your BracketRunner</a>
+  } @else {
+    <p>Sign in to manage your Start.gg link.</p>
+    <a routerLink="/user-login" [queryParams]="{returnTo: '/account'}">Sign in</a>
+  }
+</section>

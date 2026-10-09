@@ -6,8 +6,12 @@ fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 10px; min-width
 input { width: 100%; min-width: 0; padding: 12px; background: var(--black-bg); color: var(--text-primary); border: 1px solid var(--silver); font: inherit; }
 input:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid var(--aether-cyan); outline-offset: 3px; }
 button { margin-top: 12px; }
-fieldset:disabled { opacity: .65; }
+fieldset:disabled, button:disabled { opacity: .65; }
 p, small { line-height: 1.5; }
-small { color: var(--secondary-white); }
+small, .steps span { color: var(--secondary-white); }
 .error { color: #ffb3ae; }
-.profile-preview { border-top: 1px solid var(--silver); margin-top: 20px; }
+.success, .eyebrow { color: var(--aether-cyan); }
+.profile-preview { margin-top: 20px; }
+.steps { display: flex; flex-wrap: wrap; list-style: none; padding: 0; gap: 20px; color: var(--secondary-white); }
+.steps .current { color: var(--aether-cyan); border-bottom: 2px solid; padding-bottom: 8px; }
+.finish { width: 100%; margin-top: 24px; border-color: var(--aether-cyan); }

@@ -1,20 +1,29 @@
 <header>
-  <nav>
+  <nav aria-label="Main navigation">
     <ul class="first-of-type">
-      <li><a [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
-      <li><a [routerLink]="['/tournament-finder']" routerLinkActive="active">Tournament Finder</a></li>
-      <li><a [routerLink]="['/leaderboards']" routerLinkActive="active">Leaderboards</a></li>
-      <li><a [routerLink]="['/bracket-runner']" routerLinkActive="active">Bracket Runner</a></li>
-      <li><a [routerLink]="['/co-op']" routerLinkActive="active">Co-Ops</a></li>
-      <!-- Add more navigation links as needed -->
+      <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+      <li><a routerLink="/tournament-finder" routerLinkActive="active">Tournament Finder</a></li>
+      <li><a routerLink="/leaderboards" routerLinkActive="active">Leaderboards</a></li>
+      <li><a routerLink="/bracket-runner" routerLinkActive="active">BracketRunner</a></li>
+      <li><a routerLink="/co-op" routerLinkActive="active">Co-Ops</a></li>
     </ul>
     <ul class="last-of-type">
-      <li><a [routerLink]="['/user-register']">Register</a></li>
-      <li><a [routerLink]="['/user-login']">Login</a></li>
+      @if (users.account(); as account) {
+        <li><a routerLink="/account" routerLinkActive="active">{{ account.userName }}</a></li>
+        <li><button type="button" (click)="logout()" [disabled]="signingOut">{{ signingOut ? 'Signing out…' : 'Sign out' }}</button></li>
+      } @else if (users.ready()) {
+        <li><a routerLink="/user-register" routerLinkActive="active">Register</a></li>
+        <li><a routerLink="/user-login" routerLinkActive="active">Sign in</a></li>
+      }
     </ul>
   </nav>
 </header>
-
 <main>
-  <router-outlet></router-outlet>
+  @if (users.sessionError()) {
+    <div role="alert" class="session-notice">
+      {{ users.sessionError() }} <button type="button" (click)="retrySession()">Retry</button>
+    </div>
+  }
+  @if (accountError) { <p role="alert">{{ accountError }}</p> }
+  <router-outlet />
 </main>

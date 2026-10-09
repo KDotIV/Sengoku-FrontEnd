@@ -1,47 +1,43 @@
 <section class="registration" aria-labelledby="register-title">
+  <p class="eyebrow">Your next match starts here</p>
   <h1 id="register-title">Join Sengoku</h1>
-  <p>Create your account, then find your Start.gg player profile.</p>
-  @if (!accountCreated) {
+  <ol class="steps" aria-label="Registration steps">
+    <li [class.current]="!users.account()">1. Create account</li>
+    <li [class.current]="!!users.account()">2. Connect Start.gg <span>(optional)</span></li>
+  </ol>
+  @if (saving) { <p role="status">Preparing your account…</p> }
+  @if (users.account() && !saving) {
+    <div class="panel">
+      <h2>Bring your player profile with you</h2>
+      <p>Welcome, {{ users.account()?.userName }}. Your Sengoku account is ready. Link Start.gg now or come back to it from your account page.</p>
+      <app-startgg-link />
+      <button class="finish" type="button" (click)="finish()">
+        {{ users.startgg()?.link ? 'Finish and explore Sengoku' : 'Skip for now and explore Sengoku' }}
+      </button>
+    </div>
+  } @else if (!accountCreated) {
     <form #registerForm="ngForm" (ngSubmit)="register(registerForm)" class="panel">
       <h2>Create your account</h2>
-      <fieldset [disabled]="saving">
+      <fieldset [disabled]="saving || !users.ready()">
         <label for="username">Username</label>
         <input id="username" name="username" [(ngModel)]="userName" autocomplete="username" required />
         <label for="email">Email</label>
         <input id="email" name="email" type="email" [(ngModel)]="email" autocomplete="email" required email />
         <label for="password">Password</label>
-        <input id="password" name="password" type="password" [(ngModel)]="password" autocomplete="new-password" required />
+        <input id="password" name="password" type="password" [(ngModel)]="password" autocomplete="new-password"
+          minlength="12" maxlength="1024" required aria-describedby="password-help" />
+        <small id="password-help">Use at least 12 characters. Spaces, symbols, and Unicode are welcome.</small>
         <label for="confirm-password">Confirm password</label>
         <input id="confirm-password" name="confirmPassword" type="password" [(ngModel)]="confirmPassword" autocomplete="new-password" required />
-        <button type="submit">{{ saving ? 'Creating account…' : 'Create account' }}</button>
+        <button type="submit">{{ saving ? 'Creating account…' : 'Create account and continue' }}</button>
       </fieldset>
-      @if (errorMessage) { <p role="alert" class="error">{{ errorMessage }}</p> }
+      <p>Already registered? <a routerLink="/user-login">Sign in</a></p>
     </form>
-  } @else {
-    <div class="panel" role="status">
-      <h2>Account created</h2>
-      <p>Your Sengoku account has been created. Sign-in and saved Start.gg linking are not available yet.</p>
+  } @else if (!saving) {
+    <div class="panel">
+      <h2>Your account has been created</h2>
+      <a routerLink="/user-login" [queryParams]="{returnTo: '/user-register'}">Sign in to continue</a>
     </div>
   }
-
-  <form class="panel" (ngSubmit)="previewProfile()">
-    <h2>Find your Start.gg profile</h2>
-    <p>Preview your player profile. Linking it to your Sengoku account is not available yet.</p>
-    <fieldset [disabled]="lookingUp">
-      <label for="profile-slug">Start.gg profile link</label>
-      <input id="profile-slug" name="profileSlug" [(ngModel)]="profileSlug" (ngModelChange)="profile = null"
-        placeholder="start.gg/user/b1a179d8" aria-describedby="profile-help" required />
-      <small id="profile-help">A full link, user/b1a179d8, or b1a179d8 works.</small>
-      <button type="submit">{{ lookingUp ? 'Finding profile…' : 'Preview profile' }}</button>
-    </fieldset>
-    @if (profileError) { <p role="alert" class="error">{{ profileError }}</p> }
-    @if (profile; as player) {
-      <div class="profile-preview" role="status">
-        <h3>{{ player.playerName }}</h3>
-        <a [href]="profileUrl" target="_blank" rel="noopener noreferrer">View Start.gg profile</a>
-        <p>Profile found. This preview has not linked or verified the account.</p>
-      </div>
-    }
-  </form>
-  <a routerLink="/bracket-runner">Open BracketRunner</a>
+  @if (errorMessage) { <p role="alert" class="error">{{ errorMessage }}</p> }
 </section>

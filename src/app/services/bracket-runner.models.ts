@@ -33,9 +33,19 @@ export interface EntrantSetCard {
   playerTwoID: number;
   entrantTwoName: string;
   setID: string;
+  pathStep: number | null;
+  pathSetId: string | null;
+  matchStatus: string;
 }
 
 export interface BracketVictoryPathData {
+  bracketPathId: number;
+  bracketId: number | null;
+  playerStartggLink: number;
+  tournamentSlug: string | null;
+  startTime: string | null;
+  endTime: string | null;
+  lifecycle: 'Upcoming' | 'InProgress' | 'Completed' | 'Unknown';
   tournamentLinkID: number;
   eventLinkID: number;
   tournamentName: string;
@@ -58,4 +68,8 @@ export function isPending(result: PlayerOnboardResult): boolean {
 
 export function isCompleted(result: PlayerOnboardResult): boolean {
   return result.status === 'Completed' && !result.response.startsWith('FAILED:') && !result.failures?.length;
+}
+
+export interface PlayerLegend {
+  id: number; legendName: string; playerId: number; playerLinkId: number; playerName: string | null; placements: number[] | null;
 }
