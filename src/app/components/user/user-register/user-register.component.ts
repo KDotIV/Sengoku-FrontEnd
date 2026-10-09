@@ -1,89 +1,74 @@
-import { Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { UserData, UserService } from '../../../services/user.service';
-import { LeagueByOrgData, LeagueService } from '../../../services/league.service';
-import { Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormsModule, NgForm } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { finalize } from 'rxjs';
+import { StartggProfilePreview, UserService } from '../../../services/user.service';
+import { apiErrorMessage } from '../../../shared/api-error';
+import { normalizeUserSlug } from '../../../shared/startgg-url';
 
 @Component({
   selector: 'app-user-register',
-  imports: [FormsModule],
+  standalone: true,
+  imports: [FormsModule, RouterLink],
   templateUrl: './user-register.component.html',
   styleUrl: './user-register.component.css',
-  changeDetection: ChangeDetectionStrategy.Eager,
-  standalone: true
+  changeDetection: ChangeDetectionStrategy.Eager
 })
-export class UserRegisterComponent implements OnInit {
-  @Output() back = new EventEmitter<void>();
-  
-  errorMessage: string = '';
-  loading: boolean = false;
-  loggedin: boolean = false;
-  
-  newUser: UserData = { UserId: 0, UserName: '', Display: '', Password: '', Email: '', permissionChecksum: '' };
-  confirmPass: string = '';
-  
-  availableLeagues: LeagueByOrgData[] = [];
+export class UserRegisterComponent {
+  private readonly users = inject(UserService);
+  private readonly destroyRef = inject(DestroyRef);
+  userName = '';
+  email = '';
+  password = '';
+  confirmPassword = '';
+  profileSlug = '';
+  profile: StartggProfilePreview['data'] = null;
+  profileUrl = '';
+  accountCreated = false;
+  saving = false;
+  lookingUp = false;
+  errorMessage = '';
+  profileError = '';
 
-  // 1) Inject your LeagueService (or whatever can fetch the leagues)
-  constructor(private userService: UserService, private leagueService: LeagueService, private router: Router) { }
-
-  ngOnInit(): void {
-    // If you have login checks or want to handle other logic, do that here
-    if (!this.loggedin) {
-      this.getCreateNewUserForm();
+  register(form: NgForm): void {
+    if (this.saving || this.accountCreated) return;
+    this.errorMessage = '';
+    if (form.invalid || !this.userName.trim() || this.password !== this.confirmPassword) {
+      form.control.markAllAsTouched();
+      this.errorMessage = 'Enter a username, valid email, and matching passwords.';
+      return;
     }
-
-    // 2) Fetch list of leagues
-    this.fetchAvailableLeagues();
+    this.saving = true;
+    this.users.createNewUser({ userName: this.userName, email: this.email, password: this.password })
+      .pipe(takeUntilDestroyed(this.destroyRef), finalize(() => this.saving = false))
+      .subscribe({
+        next: () => {
+          this.accountCreated = true;
+          this.password = '';
+          this.confirmPassword = '';
+        },
+        error: error => this.errorMessage = apiErrorMessage(error,
+          'Unable to create your account. The email may already be registered or your details may not be accepted.')
+      });
   }
 
-  goBack(): void {
-    this.back.emit();
-  }
-
-  getCreateNewUserForm(): void {
-    this.errorMessage = '';
-    this.loading = false;
-    // Additional logic if needed
-  }
-
-  sendNewRegisteredUser(userName: string, display: string, email: string, password: string): void {
-    this.errorMessage = '';
-    this.loading = true;
-
-    this.userService.createNewUser(userName, display, email, password).subscribe({
-      next: (res) => {
-        // handle success
-        this.loading = false;
-      },
-      error: (err) => {
-        this.errorMessage = 'Failed to create user.';
-        this.loading = false;
-      }
-    });
-  }
-
-  // 3) Actually load leagues from your leagueService
-  fetchAvailableLeagues(): void {
-    this.errorMessage = '';
-    this.loading = true;
-
-    this.leagueService.queryAvailableLeagues().subscribe({
-      next: (leagues: LeagueByOrgData[]) => {
-        this.availableLeagues = leagues;
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error(err);
-        this.errorMessage = 'Failed to load leagues.';
-        this.loading = false;
-      }
-    });
-  }
-
-  // 4) Either navigate or provide a link for each league
-  onLeagueSelect(leagueId: number): void {
-    // Navigate to /leaderboards/:leagueId/register
-    this.router.navigate(['/leaderboards', leagueId, 'register']);
+  previewProfile(): void {
+    if (this.lookingUp) return;
+    this.profileError = '';
+    this.profile = null;
+    let slug: string;
+    try { slug = normalizeUserSlug(this.profileSlug); }
+    catch (error) { this.profileError = apiErrorMessage(error, 'Check your Start.gg link.'); return; }
+    this.lookingUp = true;
+    this.users.previewStartggProfile(slug)
+      .pipe(takeUntilDestroyed(this.destroyRef), finalize(() => this.lookingUp = false))
+      .subscribe({
+        next: result => {
+          this.profile = result.data;
+          this.profileUrl = `https://start.gg/${slug}`;
+        },
+        error: error => this.profileError = apiErrorMessage(error, 'Unable to load that Start.gg profile. Please try again.')
+      });
   }
 }

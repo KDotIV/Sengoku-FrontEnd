@@ -1,8 +1,13 @@
-.league-link {
-    color: rgb(116, 116, 194);
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  .league-link:hover {
-    text-decoration: none; /* or keep underline on hover, your choice */
-  }
+:host { display: block; }
+.registration { max-width: 680px; margin: 0 auto; }
+.panel { padding: clamp(14px, 3vw, 26px); margin: 22px 0; border: 1px solid var(--gold); background: var(--glass-pane); }
+h2 { margin-top: 0; }
+fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 10px; min-width: 0; }
+input { width: 100%; min-width: 0; padding: 12px; background: var(--black-bg); color: var(--text-primary); border: 1px solid var(--silver); font: inherit; }
+input:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid var(--aether-cyan); outline-offset: 3px; }
+button { margin-top: 12px; }
+fieldset:disabled { opacity: .65; }
+p, small { line-height: 1.5; }
+small { color: var(--secondary-white); }
+.error { color: #ffb3ae; }
+.profile-preview { border-top: 1px solid var(--silver); margin-top: 20px; }

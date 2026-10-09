@@ -1,32 +1,47 @@
-<div>
-  <h2>Which Tournament to Register?</h2>
-
-  <!-- Loading or error states -->
-  @if (loading) {
-    <div>Loading leagues, please wait...</div>
-  }
-  @if (errorMessage) {
-    <div>{{ errorMessage }}</div>
-  }
-
-  <hr />
-
-  <!-- Show the list of leagues -->
-  @if (!loading && availableLeagues.length > 0) {
-    <div>
-      <h3>Available Leagues</h3>
-      <ul>
-        @for (league of availableLeagues; track league) {
-          <li>
-            <a
-              href="javascript:void(0)"
-              class="league-link"
-              (click)="onLeagueSelect(league.leagueId)">
-              {{ league.leagueName }}
-            </a>
-          </li>
-        }
-      </ul>
+<section class="registration" aria-labelledby="register-title">
+  <h1 id="register-title">Join Sengoku</h1>
+  <p>Create your account, then find your Start.gg player profile.</p>
+  @if (!accountCreated) {
+    <form #registerForm="ngForm" (ngSubmit)="register(registerForm)" class="panel">
+      <h2>Create your account</h2>
+      <fieldset [disabled]="saving">
+        <label for="username">Username</label>
+        <input id="username" name="username" [(ngModel)]="userName" autocomplete="username" required />
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" [(ngModel)]="email" autocomplete="email" required email />
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" [(ngModel)]="password" autocomplete="new-password" required />
+        <label for="confirm-password">Confirm password</label>
+        <input id="confirm-password" name="confirmPassword" type="password" [(ngModel)]="confirmPassword" autocomplete="new-password" required />
+        <button type="submit">{{ saving ? 'Creating account…' : 'Create account' }}</button>
+      </fieldset>
+      @if (errorMessage) { <p role="alert" class="error">{{ errorMessage }}</p> }
+    </form>
+  } @else {
+    <div class="panel" role="status">
+      <h2>Account created</h2>
+      <p>Your Sengoku account has been created. Sign-in and saved Start.gg linking are not available yet.</p>
     </div>
   }
-</div>
+
+  <form class="panel" (ngSubmit)="previewProfile()">
+    <h2>Find your Start.gg profile</h2>
+    <p>Preview your player profile. Linking it to your Sengoku account is not available yet.</p>
+    <fieldset [disabled]="lookingUp">
+      <label for="profile-slug">Start.gg profile link</label>
+      <input id="profile-slug" name="profileSlug" [(ngModel)]="profileSlug" (ngModelChange)="profile = null"
+        placeholder="start.gg/user/b1a179d8" aria-describedby="profile-help" required />
+      <small id="profile-help">A full link, user/b1a179d8, or b1a179d8 works.</small>
+      <button type="submit">{{ lookingUp ? 'Finding profile…' : 'Preview profile' }}</button>
+    </fieldset>
+    @if (profileError) { <p role="alert" class="error">{{ profileError }}</p> }
+    @if (profile; as player) {
+      <div class="profile-preview" role="status">
+        <h3>{{ player.playerName }}</h3>
+        <a [href]="profileUrl" target="_blank" rel="noopener noreferrer">View Start.gg profile</a>
+        <p>Profile found. This preview has not linked or verified the account.</p>
+      </div>
+    }
+  </form>
+  <a routerLink="/bracket-runner">Open BracketRunner</a>
+</section>
