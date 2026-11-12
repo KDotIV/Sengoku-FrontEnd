@@ -10,7 +10,7 @@ import { LeagueStateService } from '../../../services/LeagueStateService.service
 
 @Component({
   selector: 'app-league-details',
-  imports: [CommonModule, FormsModule,],
+  imports: [CommonModule, FormsModule, FeedsSubscribeOverlayComponent],
   templateUrl: './league-details.component.html',
   styleUrl: './league-details.component.css',
   changeDetection: ChangeDetectionStrategy.Default,
