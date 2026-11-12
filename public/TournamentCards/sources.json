@@ -1,0 +1,63 @@
+{
+  "addedOn": "2026-11-11",
+  "notes": "Publisher storefront headers and game logos, preserved as downloaded. Game artwork and trademarks belong to their respective owners. The four pre-existing headers are unchanged.",
+  "newGameIdSource": "https://api.start.gg/tournament/al-locals-cutthroat-week-18?expand[]=event&expand[]=videogame",
+  "assets": [
+    {
+      "file": "TOKONheader.jpg",
+      "game": "MARVEL Tōkon: Fighting Souls",
+      "startggId": 107706,
+      "source": "https://store.steampowered.com/app/3787240/",
+      "download": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3787240/943fda32c11b3e3f451458ffa95a4adca1f316a4/header.jpg"
+    },
+    {
+      "file": "AvatarLegendsheader.jpg",
+      "game": "Avatar Legends: The Fighting Game",
+      "startggId": 114292,
+      "source": "https://store.steampowered.com/app/2424420/",
+      "download": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2424420/30d44f94173fde20d7338f01611c6b5c7618e07e/header.jpg"
+    },
+    {
+      "file": "GBVSRheader.jpg",
+      "game": "Granblue Fantasy Versus: Rising",
+      "source": "https://store.steampowered.com/app/2157560/",
+      "download": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2157560/header.jpg"
+    },
+    {
+      "file": "KOFXVheader.jpg",
+      "game": "The King of Fighters XV",
+      "source": "https://store.steampowered.com/app/1498570/",
+      "download": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1498570/header.jpg"
+    },
+    {
+      "file": "MK1header.jpg",
+      "game": "Mortal Kombat 1",
+      "source": "https://store.steampowered.com/app/1971870/",
+      "download": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1971870/header.jpg"
+    },
+    {
+      "file": "DBFZheader.jpg",
+      "game": "Dragon Ball FighterZ",
+      "source": "https://store.steampowered.com/app/678950/",
+      "download": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/678950/header.jpg"
+    },
+    {
+      "file": "ThirdStrikeheader.png",
+      "game": "Street Fighter III: 3rd Strike",
+      "source": "https://github.com/joaorb64/StreamHelperAssets/blob/main/games/sf3ts/base_files/logo.png",
+      "download": "https://raw.githubusercontent.com/joaorb64/StreamHelperAssets/main/games/sf3ts/base_files/logo.png"
+    },
+    {
+      "file": "SC2header.png",
+      "game": "SoulCalibur II",
+      "source": "https://github.com/joaorb64/StreamHelperAssets/blob/main/games/sc2/base_files/logo.png",
+      "download": "https://raw.githubusercontent.com/joaorb64/StreamHelperAssets/main/games/sc2/base_files/logo.png"
+    },
+    {
+      "file": "SmashMeleeheader.png",
+      "game": "Super Smash Bros. Melee",
+      "source": "https://github.com/joaorb64/StreamHelperAssets/blob/main/games/ssbm/base_files/logo.png",
+      "download": "https://raw.githubusercontent.com/joaorb64/StreamHelperAssets/main/games/ssbm/base_files/logo.png"
+    }
+  ]
+}

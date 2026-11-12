@@ -10,10 +10,10 @@ import { LeagueStateService } from '../../../services/LeagueStateService.service
 
 @Component({
   selector: 'app-league-details',
-  imports: [CommonModule, FormsModule, FeedsSubscribeOverlayComponent],
+  imports: [CommonModule, FormsModule,],
   templateUrl: './league-details.component.html',
   styleUrl: './league-details.component.css',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.Default,
   standalone: true,
 })
 export class LeagueDetailsComponent implements OnInit {

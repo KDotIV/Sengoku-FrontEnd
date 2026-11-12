@@ -426,6 +426,112 @@ app-tournament-finder .game-smash {
   --event-card-trim: rgba(220, 155, 60, .72);
 }
 
+app-tournament-finder .game-tokon {
+  --event-card-primary: rgba(180, 47, 37, .6);
+  --event-card-secondary: rgba(34, 94, 151, .5);
+  --event-card-trim: rgba(241, 187, 82, .8);
+}
+
+app-tournament-finder .game-avatar {
+  --event-card-primary: rgba(38, 122, 151, .6);
+  --event-card-secondary: rgba(186, 95, 37, .42);
+  --event-card-trim: rgba(236, 191, 98, .8);
+}
+
+app-tournament-finder .game-gbvsr {
+  --event-card-primary: rgba(49, 112, 188, .58);
+  --event-card-secondary: rgba(103, 61, 157, .48);
+  --event-card-trim: rgba(147, 198, 255, .74);
+}
+
+app-tournament-finder .game-third-strike {
+  --event-card-primary: rgba(176, 74, 17, .58);
+  --event-card-secondary: rgba(96, 23, 28, .5);
+  --event-card-trim: rgba(255, 170, 66, .78);
+}
+
+app-tournament-finder .game-kof {
+  --event-card-primary: rgba(25, 102, 166, .62);
+  --event-card-secondary: rgba(152, 38, 42, .46);
+  --event-card-trim: rgba(114, 195, 248, .78);
+}
+
+app-tournament-finder .game-sc2 {
+  --event-card-primary: rgba(37, 108, 89, .56);
+  --event-card-secondary: rgba(119, 91, 35, .46);
+  --event-card-trim: rgba(213, 192, 115, .78);
+}
+
+app-tournament-finder .game-mk1 {
+  --event-card-primary: rgba(51, 117, 157, .56);
+  --event-card-secondary: rgba(156, 89, 38, .44);
+  --event-card-trim: rgba(200, 205, 197, .74);
+}
+
+app-tournament-finder .game-dbfz {
+  --event-card-primary: rgba(192, 100, 16, .6);
+  --event-card-secondary: rgba(139, 33, 24, .5);
+  --event-card-trim: rgba(255, 191, 59, .82);
+}
+
+app-tournament-finder .game-melee {
+  --event-card-primary: rgba(117, 43, 72, .6);
+  --event-card-secondary: rgba(68, 50, 128, .5);
+  --event-card-trim: rgba(200, 162, 221, .78);
+}
+
+app-tournament-finder :is(.game-third-strike, .game-sc2, .game-melee) .event-card-art {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  mask-image: none;
+}
+
+/* Adapt to the results column, which shares the page with two navigation panels. */
+@container (max-width: 760px) {
+  app-tournament-finder .event-card {
+    grid-template-columns: minmax(140px, .8fr) minmax(0, 1fr);
+  }
+
+  app-tournament-finder .event-card-data,
+  app-tournament-finder .event-card-action {
+    grid-column: 1 / -1;
+    margin-left: 14px;
+  }
+}
+
+@container (max-width: 460px) {
+  app-tournament-finder .event-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    min-height: 0;
+    padding: 0 12px 12px;
+  }
+
+  app-tournament-finder .event-card-art {
+    aspect-ratio: 460 / 215;
+    margin: 0 -12px;
+    background-position: center;
+    mask-image: linear-gradient(180deg, #000 75%, transparent 100%);
+  }
+
+  app-tournament-finder .event-card-data,
+  app-tournament-finder .event-card-action {
+    margin-left: 0;
+  }
+
+  app-tournament-finder .event-card-data {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  app-tournament-finder .event-card-stat {
+    padding-left: 0;
+    padding-top: 8px;
+    border-left: 0;
+    border-top: 1px solid rgba(198, 151, 58, .24);
+  }
+}
+
   @media (min-width: 80em) {
     :root {
         --container-width: 75rem;
@@ -458,34 +564,6 @@ app-tournament-finder .game-smash {
     width: calc(100% - var(--nav-rail-left) - var(--nav-rail-width) - 20px);
     margin-left: calc(var(--nav-rail-left) + var(--nav-rail-width) + 10px);
     padding: 18px 0 40px;
-  }
-
-  app-tournament-finder .event-card {
-    grid-template-columns: 1fr;
-    gap: 10px;
-    min-height: 0;
-    padding: 0 12px 12px;
-  }
-
-  app-tournament-finder .event-card-art {
-    min-height: 72px;
-    margin: 0 -12px;
-    mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, .9) 62%, transparent 100%);
-  }
-
-  app-tournament-finder .event-card-data {
-    grid-template-columns: 1fr;
-  }
-
-  app-tournament-finder .event-card-stat {
-    padding-left: 0;
-    padding-top: 8px;
-    border-left: 0;
-    border-top: 1px solid rgba(198, 151, 58, .24);
-  }
-
-  app-tournament-finder .event-card-action {
-    width: 100%;
   }
 
   header {

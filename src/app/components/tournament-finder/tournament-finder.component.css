@@ -18,12 +18,39 @@ main {
 }
 
 .event-results {
+  container-type: inline-size;
   width: 100%;
   padding: 12px;
   overflow: hidden;
   display: grid;
   gap: 10px;
   justify-items: stretch;
+}
+
+.games-checkboxes > div {
+  display: flex;
+  align-items: start;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.games-checkboxes input {
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.games-checkboxes label {
+  line-height: 1.35;
+  cursor: pointer;
+}
+
+.event-game {
+  display: block;
+  margin-bottom: 6px;
+  color: #f4dfb3;
+  font-size: .75rem;
+  font-weight: 600;
+  line-height: 1.35;
 }
 
 input[type="text"],

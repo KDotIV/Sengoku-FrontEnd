@@ -14,14 +14,14 @@
       <label for="games">Select Games:</label>
       <div id="games" class="games-checkboxes">
         <button (click)="clearAllGames()">Clear All</button>
-        @for (game of availableGames; track game) {
+        @for (game of availableGames; track game.id) {
           <div>
             <input
               type="checkbox"
               [id]="'game-' + game.id"
               [value]="game.id"
+              [checked]="selectedGames.includes(game.id)"
               (change)="toggleGameSelection(game.id, $event)"
-              #gameCheckbox
             >
             <label [for]="'game-' + game.id">{{ game.name }}</label>
           </div>
@@ -68,8 +68,9 @@
             [ngClass]="getTournamentCardClass(event)"
             [ngStyle]="getTournamentCardStyle(event)"
             >
-            <div class="event-card-art" [attr.aria-label]="getTournamentCardLabel(event)"></div>
+            <div class="event-card-art" aria-hidden="true"></div>
             <div class="event-card-main">
+              <span class="event-game">{{ getTournamentCardLabel(event) }}</span>
               <span class="event-region">Region {{ event.region }}</span>
               <h2>{{ event.eventName }}</h2>
             </div>
